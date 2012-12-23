@@ -50,3 +50,10 @@ retrieve list of tasks
 display backlog
 display kanban
 
+### routes
+
+index
+tasks/tasksId
+
+tasks/kind
+
