@@ -1,0 +1,52 @@
+# Tasks
+
+Application to manage your tasks
+First for one user.
+Centered on tasks (backlog + kanban) more than projects/fetaures
+
+## Features
+### What's a tasks
+
+Name
+Description
+
+Belong to a project
+Belong to a feature of a project
+Kind of tasks
+
+State
+
+### Project
+
+Name
+Description
+
+### Feature
+
+Name
+Description (SubProject of a project)
+
+### Backlog
+
+per Project
+
+### Tasks state
+
+Not began
+In progress
+Ended
+
+## TODO
+
+App skeleton :
+ 1. index return js
+ 2. api REST
+
+Storage tasks (without project/feature and kind)
+add/update/read
+display/update a tasks
+
+retrieve list of tasks
+display backlog
+display kanban
+
