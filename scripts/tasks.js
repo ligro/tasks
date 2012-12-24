@@ -10,7 +10,7 @@
             // retrieve tasks lists
         },
         addtask: function(){
-            $('<div></div>').dialog();
+            $('<div>Formulaire d\'ajout de tache</div>').dialog();
             // display form (dialog)
             // submit form and close dialog
         }

@@ -21,7 +21,9 @@ class App:
 <html>
     <head>
         <title>Tasks Manager</title>
+        <link href="/styles/ui-darkness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" type="text/css" />
         <script type="application/javascript" src="/scripts/jquery-1.8.3.min.js"></script>
+        <script type="application/javascript" src="/scripts/jquery-ui.js"></script>
         <script type="application/javascript" src="/scripts/tasks.js"></script>
     </head>
     <body>
@@ -67,6 +69,14 @@ if __name__ == '__main__':
             'tools.staticdir.on': True,
             'tools.staticdir.dir': os.path.join(current_dir, 'scripts'),
             'tools.staticdir.content_types': {'js': 'application/javascript'}
+        },
+        '/styles': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': os.path.join(current_dir, 'styles'),
+            'tools.staticdir.content_types': {
+                'css': 'text/css',
+                'png': 'image/png',
+            }
         }
     }
 
