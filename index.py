@@ -1,17 +1,7 @@
 import cherrypy
 import os
-from simplejson import JSONEncoder
 
 import Task
-
-encoder = JSONEncoder()
-
-def jsonify_tool_callback(*args, **kwargs):
-    response = cherrypy.response
-    response.headers['Content-Type'] = 'application/json'
-    response.body = encoder.iterencode(response.body)
-
-cherrypy.tools.jsonify = cherrypy.Tool('before_finalize', jsonify_tool_callback, priority=30)
 
 class App:
     @cherrypy.expose
@@ -24,6 +14,7 @@ class App:
         <link href="/styles/ui-darkness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" type="text/css" />
         <script type="application/javascript" src="/scripts/jquery-1.8.3.min.js"></script>
         <script type="application/javascript" src="/scripts/jquery-ui.js"></script>
+        <script type="application/javascript" src="/scripts/dust-full-0.3.0.min.js"></script>
         <script type="application/javascript" src="/scripts/tasks.js"></script>
     </head>
     <body>
@@ -34,26 +25,51 @@ class App:
                 <li><a href="javascript:void(0);" class="jLink" data-func="addtask">Create task</a></li>
             </ul>
         </header>
-        <footer></footer>
+        <footer>
+            Powered by Ligro
+            <ul>
+                <li>cherrypy</li>
+                <li>jquery.ui</li>
+                <li>dust.js</li>
+            </ul>
+        </footer>
     </body>
 </html>"""
 
     @cherrypy.expose
-    @cherrypy.tools.jsonify()
+    @cherrypy.tools.json_out()
+    def templates(self):
+        tpl = {
+                "addTask" : """<div>
+                    <h1>Formulaire d'ajout de tache</h1>
+                    <form action="javascript:void(0)">
+                        <label>Name</label><input type="text" name="name" />
+                        <label>Description</label><input type="text" name="desc" />
+                        <!--
+                        <label>Project</label><input type="text" name="project" />
+                        <label>Feature</label><input type="text" name="feature" />
+                        -->
+                    </form>
+                </div>"""
+                }
+        return tpl
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
     def tasks(self, kind=None):
         # retrieve tasks
         # return it json encoded
         pass
 
     @cherrypy.expose
-    @cherrypy.tools.jsonify()
+    @cherrypy.tools.json_out()
     def task(self, id=None):
         # retrieve tasks
         # return it json encoded
         pass
 
     @cherrypy.expose
-    @cherrypy.tools.jsonify()
+    @cherrypy.tools.json_out()
     def savetask(self, task=None):
         if task == None:
             # fixme do a better handler

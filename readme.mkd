@@ -57,3 +57,11 @@ tasks/tasksId
 
 tasks/kind
 
+## Install
+
+## depends
+
+python2.7
+cherrypy3
+nodejs (for dust.js)
+
