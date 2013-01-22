@@ -1,58 +1,27 @@
 import cherrypy
-import os
+import os, glob
+
+import pprint
 
 import Task
 
 class App:
     @cherrypy.expose
     def index(self):
-        # should return index.html
-        return """<!DOCTYPE html>
-<html>
-    <head>
-        <title>Tasks Manager</title>
-        <link href="/styles/ui-darkness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" type="text/css" />
-        <script type="application/javascript" src="/scripts/jquery-1.8.3.min.js"></script>
-        <script type="application/javascript" src="/scripts/jquery-ui.js"></script>
-        <script type="application/javascript" src="/scripts/dust-full-0.3.0.min.js"></script>
-        <script type="application/javascript" src="/scripts/tasks.js"></script>
-    </head>
-    <body>
-        <header>
-            <a href="/" class="logo">Tasks Manager</a>
-            <ul>
-                <li><a href="javascript:void(0);" class="jLink" data-func="backlog">Backlog</a></li>
-                <li><a href="javascript:void(0);" class="jLink" data-func="addtask">Create task</a></li>
-            </ul>
-        </header>
-        <footer>
-            Powered by Ligro
-            <ul>
-                <li>cherrypy</li>
-                <li>jquery.ui</li>
-                <li>dust.js</li>
-            </ul>
-        </footer>
-    </body>
-</html>"""
+        with open('views/index.html', 'r') as f:
+            lines = f.readlines()
+        return lines
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def templates(self):
-        tpl = {
-                "addTask" : """<div>
-                    <h1>Formulaire d'ajout de tache</h1>
-                    <form action="javascript:void(0)">
-                        <label>Name</label><input type="text" name="name" />
-                        <label>Description</label><input type="text" name="desc" />
-                        <!--
-                        <label>Project</label><input type="text" name="project" />
-                        <label>Feature</label><input type="text" name="feature" />
-                        -->
-                    </form>
-                </div>"""
-                }
-        return tpl
+        templates = {}
+        for tpl in glob.glob('views/*.dust.html'):
+            tplName = tpl[6:-10]
+            templates[tplName] = ''
+            with open(tpl, 'r') as f:
+                templates[tplName] = ' '.join(f.readlines())
+        return templates
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
