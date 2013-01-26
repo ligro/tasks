@@ -1,9 +1,9 @@
-(function( $ ) {
-    $.App = {
+(function() {
+    App = {
         templates: {},
         init: function(el) {
-            $('a.jLink').bind('click', function(){
-                var func = $(this).data('func');
+            document.querySelector('a.jLink').bind('click', function(){
+                var func = document.querySelector(this).data('func');
                 if (typeof $.App[func] == 'function') {
                     $.App[func].call();
                 }
@@ -22,19 +22,19 @@
                 && dust.loadSource(dust.compile($.App.templates[name], name));
         },
         addtask: function(){
-            $.App._loadTpl("addTask");
+            App._loadTpl("addTask");
 
             // will be usefull for i18n
             dust.render("addTask", {}, function(err, out) {
-                  $(out).dialog();
+                  document.querySelector(out).dialog();
                   // click out close dialog
             });
 
             // submit form and close dialog
         }
     };
-})( jQuery );
+})();
 
-$(document).ready(function() {
-    $.App.init(document.getElementsByTagName('body'));
+document.ready(function() {
+    App.init(document.getElementsByTagName('body'));
 });
