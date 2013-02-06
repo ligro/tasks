@@ -55,9 +55,9 @@ if __name__ == '__main__':
             'tools.staticdir.dir': os.path.join(current_dir, 'js'),
             'tools.staticdir.content_types': {'js': 'application/javascript'}
         },
-        '/styles': {
+        '/css': {
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': os.path.join(current_dir, 'styles'),
+            'tools.staticdir.dir': os.path.join(current_dir, 'css'),
             'tools.staticdir.content_types': {
                 'css': 'text/css',
                 'png': 'image/png',
