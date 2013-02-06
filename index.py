@@ -50,9 +50,9 @@ class App:
 if __name__ == '__main__':
     current_dir = os.path.dirname(os.path.abspath(__file__))
     conf = {
-        '/scripts': {
+        '/js': {
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': os.path.join(current_dir, 'scripts'),
+            'tools.staticdir.dir': os.path.join(current_dir, 'js'),
             'tools.staticdir.content_types': {'js': 'application/javascript'}
         },
         '/styles': {
