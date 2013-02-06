@@ -3,25 +3,27 @@
     <head>
         <title>Tasks Manager</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <script type="application/javascript" src="/js/zepto.min.js"></script>
-        <script type="application/javascript" src="/js/dust-full-0.3.0.min.js"></script>
-        <script type="application/javascript" src="/js/tasks.js"></script>
     </head>
     <body>
-        <header>
-            <a href="/" class="logo">Tasks Manager</a>
-            <ul>
-                <li><a href="javascript:void(0);" class="jLink" data-func="backlog">Backlog</a></li>
-                <li><a href="javascript:void(0);" class="jLink" data-func="addtask">Create task</a></li>
-                <li><a href="javascript:void(0);" class="jLink" data-func="abouts">abouts</a></li>
-            </ul>
-        </header>
-        <section id="page">
-
-            <footer>
-            </footer>
-        </section>
-        <footer>
-        </footer>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="#">Tasks Manager</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li><a href="javascript:void(0);" class="jLink" data-func="backlog">Backlog</a></li>
+                            <li><a href="javascript:void(0);" class="jLink" data-func="addtask">Create task</a></li>
+                            <li><a href="javascript:void(0);" class="jLink" data-func="abouts">abouts</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="modal"></div>
+        </div>
     </body>
+    <script type="application/javascript" src="/js/zepto.min.js"></script>
+    <script type="application/javascript" src="/js/dust-full-0.3.0.min.js"></script>
+    <script type="application/javascript" src="/js/tasks.js"></script>
 </html>

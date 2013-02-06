@@ -55,7 +55,7 @@
             App._loadTpl("abouts");
             dust.render("abouts", {}, function(err, out) {
                 // @TODO put it somewhere else
-                $("#page footer").html(out);
+                $(".container .modal").html(out);
                 // @TODO allow to close the new window
             });
         },
@@ -65,7 +65,8 @@
             // will be usefull for i18n
             dust.render("addTask", {}, function(err, out) {
                 // display the view en the end of the page
-                $("#page footer").html(out);
+                console.log($(".container .modal"));
+                $(".container .modal").html(out);
 
                 // @TODO allow to close the new window
             });
