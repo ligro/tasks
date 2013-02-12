@@ -8,12 +8,14 @@
 
             $.App._loadTpl(tpl, data, function(err, out) {
                 modalData.content = out
-                $.App._loadTpl("modal", modalData, function(err, out) {
+                $.App._loadTpl('modal', modalData, function(err, out) {
                     $this.html($(out))
-                    $("body").append($this)
+                    $this.on('click', '.close', function(){ $this.remove() })
+                    $('body').append($this)
+
                     // add events on buttons
                 })
             })
         }
     })
-})(Zepto);
+})(Zepto)
