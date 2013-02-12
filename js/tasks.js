@@ -6,7 +6,7 @@
         templates: {},
         tasks: {},
 
-        init: function(el) {
+        init: function() {
             $('a.jLink').bind('click', function(){
                 var func = $(this).data('func');
                 if (typeof $.App[func] == 'function') {
@@ -55,21 +55,60 @@
         },
         abouts: function(){
             $('<div>')
-                .modal('abouts', {}, {title: "Abouts"})
+                .modal('abouts', {}, {title: 'Abouts'})
         },
         addtask: function(){
             $('<div>')
                 .modal('addTask', {}, {
-                    title: "Create task",
+                    title: 'Create task',
                     buttons: [
-                        {name: 'Create', class: "primary-btn"}
+                        {name: 'Create', class: 'primary-btn', id: 'addTaskSave'}
                     ]
                 })
+                .on('click', '#addTaskSave', function(){
+                    var fields = $.App.getFormFields(this)
+
+                    if (typeof fields.task === 'undefined') {
+                        console.log('you must provide a task description');
+                    }
+                    // POST them in ajax
+                    $.ajax({
+                        type: 'POST',
+                        url: '/task',
+                        data: fields,
+                        success: function(data, status, xhr){
+                            console.log(data)
+                            console.log(status)
+                            console.log(xhr)
+                        },
+                        error: function(data, status, xhr){
+                            console.log(data)
+                            console.log(status)
+                            console.log(xhr)
+                        }
+                    })
+                    // handle success and errors
+                })
+        },
+        getFormFields: function(form){
+            var fields=[]
+
+            $(form).find('input').each(function(){
+                this.val() !== ''
+                    && (fields[this.name] = this.val())
+            })
+
+            $(form).find('textarea').each(function(){
+                this.val() !== ''
+                    && (fields[this.name] = this.val())
+            })
+
+            return fields
         }
-    };
+    }
 
     Zepto(function($){
-        $.App.init(document.getElementsByTagName('body'));
+        $.App.init();
     })
 
 })(Zepto)
