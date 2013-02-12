@@ -62,7 +62,6 @@
                 .modal('addTask', {}, {
                     title: "Add task",
                     buttons: [
-                        {name: 'Close'},
                         {name: 'Add', class: "primary-btn"}
                     ]
                 })
