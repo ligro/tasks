@@ -60,9 +60,9 @@
         addtask: function(){
             $('<div>')
                 .modal('addTask', {}, {
-                    title: "Add task",
+                    title: "Create task",
                     buttons: [
-                        {name: 'Add', class: "primary-btn"}
+                        {name: 'Create', class: "primary-btn"}
                     ]
                 })
         }
