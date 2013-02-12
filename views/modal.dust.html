@@ -10,7 +10,7 @@
     <div class="modal-footer">
 
         {#buttons}
-        <a href="{?href}href{:else}#{/href}" class="btn{?class} class{/class}">{name}</a>
+        <a {?id}id="{id}"{/id} href="{?href}{href}{:else}javascript:void(0);{/href}" class="btn{?class} {class}{/class}">{name}</a>
         {/buttons}
     </div>
     {/buttons}
