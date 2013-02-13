@@ -5,6 +5,7 @@ import pprint
 
 import Task
 
+# TODO make it RESTful http://docs.cherrypy.org/stable/progguide/REST.html
 class App:
     @cherrypy.expose
     def index(self):
@@ -45,7 +46,10 @@ class App:
             return False
 
         ts = Task.Task()
-        return ts.insert(task)
+        objId = ts.insert({'task':task})
+        taskObj = ts.collection.find_one(objId)
+        del taskObj['_id']
+        return taskObj
 
 if __name__ == '__main__':
     current_dir = os.path.dirname(os.path.abspath(__file__))

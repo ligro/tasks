@@ -13,7 +13,7 @@ class Task(Storage):
         self.collection = self.db.task
 
     def _validate(self, datas):
-        pass
+        return datas
 
     def insert(self, datas):
         datas = self._validate(datas)
