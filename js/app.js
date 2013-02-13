@@ -4,11 +4,13 @@
      $.App = {
 
         templates: {},
-        tasks: {},
 
         init: function() {
-            $('a.jLink').bind('click', function(){
+            $('a.jLink').bind('click', function(e){
                 var func = $(this).data('func');
+
+                e.stopPropagation()
+
                 if (typeof $.App[func] == 'function') {
                     $.App[func].call();
                 }
@@ -29,23 +31,6 @@
                     // @TODO show ui error to specify we can't run
                 }
             });
-
-            // retrieve tasks lists
-            $.ajax({
-                type: 'GET',
-                url: '/tasks',
-                // type of data we are expecting in return:
-                dataType: 'json',
-                timeout: 300,
-                success: function(data){
-                    $.App.tasks = data;
-                    // trigger event to display data
-                },
-                error: function(xhr, type){
-                    // @TODO show ui error to specify we can't run
-                }
-            });
-
         },
         _loadTpl: function(name, data, end) {
             typeof dust.cache[name] === 'undefined'
@@ -58,49 +43,22 @@
                 .modal('abouts', {}, {title: 'Abouts'})
         },
         addtask: function(){
-            $('<div>')
+            $('<form>', {action: 'javascript:void(0);'})
                 .modal('addTask', {}, {
                     title: 'Create task',
                     buttons: [
                         {name: 'Create', class: 'primary-btn', id: 'addTaskSave'}
                     ]
                 })
-                .on('click', '#addTaskSave', function(){
-                    var fields = $.App.getFormFields(this)
-
-                    if (typeof fields.task === 'undefined') {
-                        console.log('you must provide a task description');
-                    }
-                    // POST them in ajax
-                    $.ajax({
-                        type: 'POST',
-                        url: '/task',
-                        data: fields,
-                        success: function(data, status, xhr){
-                            console.log(data)
-                            console.log(status)
-                            console.log(xhr)
-                        },
-                        error: function(data, status, xhr){
-                            console.log(data)
-                            console.log(status)
-                            console.log(xhr)
-                        }
-                    })
-                    // handle success and errors
-                })
+                .on('click', '#addTaskSave', $.task.save)
         },
         getFormFields: function(form){
             var fields=[]
 
-            $(form).find('input').each(function(){
-                this.val() !== ''
-                    && (fields[this.name] = this.val())
-            })
-
-            $(form).find('textarea').each(function(){
-                this.val() !== ''
-                    && (fields[this.name] = this.val())
+            form.find('input, textarea').each(function(index, element){
+                var $this = $(this)
+                $this.val() !== ''
+                    && (fields[$this.attr('name')] = $this.val())
             })
 
             return fields
