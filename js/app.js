@@ -53,7 +53,7 @@
                 .on('click', '#addTaskSave', $.task.save)
         },
         getFormFields: function(form){
-            var fields=[]
+            var fields = {}
 
             form.find('input, textarea').each(function(index, element){
                 var $this = $(this)
