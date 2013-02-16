@@ -3,7 +3,7 @@ import os, glob
 
 import pprint
 
-import Task
+from Model import Model
 
 # TODO make it RESTful http://docs.cherrypy.org/stable/progguide/REST.html
 class App:
@@ -27,16 +27,18 @@ class App:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def tasks(self, kind=None):
-        # retrieve tasks
-        # return it json encoded
-        pass
+        tasks = [];
+        t = Model();
+        for task in t.find():
+            task['_id'] = str(task['_id'])
+            tasks.append(task)
+        return tasks
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def task(self, id=None):
-        # retrieve tasks
-        # return it json encoded
-        pass
+        t = Model();
+        return t.findById(id)
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -45,7 +47,7 @@ class App:
             # fixme do a better handler
             return False
 
-        ts = Task.Task()
+        ts = Model()
         objId = ts.insert({'task':task})
         taskObj = ts.collection.find_one(objId)
         del taskObj['_id']

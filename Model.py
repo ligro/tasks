@@ -7,9 +7,9 @@ class Storage(object):
         self.connection = pymongo.Connection()
         self.db = self.connection.tasks
 
-class Task(Storage):
+class Model(Storage):
     def __init__(self):
-        super(Task, self).__init__()
+        super(Model, self).__init__()
         self.collection = self.db.task
 
     def _validate(self, datas):
@@ -22,7 +22,7 @@ class Task(Storage):
     def delete(self, spec):
         return self.collection.remove(spec)
 
-    def find(self, specs):
+    def find(self, specs={}):
         return self.collection.find(specs)
 
     def findById(self, id):
