@@ -3,6 +3,7 @@
     <head>
         <title>Tasks Manager</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/tasks.css" rel="stylesheet" media="screen">
     </head>
     <body>
         <header class="navbar navbar-inverse navbar-fixed-top">
@@ -19,8 +20,44 @@
                 </div>
             </div>
         </header>
-        <section id="page" class="container">
+        <section id="page" class="container-fluid">
+            <div class="row-fluid">
+                <div class="span4 column">
+                    <div class="row-fluid header">
+                        <span class="span12">
+                            <input type="text" placeholder="search"/>
+                        </span>
+                    </div>
+                </div>
+                <div class="span3 column">
+                    <div class="row-fluid header">
+                        <span class="span12">
+                            <h3>Day tasks</h3>
+                        </span>
+                    </div>
+                </div>
+                <div class="span3 column">
+                    <div class="row-fluid header">
+                        <span class="span12">
+                            <h3>In progress</h3>
+                        </span>
+                    </div>
+                </div>
+                <div class="span2 column">
+                    <div class="row-fluid header">
+                        <span class="span12">
+                            <h3>Done</h3>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </section>
+        <footer class="navbar navbar-inverse navbar-fixed-bottom">
+            <div class="navbar-inner">
+                <div class="container">
+                 </div>
+             </div>
+        </footer>
     </body>
     <script type="application/javascript" src="/js/zepto.min.js"></script>
     <script type="application/javascript" src="/js/dust-full-0.3.0.min.js"></script>

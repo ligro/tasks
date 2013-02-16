@@ -11,7 +11,7 @@
                 timeout: 300,
                 success: function(data){
                     $.App.tasks = data
-                    // trigger event to display data
+                    $(document.body).trigger('task:load')
                 },
                 error: function(xhr, type){
                     // @TODO show ui error to specify we can't run

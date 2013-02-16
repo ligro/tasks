@@ -1,0 +1,34 @@
+body {
+    position : relative;
+    padding-top : 40px;
+}
+
+section#page {
+    margin-top : 20px;
+    height : auto;
+}
+
+div.column {
+    border-right : 1px solid black;
+    padding-right : 10px;
+    height : 90%;
+}
+div.column:last-child {
+    border : 0;
+}
+
+div.column .header {
+    height : 60px;
+}
+
+div.column input {
+    width : 90%;
+    vertical-align : middle;
+    margin : 15px 0px;
+}
+
+/* la surcharge marche pas */
+footer.navbar-fixed-bottom .nav-inner {
+    min-height : 20px;
+}
+

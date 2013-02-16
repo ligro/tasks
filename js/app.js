@@ -6,15 +6,19 @@
         templates: {},
 
         init: function() {
-            $('a.jLink').bind('click', function(e){
+            $('a.jLink').on('click', function(e){
                 var func = $(this).data('func');
-
                 e.stopPropagation()
-
                 if (typeof $.App[func] == 'function') {
                     $.App[func].call();
                 }
-            });
+            })
+
+            $(document).on('task:load', function(e){
+                // display tasks in page
+                console.log('task:load');
+
+            })
 
             // retrieve templates
             // @TODO handles error
@@ -30,7 +34,7 @@
                 error: function(xhr, type){
                     // @TODO show ui error to specify we can't run
                 }
-            });
+            })
         },
         _loadTpl: function(name, data, end) {
             typeof dust.cache[name] === 'undefined'
