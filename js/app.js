@@ -16,8 +16,7 @@
 
             $(document).on('task:load', function(e){
                 // display tasks in page
-                console.log('task:load');
-
+                $('.column').tasksColumn()
             })
 
             // retrieve templates
