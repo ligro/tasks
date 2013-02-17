@@ -3,6 +3,7 @@
 
     $.task = {
         loadTasks: function(){
+            // TODO already loaded / force reload
             $.ajax({
                 type: 'GET',
                 url: '/tasks',
@@ -46,6 +47,20 @@
             }
             console.log(opt)
             $.ajax(opt)
+        },
+        findByStatus: function(status){
+            var tasks = []
+
+            // TODO init load ?
+           $.each($.App.tasks, function(index, item){
+               item.status === status
+                   && (tasks.push(item))
+           })
+
+           return tasks
+        },
+        find: function(query){
+
         }
     }
 
