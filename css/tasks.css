@@ -10,7 +10,7 @@ section#page {
 
 div.column {
     border-right : 1px solid black;
-    padding-right : 10px;
+    padding : 0px 10px;
     height : 90%;
 }
 div.column:last-child {
@@ -23,8 +23,6 @@ div.column .header {
 
 div.column input {
     width : 90%;
-    vertical-align : middle;
-    margin : 15px 0px;
 }
 
 /* la surcharge marche pas */
