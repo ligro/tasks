@@ -25,8 +25,18 @@ div.column input {
     width : 90%;
 }
 
-/* la surcharge marche pas */
-footer.navbar-fixed-bottom .nav-inner {
-    min-height : 20px;
+div.tasks div.task:hover {
+    background-color : #F5F5F5;
 }
 
+div.task {
+    padding : 5px 0px;
+}
+
+div.task span {
+    min-height : 10px;
+}
+
+.row-fluid [class*="span"] {
+    min-height : 10px;
+}
