@@ -12,9 +12,13 @@ TODO
 
 TODO
 
+## Configure and run
+
+python2.7 index.py
+
 ## depends
 
 python2.7
-cherrypy3
-nodejs (for dust.js)
+cherrypy3 (python-cherrypy3)
+mongodb
 
