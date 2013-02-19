@@ -1,3 +1,9 @@
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 body {
     position : relative;
     padding-top : 40px;
@@ -9,20 +15,17 @@ section#page {
 }
 
 div.column {
-    border-right : 1px solid black;
-    padding : 0px 10px;
-    height : 90%;
+    border-right : 1px solid #999999;
+    height : 100%;
+    padding-right : 2.12766%;
 }
+
 div.column:last-child {
     border : 0;
 }
 
-div.column .header {
-    height : 60px;
-}
-
 div.column input {
-    width : 90%;
+    width : 100%;
 }
 
 div.tasks div.task:hover {
@@ -40,3 +43,4 @@ div.task span {
 .row-fluid [class*="span"] {
     min-height : 10px;
 }
+
