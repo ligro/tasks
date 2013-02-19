@@ -8,7 +8,7 @@
                    status = $this.data('status')
 
                 $.task.findByStatus($this.data('status')).forEach(function(task){
-                    $.App._loadTpl('taskColumn', task, function(err, out) {
+                    $.App._loadTpl('task', task, function(err, out) {
                         $this.find('.tasks').append($(out))
                     })
                 })
