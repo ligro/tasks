@@ -71,6 +71,11 @@
             })
 
             return fields
+        },
+        tasksEdit: function(e) {
+            e.stopPropagation()
+            // retrieve task id
+            // display a modal
         }
     }
 

@@ -30,6 +30,7 @@
 
                 $.task.findByState(state).forEach(function(task){
                     $.App._loadTpl('task', task, function(err, out) {
+                        $(out).find('.task').on('click', 'a', $.App.taskEdit)
                         $this.append($(out))
                     })
                 })
