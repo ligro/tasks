@@ -26,9 +26,15 @@ class App:
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def tasks(self, kind=None):
-        tasks = [];
-        t = Model();
+    def state(self):
+        t = Model()
+        return t.collection.distinct('state')
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def tasks(self):
+        tasks = []
+        t = Model()
         for task in t.find():
             task['_id'] = str(task['_id'])
             tasks.append(task)

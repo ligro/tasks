@@ -12,7 +12,25 @@
                 timeout: 300,
                 success: function(data){
                     $.App.tasks = data
+                    console.log('task:load')
                     $(document.body).trigger('task:load')
+                },
+                error: function(xhr, type){
+                    // @TODO show ui error to specify we can't run
+                }
+            })
+        },
+        loadState: function(){
+            $.ajax({
+                type: 'GET',
+                url: '/state',
+                // type of data we are expecting in return:
+                dataType: 'json',
+                timeout: 300,
+                success: function(data){
+                    $.App.state = data
+                    console.log('state:load')
+                    $(document.body).trigger('state:load')
                 },
                 error: function(xhr, type){
                     // @TODO show ui error to specify we can't run
@@ -34,26 +52,26 @@
                 url: '/savetask',
                 data: fields,
                 dataType: 'json',
-                success: function(data, status, xhr){
+                success: function(data, state, xhr){
                     console.log(data)
-                    console.log(status)
+                    console.log(state)
                     console.log(xhr)
                 },
-                error: function(data, status, xhr){
+                error: function(data, state, xhr){
                     console.log(data)
-                    console.log(status)
+                    console.log(state)
                     console.log(xhr)
                 }
             }
             console.log(opt)
             $.ajax(opt)
         },
-        findByStatus: function(status){
+        findByState: function(state){
             var tasks = []
 
             // TODO init load ?
            $.each($.App.tasks, function(index, item){
-               item.status === status
+               item.state === state
                    && (tasks.push(item))
            })
 
@@ -66,6 +84,7 @@
 
     Zepto(function($){
         $.task.loadTasks();
+        $.task.loadState();
     })
 
 })(Zepto)

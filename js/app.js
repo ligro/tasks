@@ -14,9 +14,12 @@
                 }
             })
 
-            $(document).on('task:load', function(e){
-                // display tasks in page
-                $('.column').tasksColumn()
+            $(document).one('state:load', function(e){
+                if (typeof $.App.tasks === 'undefined') {
+                    $(document).one('task:load', $.App.displayTasks)
+                } else {
+                    $.App.displayTasks()
+                }
             })
 
             // retrieve templates
@@ -54,6 +57,9 @@
                     ]
                 })
                 .on('click', '#addTaskSave', $.task.save)
+        },
+        displayTasks: function(){
+            $('.tasksColumns').tasksColumns()
         },
         getFormFields: function(form){
             var fields = {}
