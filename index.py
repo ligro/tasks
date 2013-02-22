@@ -33,11 +33,11 @@ class App:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def tasks(self):
-        tasks = []
+        tasks = {}
         t = Model()
         for task in t.find():
             task['_id'] = str(task['_id'])
-            tasks.append(task)
+            tasks[task['_id']] = task
         return tasks
 
     @cherrypy.expose

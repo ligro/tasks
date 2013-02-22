@@ -29,11 +29,13 @@
                 var $this = $(this)
 
                 $.task.findByState(state).forEach(function(task){
+
                     $.App._loadTpl('task', task, function(err, out) {
-                        $(out).find('.task').on('click', 'a', $.App.taskEdit)
                         $this.append($(out))
                     })
                 })
+
+                $this.find('.task').task()
             })
         }
     })

@@ -9,10 +9,8 @@
                 url: '/tasks',
                 // type of data we are expecting in return:
                 dataType: 'json',
-                timeout: 300,
                 success: function(data){
                     $.App.tasks = data
-                    console.log('task:load')
                     $(document.body).trigger('task:load')
                 },
                 error: function(xhr, type){
@@ -26,10 +24,8 @@
                 url: '/state',
                 // type of data we are expecting in return:
                 dataType: 'json',
-                timeout: 300,
                 success: function(data){
                     $.App.state = data
-                    console.log('state:load')
                     $(document.body).trigger('state:load')
                 },
                 error: function(xhr, type){
@@ -37,30 +33,34 @@
                 }
             })
         },
-        save: function(){
-            var $this = $(this),
-                fields = $.App.getFormFields($this.parents('form'))
-
-            if (typeof fields.task === 'undefined') {
+        save: function(task, success, error){
+            if (typeof task.task === 'undefined') {
                 console.log('you must provide a task description');
+                // ui error
             }
 
-            console.log(fields)
-            // POST them in ajax
+            console.log(task)
+
+            // TODO sync tasks with the server
             var opt = {
                 type: 'POST',
                 url: '/savetask',
-                data: fields,
+                data: task,
                 dataType: 'json',
                 success: function(data, state, xhr){
-                    console.log(data)
-                    console.log(state)
-                    console.log(xhr)
+                    $.App.tasks[data._id] = data
+                    // TODO update the ui
+                    if (typeof task._id === 'undefined') {
+                        // new task add it
+                    } else {
+                        // update task data
+                        // if state change, add it to new stateColumn
+                    }
+                    success()
                 },
                 error: function(data, state, xhr){
-                    console.log(data)
-                    console.log(state)
-                    console.log(xhr)
+                    // @TODO show ui error to specify we can't run
+                    error('an error occured')
                 }
             }
             console.log(opt)
@@ -81,6 +81,20 @@
 
         }
     }
+
+    $.extend($.fn, {
+        task: function(){
+            var $this = $(this)
+
+            $this.find('a').on('click', function(e){
+                var $this = $(this)
+                e.stopPropagation()
+
+                // load modal with task value
+
+            })
+        }
+    })
 
     Zepto(function($){
         $.task.loadTasks();

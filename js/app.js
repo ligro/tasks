@@ -6,32 +6,32 @@
         templates: {},
 
         init: function() {
-            $('a.jLink').on('click', function(e){
-                var func = $(this).data('func');
-                e.stopPropagation()
-                if (typeof $.App[func] == 'function') {
-                    $.App[func].call();
-                }
+
+            $(document).one('templates:load', function(e){
+                $.App.ui.init();
             })
 
+            // TODO event on templates load
             $(document).one('state:load', function(e){
                 if (typeof $.App.tasks === 'undefined') {
-                    $(document).one('task:load', $.App.displayTasks)
+                    $(document).one('task:load', function(){
+                        $('.tasksColumns').tasksColumns()
+                    })
                 } else {
-                    $.App.displayTasks()
+                    $('.tasksColumns').tasksColumns()
                 }
             })
 
             // retrieve templates
-            // @TODO handles error
+            // TODO handles error
             $.ajax({
                 type: 'GET',
                 url: '/templates',
                 // type of data we are expecting in return:
                 dataType: 'json',
-                timeout: 300,
                 success: function(data){
                     $.App.templates = data;
+                    $(document.body).trigger('templates:load')
                 },
                 error: function(xhr, type){
                     // @TODO show ui error to specify we can't run
@@ -44,23 +44,6 @@
 
             dust.render(name, data, end)
         },
-        abouts: function(){
-            $('<div>')
-                .modal('abouts', {}, {title: 'Abouts'})
-        },
-        addtask: function(){
-            $('<form>', {action: 'javascript:void(0);'})
-                .modal('addTask', {}, {
-                    title: 'Create task',
-                    buttons: [
-                        {name: 'Create', class: 'primary-btn', id: 'addTaskSave'}
-                    ]
-                })
-                .on('click', '#addTaskSave', $.task.save)
-        },
-        displayTasks: function(){
-            $('.tasksColumns').tasksColumns()
-        },
         getFormFields: function(form){
             var fields = {}
 
@@ -72,12 +55,50 @@
 
             return fields
         },
-        tasksEdit: function(e) {
-            e.stopPropagation()
-            // retrieve task id
-            // display a modal
-        }
-    }
+     }
+
+     $.App.ui = {
+         init: function(){
+             $('a.jLink').on('click', function(e){
+                 var func = $(this).data('func')+'_link';
+                 e.stopPropagation()
+                 if (typeof $.App.ui[func] == 'function') {
+                     $.App.ui[func].call();
+                 }
+             })
+         },
+         closeModal: function(){
+             $('.modal').parent().each(function(){console.log(this)})
+             $('.modal').parent().remove()
+         },
+         abouts_link: function(){
+             $('<div>')
+                 .modal('abouts', {}, {title: 'Abouts'})
+         },
+         addtask_link: function(task){
+             $('<form>', {action: 'javascript:void(0);'})
+                 .modal('addTask', {}, {
+                     title: 'Create task',
+                     buttons: [
+                         {name: 'Create', class: 'primary-btn', id: 'addTaskSave'}
+                     ]
+                 })
+                 .on('click', '#addTaskSave', function (){
+                     var $this = $(this)
+                     task = $.App.getFormFields($this.parents('form'))
+                     $.task.save(task, function(){
+                         // success
+                         //FIXME move it to modal.js
+                         $.App.ui.closeModal()
+                     },
+                     function(msg){
+                         // error
+                         // display error
+                         console.log(msg)
+                     })
+                 })
+         }
+     }
 
     Zepto(function($){
         $.App.init();
