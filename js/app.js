@@ -44,10 +44,10 @@
 
             dust.render(name, data, end)
         },
-        getFormFields: function(form){
+        getFormFields: function($form){
             var fields = {}
 
-            form.find('input, textarea').each(function(index, element){
+            $form.find('input, textarea').each(function(index, element){
                 var $this = $(this)
                 $this.val() !== ''
                     && (fields[$this.attr('name')] = $this.val())
@@ -83,7 +83,8 @@
                  })
                  .on('click', '#addTaskSave', function (){
                      var $this = $(this)
-                     task = $.App.getFormFields($this.parents('form'))
+
+                     task = $.App.getFormFields($this.closest('form'))
                      $.task.save(task, function(){
                          console.log('saved task')
                          // success

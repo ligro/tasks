@@ -18,9 +18,7 @@
                     && $(out).data('state', state)
                 $columns.append($(out))
 
-                // handle state == undefined
-                taskColumns.columns[state] = $columns.find('#'+data.id)
-                $columns.trigger('column:added', taskColumns.columns[state])
+                $columns.trigger('column:added', [$columns.find('#'+data.id), state])
             })
         }
     },
@@ -28,6 +26,11 @@
         addTask: function($column, task){
             $.App._loadTpl('task', task, function(err, out) {
                 $column.append($(out))
+            })
+        },
+        updateTask: function($task, task){
+            $.App._loadTpl('task', task, function(err, out) {
+                $task.html($(out))
             })
         }
     }
@@ -39,15 +42,24 @@
                 var $this = $(this)
 
                 // add columns => add task in this column
-                $this.on('column:added', function(e, column){
-                    $(column).find('.tasks').tasksColumn()
+                $this.on('column:added', function(e, column, state){
+                       var $column = $(column).find('.tasks')
+                    // handle state == undefined
+                    taskColumns.columns[state] = $column
+                    $column.tasksColumn()
                 })
 
                 $(document).on('task:saved', function(e, task){
                     console.log('task:saved')
-                    var $column = taskColumns.getColumnByState(task.state)
+                    var $column,
+                        $task = $('#task-'+task._id)
 
-                    taskColumn.addTask($column, task)
+                    if ($task.length != 0) {
+                        taskColumn.updateTask($task, task)
+                    } else {
+                        $column = taskColumns.getColumnByState(task.state)
+                        taskColumn.addTask($column, task)
+                    }
                 })
 
                 // click on task
@@ -60,7 +72,6 @@
                     console.log(task)
                     $.App.ui.taskEditModal(task)
                 })
-
 
                 taskColumns.addColumn($this, 'backlog')
                 $.App.state.forEach(function(state){
