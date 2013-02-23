@@ -52,6 +52,7 @@
                     // TODO update the ui
                     if (typeof task._id === 'undefined') {
                         // new task add it
+
                     } else {
                         // update task data
                         // if state change, add it to new stateColumn
@@ -91,6 +92,7 @@
                 e.stopPropagation()
 
                 // load modal with task value
+                console.log('on click');
 
             })
         }
