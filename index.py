@@ -56,7 +56,7 @@ class App:
         ts = Model()
         objId = ts.insert({'task':task})
         taskObj = ts.collection.find_one(objId)
-        del taskObj['_id']
+        taskObj['_id'] = str(taskObj['_id'])
         return taskObj
 
 if __name__ == '__main__':
