@@ -1,9 +1,11 @@
 import cherrypy
 import os, glob
-
 import pprint
 
 from Model import Model
+
+# TODO move that to Model
+import bson
 
 # TODO make it RESTful http://docs.cherrypy.org/stable/progguide/REST.html
 class App:
@@ -54,7 +56,7 @@ class App:
             return False
 
         ts = Model()
-        objId = ts.insert({'task':task, '_id':_id})
+        objId = ts.save({'task':task, '_id':bson.objectid.ObjectId(_id)})
         taskObj = ts.collection.find_one(objId)
         taskObj['_id'] = str(taskObj['_id'])
         return taskObj

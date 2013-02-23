@@ -15,9 +15,9 @@ class Model(Storage):
     def _validate(self, datas):
         return datas
 
-    def insert(self, datas):
+    def save(self, datas):
         datas = self._validate(datas)
-        return self.collection.insert(datas)
+        return self.collection.save(datas)
 
     def delete(self, spec):
         return self.collection.remove(spec)
