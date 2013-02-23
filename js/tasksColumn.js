@@ -52,11 +52,13 @@
 
                 // click on task
                 $this.on('click', '.tasks .task a', function(e){
-                    var $this = $(this)
-                    e.stopPropagation()
+                    var $this = $(this),
+                        task = $.App.tasks[$(e.target).closest('.task').data('id')]
 
+                    e.stopPropagation()
                     // load modal with task value
-                    console.log('on click')
+                    console.log(task)
+                    $.App.ui.taskEditModal(task)
                 })
 
 

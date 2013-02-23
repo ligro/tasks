@@ -48,13 +48,13 @@ class App:
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def savetask(self, task=None):
+    def savetask(self, task=None, _id=None):
         if task == None:
             # fixme do a better handler
             return False
 
         ts = Model()
-        objId = ts.insert({'task':task})
+        objId = ts.insert({'task':task, '_id':_id})
         taskObj = ts.collection.find_one(objId)
         taskObj['_id'] = str(taskObj['_id'])
         return taskObj

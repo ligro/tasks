@@ -70,13 +70,12 @@
          closeModal: function(){
              $('.modal').parent().remove()
          },
-         abouts_link: function(){
-             $('<div>')
-                 .modal('abouts', {}, {title: 'Abouts'})
-         },
-         addtask_link: function(task){
+         taskEditModal: function(task){
+            typeof task === 'undefined'
+               && (task = {})
+
              $('<form>', {action: 'javascript:void(0);'})
-                 .modal('addTask', {}, {
+                 .modal('addTask', task, {
                      title: 'Create task',
                      buttons: [
                          {name: 'Create', class: 'primary-btn', id: 'addTaskSave'}
@@ -97,6 +96,13 @@
                          console.log(msg)
                      })
                  })
+         },
+         abouts_link: function(){
+             $('<div>')
+                 .modal('abouts', {}, {title: 'Abouts'})
+         },
+         addtask_link: function(){
+             $.App.ui.taskEditModal()
          }
      }
 
