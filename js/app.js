@@ -68,7 +68,6 @@
              })
          },
          closeModal: function(){
-             $('.modal').parent().each(function(){console.log(this)})
              $('.modal').parent().remove()
          },
          abouts_link: function(){
@@ -87,8 +86,9 @@
                      var $this = $(this)
                      task = $.App.getFormFields($this.parents('form'))
                      $.task.save(task, function(){
+                         console.log('saved task')
                          // success
-                         //FIXME move it to modal.js
+                         //FIXME move it to modal.js // event ?
                          $.App.ui.closeModal()
                      },
                      function(msg){
