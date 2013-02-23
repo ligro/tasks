@@ -2,6 +2,10 @@
     'use strict';
 
     var taskColumns = {
+        columns: {},
+        getColumnByState: function(state) {
+            return this.columns[state]
+        },
         addColumn: function($columns, title, state){
             var data = {
                 id: (typeof state === 'undefined') ? 'state' : 'state'+state,
@@ -13,7 +17,10 @@
                 typeof state !== 'undefined'
                     && $(out).data('state', state)
                 $columns.append($(out))
-                $columns.trigger('column:added', $columns.find('#'+data.id))
+
+                // handle state == undefined
+                taskColumns.columns[state] = $columns.find('#'+data.id)
+                $columns.trigger('column:added', taskColumns.columns[state])
             })
         }
     },
@@ -33,10 +40,14 @@
 
                 // add columns => add task in this column
                 $this.on('column:added', function(e, column){
-                    console.log('column:added')
-                    console.log(column)
-                    console.log($(column))
                     $(column).find('.tasks').tasksColumn()
+                })
+
+                $(document).on('task:saved', function(e, task){
+                    console.log('task:saved')
+                    var $column = taskColumns.getColumnByState(task.state)
+
+                    taskColumn.addTask($column, task)
                 })
 
                 // click on task

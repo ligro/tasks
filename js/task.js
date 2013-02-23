@@ -35,37 +35,26 @@
         },
         save: function(task, success, error){
             if (typeof task.task === 'undefined') {
-                console.log('you must provide a task description');
                 // ui error
+                error('you must provide a task description');
             }
 
-            console.log(task)
-
             // TODO sync tasks with the server
-            var opt = {
+            $.ajax({
                 type: 'POST',
                 url: '/savetask',
                 data: task,
                 dataType: 'json',
                 success: function(data, state, xhr){
+                    // TODO verify the server return
                     $.App.tasks[data._id] = data
-                    // TODO update the ui
-                    if (typeof task._id === 'undefined') {
-                        // new task add it
-
-                    } else {
-                        // update task data
-                        // if state change, add it to new stateColumn
-                    }
+                    $(document.body).trigger('task:saved', [data])
                     success()
                 },
                 error: function(data, state, xhr){
-                    // @TODO show ui error to specify we can't run
                     error('an error occured')
                 }
-            }
-            console.log(opt)
-            $.ajax(opt)
+            })
         },
         findByState: function(state){
             var tasks = []
@@ -82,21 +71,6 @@
 
         }
     }
-
-    $.extend($.fn, {
-        task: function(){
-            var $this = $(this)
-
-            $this.find('a').on('click', function(e){
-                var $this = $(this)
-                e.stopPropagation()
-
-                // load modal with task value
-                console.log('on click');
-
-            })
-        }
-    })
 
     Zepto(function($){
         $.task.loadTasks();
