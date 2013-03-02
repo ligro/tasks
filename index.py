@@ -56,7 +56,8 @@ class App:
             return False
 
         data = kw
-        data['_id'] = bson.objectid.ObjectId(data['_id'])
+        if '_id' in data:
+            data['_id'] = bson.objectid.ObjectId(data['_id'])
 
         ts = Model()
         objId = ts.save(data)
