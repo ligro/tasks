@@ -8,7 +8,7 @@
         },
         addColumn: function($columns, title, state){
             var data = {
-                id: (typeof state === 'undefined') ? 'state' : 'state'+state,
+                id: (typeof state === 'undefined') ? 'state' : 'state'+state.replace(' ', '_'),
                 title: title,
                 state: state
             }
@@ -43,14 +43,13 @@
 
                 // add columns => add task in this column
                 $this.on('column:added', function(e, column, state){
-                       var $column = $(column).find('.tasks')
+                    var $column = column.find('.tasks')
                     // handle state == undefined
                     taskColumns.columns[state] = $column
-                    $column.tasksColumn()
+                    $column.tasksColumn(state)
                 })
 
                 $(document).on('task:saved', function(e, task){
-                    console.log('task:saved')
                     var $column,
                         $task = $('#task-'+task._id)
 
@@ -69,7 +68,6 @@
 
                     e.stopPropagation()
                     // load modal with task value
-                    console.log(task)
                     $.App.ui.taskEditModal(task)
                 })
 
@@ -79,10 +77,9 @@
                 })
             })
         },
-        tasksColumn: function(){
+        tasksColumn: function(state){
             return this.each(function (){
-                var $this = $(this),
-                    state = $this.data('state')
+                var $this = $(this)
 
                 $.task.findByState(state).forEach(function(task){
                     taskColumn.addTask($this, task)
