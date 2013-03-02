@@ -14,9 +14,9 @@
             }
 
             $.App._loadTpl('tasksColumn', data, function(err, out) {
-                typeof state !== 'undefined'
-                    && $(out).data('state', state)
                 $columns.append($(out))
+                typeof state !== "undefined"
+                    && $columns.find('#'+data.id).data('state', state)
 
                 $columns.trigger('column:added', [$columns.find('#'+data.id), state])
             })
@@ -51,10 +51,17 @@
 
                 $(document).on('task:saved', function(e, task){
                     var $column,
-                        $task = $('#task-'+task._id)
+                        $task = $('#task-'+task._id),
+                        oldState = $task.closest('.column').data('state')
 
                     if ($task.length != 0) {
                         taskColumn.updateTask($task, task)
+                        // state changed ?
+                        if (task.state !== oldState) {
+                            $column = taskColumns.getColumnByState(task.state)
+                            $column.append($task.html())
+                            $task.remove()
+                        }
                     } else {
                         $column = taskColumns.getColumnByState(task.state)
                         taskColumn.addTask($column, task)
