@@ -50,13 +50,16 @@ class App:
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def savetask(self, task=None, _id=None):
-        if task == None:
+    def savetask(self, **kw):
+        if kw == {}:
             # fixme do a better handler
             return False
 
+        data = kw
+        data['_id'] = bson.objectid.ObjectId(data['_id'])
+
         ts = Model()
-        objId = ts.save({'task':task, '_id':bson.objectid.ObjectId(_id)})
+        objId = ts.save(data)
         taskObj = ts.collection.find_one(objId)
         taskObj['_id'] = str(taskObj['_id'])
         return taskObj
