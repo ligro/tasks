@@ -14,10 +14,17 @@ section#page {
     height : auto;
 }
 
+/*
+div.tasksColumns {
+}
+*/
+
 div.column {
     border-right : 1px solid #999999;
     height : 100%;
     padding-right : 2.12766%;
+    width: 250px;
+    margin: 0px auto;
 }
 
 div.column:last-child {
