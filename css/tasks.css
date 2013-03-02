@@ -14,17 +14,37 @@ section#page {
     height : auto;
 }
 
-/*
 div.tasksColumns {
+    margin: 0px auto;
 }
-*/
+
+div.tasksColumns:after {
+    clear: both;
+}
+
+div.tasksColumns:before, div.tasksColumns:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
 
 div.column {
+    /**/
+    max-width: 250px;
+    /**/
     border-right : 1px solid #999999;
     height : 100%;
     padding-right : 2.12766%;
-    width: 250px;
-    margin: 0px auto;
+    /**
+    width: 31.9149%;
+    /**/
+    margin-left: 2.12766%;
+    float: left;
+    height: 100%;
+}
+
+div.column:first-child {
+    margin-left: 0px;
 }
 
 div.column:last-child {
