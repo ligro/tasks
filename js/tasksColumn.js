@@ -59,8 +59,13 @@
                         // state changed ?
                         if (task.state !== oldState) {
                             $column = taskColumns.getColumnByState(task.state)
-                            $column.append($task.html())
-                            $task.remove()
+                            // addcolumn
+                            if (typeof $column === 'undefined') {
+                                taskColumns.addColumn($this, task.state, task.state)
+                            } else {
+                                $column.append($task.html())
+                                $task.remove()
+                            }
                         }
                     } else {
                         $column = taskColumns.getColumnByState(task.state)

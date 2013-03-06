@@ -22,3 +22,7 @@ python2.7
 cherrypy3 (python-cherrypy3)
 mongodb
 
+## TODO
+
+ * be configurable (at list ip/port)
+
