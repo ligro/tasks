@@ -31,4 +31,5 @@ mongodb
  * allow to sort column
  * add inscription, login
  * add password forget
-
+ * add translation
+ * add contact form
