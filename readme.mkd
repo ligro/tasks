@@ -24,12 +24,20 @@ mongodb
 
 ## TODO
 
+### in progress
+
+ * add inscription, login
+
+### next
+
  * be configurable (at list ip/port)
+
  * add project settings
+
  * allow to specify some persistent status
  * sort state column
  * allow to sort column
- * add inscription, login
+
  * add password forget
  * add translation
  * add contact form
