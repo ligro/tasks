@@ -12,11 +12,12 @@ def check_credentials(username, password):
     """Verifies credentials for username and password.
     Returns None on success or a string describing the error on failure"""
     # Adapt to your needs
+    # FIXME
     if username in ('joe', 'steve') and password == 'secret':
         return None
     else:
         return u"Incorrect username or password."
-    
+
     # An example implementation which uses an ORM could be:
     # u = User.get(username)
     # if u is None:
@@ -39,7 +40,7 @@ def check_auth(*args, **kwargs):
                     raise cherrypy.HTTPRedirect("/auth/login")
         else:
             raise cherrypy.HTTPRedirect("/auth/login")
-    
+
 cherrypy.tools.auth = cherrypy.Tool('before_handler', check_auth)
 
 def require(*conditions):
@@ -96,14 +97,16 @@ def all_of(*conditions):
 
 # Controller to provide login and logout actions
 
-class AuthController(object):
-    
+class controller(object):
+
     def on_login(self, username):
         """Called on successful login"""
-    
+        # TODO stats
+
     def on_logout(self, username):
         """Called on logout"""
-    
+        # TODO stats
+
     def get_loginform(self, username, msg="Enter login information", from_page="/"):
         return """<html><body>
             <form method="post" action="/auth/login">
@@ -113,12 +116,12 @@ class AuthController(object):
             Password: <input type="password" name="password" /><br />
             <input type="submit" value="Log in" />
         </body></html>""" % locals()
-    
+
     @cherrypy.expose
     def login(self, username=None, password=None, from_page="/"):
         if username is None or password is None:
             return self.get_loginform("", from_page=from_page)
-        
+
         error_msg = check_credentials(username, password)
         if error_msg:
             return self.get_loginform(username, error_msg, from_page)
@@ -126,7 +129,7 @@ class AuthController(object):
             cherrypy.session[SESSION_KEY] = cherrypy.request.login = username
             self.on_login(username)
             raise cherrypy.HTTPRedirect(from_page or "/")
-    
+
     @cherrypy.expose
     def logout(self, from_page="/"):
         sess = cherrypy.session

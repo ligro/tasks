@@ -1,27 +1,14 @@
-import cherrypy
 import os, glob
 import pprint
 
-from Model import Model
+import cherrypy
 
 # TODO move that to Model
 import bson
+from Model import Model
 
-from auth import AuthController, require, member_of
-
-# admin area
-class RestrictedArea:
-
-    # all methods in this controller (and subcontrollers) is
-    # open only to members of the admin group
-
-    _cp_config = {
-        'auth.require': [member_of('admin')]
-    }
-
-    @cherrypy.expose
-    def index(self):
-        return """This is the admin only area."""
+from Admin import Admin
+import Auth
 
 # TODO make it RESTful http://docs.cherrypy.org/stable/progguide/REST.html
 class App:
@@ -31,8 +18,8 @@ class App:
         'tools.auth.on': True
     }
 
-    auth = AuthController()
-    restricted = RestrictedArea()
+    auth = Auth.controller()
+    admin = Admin()
 
     @cherrypy.expose
     def index(self):
@@ -51,12 +38,14 @@ class App:
                 templates[tplName] = ' '.join(f.readlines())
         return templates
 
+    @Auth.require
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def state(self):
         t = Model()
         return t.collection.distinct('state')
 
+    @Auth.require
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def tasks(self):
@@ -67,12 +56,14 @@ class App:
             tasks[task['_id']] = task
         return tasks
 
+    @Auth.require
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def task(self, id=None):
         t = Model();
         return t.findById(id)
 
+    @Auth.require
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def savetask(self, **kw):
