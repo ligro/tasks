@@ -30,6 +30,8 @@ mongodb
 
 ### next
 
+ * add ssl
+
  * be configurable (at list ip/port)
 
  * add project settings
