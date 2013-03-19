@@ -10,17 +10,33 @@
             <div class="navbar-inner">
                 <div class="container">
                     <a class="brand" href="#">Tasks Manager</a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li><a href="javascript:void(0);" class="jLink" data-func="addtask">Create task</a></li>
-                            <li><a href="javascript:void(0);" class="jLink" data-func="abouts">abouts</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </header>
         <section id="page" class="container-fluid">
-            <div class="tasksColumns">
+            <div class="row-fluid">
+                <div class="offset2 span4 whatIsThisBox">
+                    What is Task manager
+                </div>
+                <div class="span3">
+                    <div class="logInBox">
+                        <form action="/auth/login" method="POST">
+                            <input type="text" placeholder="Email or pseudo" name="login" />
+                            <input type="text" placeholder="Password" name="password" />
+                            <input type="submit" class="btn btn-primary" value="log in" />
+                        </form>
+                    </div>
+                    <div class="createUserBox">
+                        <form action="/auth/createuser" method="POST">
+                            <p>You don't have an account, create it now :</p>
+                            <input type="text" placeholder="Pseudo" name="pseudo" />
+                            <input type="text" placeholder="Email" name="email" />
+                            <input type="password" placeholder="Password" name="password" />
+                            <input type="password" placeholder="Password Confirmation" name="password_conf" />
+                            <input type="submit" class="btn" value="Create your account" />
+                        </form>
+                    </div>
+                </div>
             </div>
         </section>
     </body>

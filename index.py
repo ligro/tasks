@@ -8,7 +8,8 @@ import bson
 from Model import Model
 
 from Admin import Admin
-import Auth
+import auth
+import user
 
 # TODO make it RESTful http://docs.cherrypy.org/stable/progguide/REST.html
 class App:
@@ -18,12 +19,19 @@ class App:
         'tools.auth.on': True
     }
 
-    auth = Auth.controller()
-    admin = Admin()
+    def __init__(self):
+        self.auth = auth.controller()
+        self.admin = Admin()
+        self.user = user.Controller()
 
     @cherrypy.expose
     def index(self):
-        with open('views/index.html', 'r') as f:
+        if cherrypy.request.login is not None:
+            tpl = 'views/logguedindex.html'
+        else:
+            tpl = 'views/index.html'
+
+        with open(tpl, 'r') as f:
             lines = f.readlines()
         return lines
 
@@ -38,14 +46,14 @@ class App:
                 templates[tplName] = ' '.join(f.readlines())
         return templates
 
-    @Auth.require
+    @auth.require
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def state(self):
         t = Model()
         return t.collection.distinct('state')
 
-    @Auth.require
+    @auth.require
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def tasks(self):
@@ -56,14 +64,14 @@ class App:
             tasks[task['_id']] = task
         return tasks
 
-    @Auth.require
+    @auth.require
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def task(self, id=None):
         t = Model();
         return t.findById(id)
 
-    @Auth.require
+    @auth.require
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def savetask(self, **kw):
