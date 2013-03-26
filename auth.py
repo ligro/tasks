@@ -32,7 +32,6 @@ def check_auth(*args, **kwargs):
     is not None, a login is required and the entry is evaluated as a list of
     conditions that the user must fulfill"""
     conditions = cherrypy.request.config.get('auth.require', None)
-    pprint.pprint(conditions)
     if conditions is not None:
         username = cherrypy.session.get(SESSION_KEY)
         if username:
@@ -40,9 +39,9 @@ def check_auth(*args, **kwargs):
             for condition in conditions:
                 # A condition is just a callable that returns true or false
                 if not condition():
-                    raise cherrypy.HTTPRedirect("/auth/login")
+                    raise cherrypy.HTTPError(403)
         else:
-            raise cherrypy.HTTPRedirect("/auth/login")
+            raise cherrypy.HTTPError(403)
 
 cherrypy.tools.auth = cherrypy.Tool('before_handler', check_auth)
 
@@ -66,19 +65,12 @@ def require(*conditions):
 #
 # Define those at will however suits the application.
 
-def member_of(groupname):
-    def check():
-        # replace with actual check if <username> is in <groupname>
-        return cherrypy.request.login == 'joe' and groupname == 'admin'
-    return check
-
-def name_is(reqd_username):
-    return lambda: reqd_username == cherrypy.request.login
-
 def is_loggued():
     """condition to check if a user is connected"""
     pprint.pprint(cherrypy.request.login)
     return lambda: cherrypy.session.get(SESSION_KEY) is not None
+
+
 # These might be handy
 
 def any_of(*conditions):
@@ -114,35 +106,27 @@ class controller(object):
         """Called on logout"""
         # TODO stats
 
-    def get_loginform(self, username, msg="Enter login information", from_page="/"):
-        return """<html><body>
-            <form method="post" action="/auth/login">
-            <input type="hidden" name="from_page" value="%(from_page)s" />
-            %(msg)s<br />
-            Username: <input type="text" name="username" value="%(username)s" /><br />
-            Password: <input type="password" name="password" /><br />
-            <input type="submit" value="Log in" />
-        </body></html>""" % locals()
-
     @cherrypy.expose
-    def login(self, username=None, password=None, from_page="/"):
+    @cherrypy.tools.json_out()
+    def login(self, username=None, password=None):
         if username is None or password is None:
-            return self.get_loginform("", from_page=from_page)
+            return {'success': False}
 
         error_msg = check_credentials(username, password)
         if error_msg:
-            return self.get_loginform(username, error_msg, from_page)
+            return {'success': False, 'msg': error_msg}
         else:
             cherrypy.session[SESSION_KEY] = cherrypy.request.login = username
             self.on_login(username)
-            raise cherrypy.HTTPRedirect(from_page or "/")
+            raise {'success': True}
 
     @cherrypy.expose
-    def logout(self, from_page="/"):
+    def logout(self):
         sess = cherrypy.session
         username = sess.get(session_key, none)
         sess[session_key] = None
         if username:
             cherrypy.request.login = none
             self.on_logout(username)
-        raise cherrypy.httpredirect(from_page or "/")
+        raise cherrypy.httpredirect("/")
+
