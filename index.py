@@ -5,9 +5,9 @@ import cherrypy
 
 # TODO move that to Model
 import bson
-from Model import Model
+from model import Model
 
-from Admin import Admin
+from admin import Admin
 import auth
 import user
 
@@ -46,14 +46,14 @@ class App:
                 templates[tplName] = ' '.join(f.readlines())
         return templates
 
-    @auth.require
+    @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def state(self):
         t = Model()
         return t.collection.distinct('state')
 
-    @auth.require
+    @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def tasks(self):
@@ -64,14 +64,14 @@ class App:
             tasks[task['_id']] = task
         return tasks
 
-    @auth.require
+    @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def task(self, id=None):
         t = Model();
         return t.findById(id)
 
-    @auth.require
+    @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def savetask(self, **kw):

@@ -6,6 +6,8 @@
 
 import cherrypy
 
+import pprint
+
 SESSION_KEY = '_cp_username'
 
 def check_credentials(username, password):
@@ -30,6 +32,7 @@ def check_auth(*args, **kwargs):
     is not None, a login is required and the entry is evaluated as a list of
     conditions that the user must fulfill"""
     conditions = cherrypy.request.config.get('auth.require', None)
+    pprint.pprint(conditions)
     if conditions is not None:
         username = cherrypy.session.get(SESSION_KEY)
         if username:
@@ -47,6 +50,7 @@ def require(*conditions):
     """A decorator that appends conditions to the auth.require config
     variable."""
     def decorate(f):
+        pprint.pprint(conditions)
         if not hasattr(f, '_cp_config'):
             f._cp_config = dict()
         if 'auth.require' not in f._cp_config:
@@ -54,7 +58,6 @@ def require(*conditions):
         f._cp_config['auth.require'].extend(conditions)
         return f
     return decorate
-
 
 # Conditions are callables that return True
 # if the user fulfills the conditions they define, False otherwise
@@ -72,6 +75,10 @@ def member_of(groupname):
 def name_is(reqd_username):
     return lambda: reqd_username == cherrypy.request.login
 
+def is_loggued():
+    """condition to check if a user is connected"""
+    pprint.pprint(cherrypy.request.login)
+    return lambda: cherrypy.session.get(SESSION_KEY) is not None
 # These might be handy
 
 def any_of(*conditions):
@@ -134,7 +141,7 @@ class controller(object):
     def logout(self, from_page="/"):
         sess = cherrypy.session
         username = sess.get(session_key, none)
-        sess[session_key] = none
+        sess[session_key] = None
         if username:
             cherrypy.request.login = none
             self.on_logout(username)
