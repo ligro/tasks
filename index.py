@@ -1,5 +1,4 @@
 import os, glob
-import pprint
 
 import cherrypy
 
