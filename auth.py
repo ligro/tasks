@@ -108,16 +108,16 @@ class controller(object):
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def login(self, username=None, password=None):
-        if username is None or password is None:
+    def login(self, login=None, password=None):
+        if login is None or password is None:
             return {'success': False}
 
-        error_msg = check_credentials(username, password)
+        error_msg = check_credentials(login, password)
         if error_msg:
             return {'success': False, 'msg': error_msg}
         else:
             cherrypy.session[SESSION_KEY] = cherrypy.request.login = username
-            self.on_login(username)
+            self.on_login(login)
             raise {'success': True}
 
     @cherrypy.expose
