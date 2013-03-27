@@ -16,7 +16,8 @@
             return fields
         },
         // post form
-        post: function(){
+        post: function(success){
+            var $this = this
             $.ajax({
                 type: 'POST',
                 url: this.data('url'),
@@ -24,15 +25,19 @@
                 success: function(data){
                     if (data.success) {
                         console.log(data)
+                        $.App[$this.data('success')]()
                     } else {
                         console.log(data)
-                        //.displayError(data.error);
+                        $this.displayError(data.error);
                     }
                 },
                 error: function(xhr, type){
                     //.displayError('An error occured');
                 }
             })
+        },
+        displayError: function(error){
+            console.log(error)
         }
     })
 })(Zepto)

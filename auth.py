@@ -111,7 +111,7 @@ class controller(object):
 
         error_msg = check_credentials(login, password)
         if error_msg:
-            return {'success': False, 'msg': error_msg}
+            return {'success': False, 'error': error_msg}
         else:
             cherrypy.session[SESSION_KEY] = cherrypy.request.login = login
             self.on_login(login)

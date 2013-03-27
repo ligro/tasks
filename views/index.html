@@ -20,14 +20,14 @@
                 </div>
                 <div class="span3">
                     <div class="logInBox">
-                        <form action="javascript:void(0);" method="POST" class="jForm" data-url="/auth/login">
+                        <form action="javascript:void(0);" method="POST" class="jForm" data-url="/auth/login" data-success="login">
                             <input type="text" placeholder="Email or pseudo" name="login" />
                             <input type="password" placeholder="Password" name="password" />
                             <a href="javascript:void(0);" class="btn btn-primary jSubmit">Log in</a>
                         </form>
                     </div>
                     <div class="createUserBox">
-                        <form action="javascript:void(0);" method="POST" class="jForm" data-url="/auth/create">
+                        <form action="javascript:void(0);" method="POST" class="jForm" data-url="/auth/create" data-success="userCreation">
                             <p>You don't have an account, create it now :</p>
                             <input type="text" placeholder="Pseudo" name="pseudo" />
                             <input type="text" placeholder="Email" name="email" />
