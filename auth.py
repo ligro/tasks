@@ -5,6 +5,7 @@
 #
 
 import cherrypy
+import pprint
 
 SESSION_KEY = '_cp_username'
 
@@ -112,9 +113,9 @@ class controller(object):
         if error_msg:
             return {'success': False, 'msg': error_msg}
         else:
-            cherrypy.session[SESSION_KEY] = cherrypy.request.login = username
+            cherrypy.session[SESSION_KEY] = cherrypy.request.login = login
             self.on_login(login)
-            raise {'success': True}
+            return {'success': True}
 
     @cherrypy.expose
     def logout(self):
