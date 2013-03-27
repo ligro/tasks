@@ -122,10 +122,10 @@ class controller(object):
     @cherrypy.expose
     def logout(self):
         sess = cherrypy.session
-        username = sess.get(session_key, none)
-        sess[session_key] = None
+        username = sess.get(SESSION_KEY, None)
+        sess[SESSION_KEY] = None
         if username:
-            cherrypy.request.login = none
+            cherrypy.request.login = None
             self.on_logout(username)
-        raise cherrypy.httpredirect("/")
+        raise cherrypy.HTTPRedirect("/")
 
