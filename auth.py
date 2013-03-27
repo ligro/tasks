@@ -30,11 +30,13 @@ def check_auth(*args, **kwargs):
     """A tool that looks in config for 'auth.require'. If found and it
     is not None, a login is required and the entry is evaluated as a list of
     conditions that the user must fulfill"""
+    username = cherrypy.session.get(SESSION_KEY)
+    if username:
+        cherrypy.request.login = username
+
     conditions = cherrypy.request.config.get('auth.require', None)
     if conditions is not None:
-        username = cherrypy.session.get(SESSION_KEY)
-        if username:
-            cherrypy.request.login = username
+        if cherrypy.request.login:
             for condition in conditions:
                 # A condition is just a callable that returns true or false
                 if not condition():

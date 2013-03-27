@@ -2,6 +2,8 @@ import os, glob
 
 import cherrypy
 
+import pprint
+
 # TODO move that to Model
 import bson
 from model import Model
@@ -26,7 +28,7 @@ class App:
     @cherrypy.expose
     def index(self):
         if cherrypy.request.login is not None:
-            tpl = 'views/logguedindex.html'
+            tpl = 'views/loggued_index.html'
         else:
             tpl = 'views/index.html'
 
