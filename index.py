@@ -4,9 +4,6 @@ import cherrypy
 
 import pprint
 
-# TODO move that to Model
-import bson
-
 from admin import Admin
 import auth
 import user
@@ -60,10 +57,7 @@ class App:
     def tasks(self):
         tasks = {}
         t = Task()
-        for task in t.find():
-            task['_id'] = str(task['_id'])
-            tasks[task['_id']] = task
-        return tasks
+        return t.find()
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose
@@ -80,14 +74,9 @@ class App:
             # fixme do a better handler
             return False
 
-        data = kw
-        if '_id' in data:
-            data['_id'] = bson.objectid.ObjectId(data['_id'])
-
         ts = Task()
-        objId = ts.save(data)
+        objId = ts.save(kw)
         taskObj = ts.collection.find_one(objId)
-        taskObj['_id'] = str(taskObj['_id'])
         return taskObj
 
 if __name__ == '__main__':

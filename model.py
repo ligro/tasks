@@ -1,5 +1,5 @@
 #from pymongo import MongoClient
-import pymongo
+import pymongo, bson
 
 class Storage(object):
     def __init__(self):
@@ -12,6 +12,9 @@ class Model(Storage):
         super(Model, self).__init__()
 
     def _validate(self, datas):
+        for data in datas:
+            if '_id' in data:
+                data['_id'] = bson.objectid.ObjectId(data['_id'])
         return datas
 
     def save(self, datas):
@@ -22,8 +25,15 @@ class Model(Storage):
         return self.collection.remove(spec)
 
     def find(self, specs={}):
-        return self.collection.find(specs)
+        objs = {}
+        for obj in self.collection.find(specs):
+            obj['_id'] = str(obj['_id'])
+            objs[obj['_id']] = obj
+        return objs
 
     def findById(self, id):
-        return self.collection.find_one(ObjectId(id))
+        obj = self.collection.find_one(ObjectId(id))
+        if '_id' in obj:
+            obj['_id'] = str(obj['_id'])
+        return obj
 
