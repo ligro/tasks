@@ -10,7 +10,6 @@ class Storage(object):
 class Model(Storage):
     def __init__(self):
         super(Model, self).__init__()
-        self.collection = self.db.task
 
     def _validate(self, datas):
         return datas

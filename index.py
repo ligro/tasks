@@ -6,11 +6,11 @@ import pprint
 
 # TODO move that to Model
 import bson
-from model import Model
 
 from admin import Admin
 import auth
 import user
+from task import Task
 
 # TODO make it RESTful http://docs.cherrypy.org/stable/progguide/REST.html
 class App:
@@ -51,7 +51,7 @@ class App:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def state(self):
-        t = Model()
+        t = Task()
         return t.collection.distinct('state')
 
     @auth.require(auth.is_loggued())
@@ -59,7 +59,7 @@ class App:
     @cherrypy.tools.json_out()
     def tasks(self):
         tasks = {}
-        t = Model()
+        t = Task()
         for task in t.find():
             task['_id'] = str(task['_id'])
             tasks[task['_id']] = task
@@ -69,7 +69,7 @@ class App:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def task(self, id=None):
-        t = Model();
+        t = Task();
         return t.findById(id)
 
     @auth.require(auth.is_loggued())
@@ -84,7 +84,7 @@ class App:
         if '_id' in data:
             data['_id'] = bson.objectid.ObjectId(data['_id'])
 
-        ts = Model()
+        ts = Task()
         objId = ts.save(data)
         taskObj = ts.collection.find_one(objId)
         taskObj['_id'] = str(taskObj['_id'])
