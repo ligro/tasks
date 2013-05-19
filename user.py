@@ -1,8 +1,6 @@
 import cherrypy
 from model import Model
 
-import pprint
-
 class Controller:
     """User controller"""
 
@@ -17,14 +15,33 @@ class Controller:
         ]
         errors = {}
         for field in formFields:
-            pprint.pprint(field)
             if field['name'] not in kw:
-                # TODO return error msg
-                return False
+                errors.append("%s field missing".format(field['name']))
 
-        datas = kw
-        objId = User.save(datas)
-        user = ts.collection.find_one(objId)
+        if len(errors) > 0:
+            return {'error': True, 'msgs' : errors}
+
+        if kw['password'] != kw['password_conf']:
+            return {'error': True, 'msg': "passwords are different"}
+
+        userModel = User()
+        if userModel.findOne({'email': kw['email']}) is not None:
+            return {'error': True, 'msg': "email already exists"}
+
+        datas = {
+            'email': kw['email'],
+            'pseudo': kw['pseudo']
+        }
+        userId = userModel.save(datas)
+        user = userModel.findById(userId)
+
+        datas = {
+                '_id': userId,
+                'email': kw['email'],
+                'password': kw['password']
+                }
+        pwdModel = Password()
+        pwdModel.save(datas)
         return user
 
 class User(Model):
@@ -37,3 +54,23 @@ class User(Model):
         datas = super(User, self)._validate(datas)
         # todo
         return datas
+
+class Password(Model):
+    def __init__(self):
+        super(Password, self).__init__()
+        self.collection = self.db.password
+
+    def _validateOne(self, data):
+        data = super(Password, self)._validateOne(data)
+        data['password'] = self._encodePwd(data['password'])
+        return data
+
+    def findOne(self, specs):
+        if 'password' in specs:
+            specs['password'] = self._encodePwd(specs['password'])
+        return self.findOne(specs)
+
+    def _encodePwd(self, password):
+        # todo encode it
+        return password
+

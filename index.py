@@ -76,7 +76,7 @@ class App:
 
         ts = Task()
         objId = ts.save(kw)
-        taskObj = ts.collection.find_one(objId)
+        taskObj = ts.findById(objId)
         return taskObj
 
 if __name__ == '__main__':
