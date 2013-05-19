@@ -5,7 +5,6 @@
 #
 
 import cherrypy
-import pprint
 
 SESSION_KEY = '_cp_username'
 
@@ -128,9 +127,4 @@ class controller(object):
             cherrypy.request.login = None
             self.on_logout(username)
         raise cherrypy.HTTPRedirect("/")
-
-    @cherrypy.expose
-    @cherrypy.tools.json_out()
-    def create(self):
-        return False
 
