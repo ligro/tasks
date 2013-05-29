@@ -6,17 +6,21 @@
 
 import cherrypy
 
+from user import User, Password
+
 SESSION_KEY = '_cp_username'
 
 def check_credentials(username, password):
     """Verifies credentials for username and password.
     Returns None on success or a string describing the error on failure"""
-    # Adapt to your needs
-    # FIXME
-    if username in ('joe', 'steve') and password == 'secret':
-        return None
-    else:
+    user = User().findOne({'$or':[{'username' : username},{'email':username}]})
+    if user is None:
         return u"Incorrect username or password."
+    pwd = Password().findById(user['_id'])
+    if pwd is None or pwd['password'] != password:
+        return u"Incorrect username or password."
+
+    return None
 
     # An example implementation which uses an ORM could be:
     # u = User.get(username)
