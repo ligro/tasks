@@ -2,7 +2,7 @@
 
 Application to manage your tasks
 Today it doesn't include user connection/management
-Centered on tasks (backlog + kanban) more than projects/fetaures
+Centered on tasks (backlog + kanban) more than projects/features
 
 ## Features
 
