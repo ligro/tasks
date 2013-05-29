@@ -24,7 +24,7 @@ class App:
 
     @cherrypy.expose
     def index(self):
-        if cherrypy.request.login is not None:
+        if auth.is_loggued()() is not None:
             tpl = 'views/loggued_index.html'
         else:
             tpl = 'views/index.html'

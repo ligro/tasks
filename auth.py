@@ -11,17 +11,23 @@ from user import User, Password
 import pprint
 
 SESSION_KEY = '_cp_pseudo'
+userAuth = None
+
+def get_user_auth():
+    id = cherrypy.session.get(SESSION_KEY)
+    if id is not None:
+        cherrypy.request.id = id
+        userAuth = User().findById(id)
 
 def check_credentials(pseudo, password):
     """Verifies credentials for pseudo and password.
     Returns None on success or a string describing the error on failure"""
-    user = User().findOne({'$or':[{'pseudo' : pseudo},{'email':pseudo}]})
+    user = User().findOne({'$or':[{'pseudo' : pseudo},{'email' : pseudo}]})
     if user is None:
         return None
     pwd = Password().findById(user['_id'])
     if pwd is None or pwd['password'] != password:
         return None
-
     return user
 
     # An example implementation which uses an ORM could be:
@@ -35,13 +41,11 @@ def check_auth(*args, **kwargs):
     """A tool that looks in config for 'auth.require'. If found and it
     is not None, a login is required and the entry is evaluated as a list of
     conditions that the user must fulfill"""
-    pseudo = cherrypy.session.get(SESSION_KEY)
-    if pseudo:
-        cherrypy.request.login = pseudo
+    get_user_auth()
 
     conditions = cherrypy.request.config.get('auth.require', None)
     if conditions is not None:
-        if cherrypy.request.login:
+        if cherrypy.request.id:
             for condition in conditions:
                 # A condition is just a callable that returns true or false
                 if not condition():
@@ -66,7 +70,7 @@ def require(*conditions):
 # Conditions are callables that return True
 # if the user fulfills the conditions they define, False otherwise
 #
-# They can access the current pseudo as cherrypy.request.login
+# They can access the current pseudo as cherrypy.request.id
 #
 # Define those at will however suits the application.
 
@@ -120,8 +124,7 @@ class controller(object):
         if user is None:
             return {'success': False, 'error': u"Incorrect pseudo or password."}
 
-        pprint.pprint(user)
-        cherrypy.session[SESSION_KEY] = cherrypy.request.login = user['pseudo']
+        cherrypy.session[SESSION_KEY] = cherrypy.request.id = user['_id']
         self.on_login(login)
         return {'success': True}
 
@@ -131,7 +134,7 @@ class controller(object):
         pseudo = sess.get(SESSION_KEY, None)
         sess[SESSION_KEY] = None
         if pseudo:
-            cherrypy.request.login = None
+            cherrypy.request.id = None
             self.on_logout(pseudo)
         raise cherrypy.HTTPRedirect("/")
 
