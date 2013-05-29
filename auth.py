@@ -8,24 +8,26 @@ import cherrypy
 
 from user import User, Password
 
-SESSION_KEY = '_cp_username'
+import pprint
 
-def check_credentials(username, password):
-    """Verifies credentials for username and password.
+SESSION_KEY = '_cp_pseudo'
+
+def check_credentials(pseudo, password):
+    """Verifies credentials for pseudo and password.
     Returns None on success or a string describing the error on failure"""
-    user = User().findOne({'$or':[{'username' : username},{'email':username}]})
+    user = User().findOne({'$or':[{'pseudo' : pseudo},{'email':pseudo}]})
     if user is None:
-        return u"Incorrect username or password."
+        return None
     pwd = Password().findById(user['_id'])
     if pwd is None or pwd['password'] != password:
-        return u"Incorrect username or password."
+        return None
 
-    return None
+    return user
 
     # An example implementation which uses an ORM could be:
-    # u = User.get(username)
+    # u = User.get(pseudo)
     # if u is None:
-    #     return u"Username %s is unknown to me." % username
+    #     return u"pseudo %s is unknown to me." % pseudo
     # if u.password != md5.new(password).hexdigest():
     #     return u"Incorrect password"
 
@@ -33,9 +35,9 @@ def check_auth(*args, **kwargs):
     """A tool that looks in config for 'auth.require'. If found and it
     is not None, a login is required and the entry is evaluated as a list of
     conditions that the user must fulfill"""
-    username = cherrypy.session.get(SESSION_KEY)
-    if username:
-        cherrypy.request.login = username
+    pseudo = cherrypy.session.get(SESSION_KEY)
+    if pseudo:
+        cherrypy.request.login = pseudo
 
     conditions = cherrypy.request.config.get('auth.require', None)
     if conditions is not None:
@@ -64,7 +66,7 @@ def require(*conditions):
 # Conditions are callables that return True
 # if the user fulfills the conditions they define, False otherwise
 #
-# They can access the current username as cherrypy.request.login
+# They can access the current pseudo as cherrypy.request.login
 #
 # Define those at will however suits the application.
 
@@ -100,11 +102,11 @@ def all_of(*conditions):
 
 class controller(object):
 
-    def on_login(self, username):
+    def on_login(self, pseudo):
         """Called on successful login"""
         # TODO stats
 
-    def on_logout(self, username):
+    def on_logout(self, pseudo):
         """Called on logout"""
         # TODO stats
 
@@ -114,21 +116,22 @@ class controller(object):
         if login is None or password is None:
             return {'success': False}
 
-        error_msg = check_credentials(login, password)
-        if error_msg:
-            return {'success': False, 'error': error_msg}
-        else:
-            cherrypy.session[SESSION_KEY] = cherrypy.request.login = login
-            self.on_login(login)
-            return {'success': True}
+        user = check_credentials(login, password)
+        if user is None:
+            return {'success': False, 'error': u"Incorrect pseudo or password."}
+
+        pprint.pprint(user)
+        cherrypy.session[SESSION_KEY] = cherrypy.request.login = user['pseudo']
+        self.on_login(login)
+        return {'success': True}
 
     @cherrypy.expose
     def logout(self):
         sess = cherrypy.session
-        username = sess.get(SESSION_KEY, None)
+        pseudo = sess.get(SESSION_KEY, None)
         sess[SESSION_KEY] = None
-        if username:
+        if pseudo:
             cherrypy.request.login = None
-            self.on_logout(username)
+            self.on_logout(pseudo)
         raise cherrypy.HTTPRedirect("/")
 
