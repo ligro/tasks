@@ -2,8 +2,6 @@ import os, glob
 
 import cherrypy
 
-import pprint
-
 from admin import Admin
 import auth
 import user
@@ -14,6 +12,7 @@ class App:
 
     _cp_config = {
         'tools.sessions.on': True,
+        'tools.sessions.timeout': 60*24*30,
         'tools.auth.on': True
     }
 
@@ -24,7 +23,7 @@ class App:
 
     @cherrypy.expose
     def index(self):
-        if auth.is_loggued()() is not None:
+        if auth.is_loggued()():
             tpl = 'views/loggued_index.html'
         else:
             tpl = 'views/index.html'
@@ -48,23 +47,24 @@ class App:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def state(self):
-        t = Task()
-        return t.collection.distinct('state')
+        tasks = Task().collection.find({'authorId' : auth.userAuth['_id']})
+        return [] if tasks is None else tasks.distinct('state')
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def tasks(self):
-        tasks = {}
-        t = Task()
-        return t.find()
+        return Task().find({'authorId' : auth.userAuth['_id']})
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def task(self, id=None):
         t = Task();
-        return t.findById(id)
+        task = t.findById(id)
+        if task['authorId'] == auth.userAuth['_id']:
+            return task
+        return None
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose

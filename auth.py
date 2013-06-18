@@ -8,16 +8,8 @@ import cherrypy
 
 from user import User, Password
 
-import pprint
-
-SESSION_KEY = '_cp_pseudo'
+SESSION_KEY = '_cp_id'
 userAuth = None
-
-def get_user_auth():
-    id = cherrypy.session.get(SESSION_KEY)
-    if id is not None:
-        cherrypy.request.id = id
-        userAuth = User().findById(id)
 
 def check_credentials(pseudo, password):
     """Verifies credentials for pseudo and password.
@@ -41,7 +33,11 @@ def check_auth(*args, **kwargs):
     """A tool that looks in config for 'auth.require'. If found and it
     is not None, a login is required and the entry is evaluated as a list of
     conditions that the user must fulfill"""
-    get_user_auth()
+    global userAuth
+    id = cherrypy.session.get(SESSION_KEY)
+    cherrypy.request.id = id
+    if id is not None:
+        userAuth = User().findById(id)
 
     conditions = cherrypy.request.config.get('auth.require', None)
     if conditions is not None:
@@ -77,7 +73,6 @@ def require(*conditions):
 def is_loggued():
     """condition to check if a user is connected"""
     return lambda: cherrypy.session.get(SESSION_KEY) is not None
-
 
 # These might be handy
 
@@ -124,7 +119,8 @@ class controller(object):
         if user is None:
             return {'success': False, 'error': u"Incorrect pseudo or password."}
 
-        cherrypy.session[SESSION_KEY] = cherrypy.request.id = user['_id']
+        cherrypy.session[SESSION_KEY] = user['_id']
+        cherrypy.request.id = user['_id']
         self.on_login(login)
         return {'success': True}
 
