@@ -49,10 +49,11 @@
 
      $.App.ui = {
          notifyLevels: {
-             debug: 'Dev debug',
-             info: 'Information',
-             warning: 'Warning',
-             error: 'Error'
+             debug: ['Dev debug', 'alert-info'],
+             info: ['Information', 'alert-info'],
+             success: ['Success', 'alert-success'],
+             warning: ['Warning', ''],
+             error: ['Error', 'alert-error']
          },
          init: function(){
              $('a.jLink').on('click', function(e){
@@ -61,7 +62,7 @@
                  if (typeof $.App.ui[func] == 'function') {
                      $.App.ui[func].call()
                  }
-             });
+             })
 
              $(document).on('notify', function(e, msg, type){
                  // handle default values
@@ -69,8 +70,18 @@
                   || typeof $.App.ui.notifyLevels[type] === "undefined"
                  ) && (type = "info")
 
-                 console.log("notify : %s(%s), %s", $.App.ui.notifyLevels[type], type, msg);
-             });
+                 $.App._loadTpl(
+                     'alert',
+                     {
+                         level_label: $.App.ui.notifyLevels[type][0],
+                         class: $.App.ui.notifyLevels[type][1],
+                         msg: msg
+                     },
+                     function(err, out) {
+                         $('#page').prepend($(out))
+                     }
+                 )
+             })
          },
          closeModal: function(){
              $('.modal').parent().remove()
