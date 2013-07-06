@@ -48,14 +48,29 @@
      }
 
      $.App.ui = {
+         notifyLevels: {
+             debug: 'Dev debug',
+             info: 'Information',
+             warning: 'Warning',
+             error: 'Error'
+         },
          init: function(){
              $('a.jLink').on('click', function(e){
                  var func = $(this).data('func')+'_link';
                  e.stopPropagation()
                  if (typeof $.App.ui[func] == 'function') {
-                     $.App.ui[func].call();
+                     $.App.ui[func].call()
                  }
-             })
+             });
+
+             $(document).on('notify', function(e, msg, type){
+                 // handle default values
+                 (typeof type === "undefined"
+                  || typeof $.App.ui.notifyLevels[type] === "undefined"
+                 ) && (type = "info")
+
+                 console.log("notify : %s(%s), %s", $.App.ui.notifyLevels[type], type, msg);
+             });
          },
          closeModal: function(){
              $('.modal').parent().remove()
