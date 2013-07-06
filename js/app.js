@@ -74,7 +74,7 @@
                  .on('click', '#addTaskSave', function (){
                      var $this = $(this)
 
-                     task = $this.closest('form').getFormFields()
+                     task = $this.closest('form').getFields()
                      $.task.save(task, function(){
                          console.log('saved task')
                          // success
