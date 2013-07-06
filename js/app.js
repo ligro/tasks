@@ -78,9 +78,13 @@
                          msg: msg
                      },
                      function(err, out) {
-                         $('#page').prepend($(out))
+                         $('#page')
+                            .prepend($(out))
                      }
                  )
+             })
+             $(document).on('click', '.alert button.close', function(){
+                 $(this).closest('.alert').remove()
              })
          },
          closeModal: function(){
