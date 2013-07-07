@@ -13,7 +13,7 @@
                 state: state
             }
 
-            $.App._loadTpl('tasksColumn', data, function(err, out) {
+            $.ui._loadTpl('tasksColumn', data, function(err, out) {
                 $columns.append($(out))
                 typeof state !== "undefined"
                     && $columns.find('#'+data.id).data('state', state)
@@ -24,12 +24,12 @@
     },
     taskColumn = {
         addTask: function($column, task){
-            $.App._loadTpl('task', task, function(err, out) {
+            $.ui._loadTpl('task', task, function(err, out) {
                 $column.append($(out))
             })
         },
         updateTask: function($task, task){
-            $.App._loadTpl('task', task, function(err, out) {
+            $.ui._loadTpl('task', task, function(err, out) {
                 $task.html($(out))
             })
         }
