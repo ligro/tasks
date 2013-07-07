@@ -18,7 +18,7 @@ class Controller:
         errors = {}
         for field in formFields:
             if field['name'] not in kw:
-                errors.append("%s field missing".format(field['name']))
+                errors[field['name']] = "%s field missing".format(field['name'])
 
         if len(errors) > 0:
             return {'error': True, 'msgs' : errors}
