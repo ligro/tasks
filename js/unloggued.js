@@ -17,5 +17,10 @@
         $('form.jForm').on('submit', function(){
             $(this).post()
         })
+        // display about
+        $(document).on('click', '.jLink', function(){
+            $('<div>')
+                .modal('abouts', {}, {title: 'Abouts'})
+        })
     })
 })(Zepto)
