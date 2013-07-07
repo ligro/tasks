@@ -75,6 +75,7 @@ class App:
             return False
 
         ts = Task()
+        kw['authorId'] = auth.userAuth['_id']
         objId = ts.save(kw)
         taskObj = ts.findById(objId)
         return taskObj
