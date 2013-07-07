@@ -24,20 +24,30 @@
                 data: this.getFields(),
                 success: function(data){
                     if (data.success) {
-                        console.log(data)
                         $.App[$this.data('success')]()
+
+                    } else if (typeof data.msgs === "undefined") {
+                        $(document.body).trigger('notify', ['An error occured', 'error']);
                     } else {
-                        console.log(data)
-                        $this.displayError(data.error);
+                        var $input, field;
+                        for (field in data.msgs) {
+                            $input = $this.find('input[name="'+field+'"]')
+                            if ($input.length == 0) {
+                                $(document.body).trigger('notify', [data.msgs[field], 'error']);
+                                continue;
+                            }
+                            $input.errorMsg(data.msgs[field])
+                        }
                     }
                 },
                 error: function(xhr, type){
-                    //.displayError('An error occured');
+                    $(document.body).trigger('notify', ['An error occured', 'error']);
                 }
             })
         },
-        displayError: function(error){
-            console.log(error)
+        errorMsg: function(msg) {
+            var $this = $(this);
+            console.log("%o, %s", $this, msg);
         }
     })
 })(Zepto)
