@@ -31,18 +31,42 @@
                 <div class="span3">
                     <div class="logInBox">
                         <form action="javascript:void(0);" method="POST" class="jForm" data-url="/auth/login" data-success="login">
-                            <input type="text" placeholder="Email or pseudo" name="login" />
-                            <input type="password" placeholder="Password" name="password" />
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input type="text" placeholder="Email or pseudo" name="login" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input type="password" placeholder="Password" name="password" />
+                                </div>
+                            </div>
                             <a href="javascript:void(0);" class="btn btn-primary jSubmit">Log in</a>
                         </form>
                     </div>
                     <div class="createUserBox">
                         <form action="javascript:void(0);" method="POST" class="jForm" data-url="/user/create" data-success="userCreation">
                             <p>You don't have an account, create it now :</p>
-                            <input type="text" placeholder="Pseudo" name="pseudo" />
-                            <input type="text" placeholder="Email" name="email" />
-                            <input type="password" placeholder="Password" name="password" />
-                            <input type="password" placeholder="Password Confirmation" name="password_conf" />
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input type="text" placeholder="Pseudo" name="pseudo" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input type="text" placeholder="Email" name="email" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input type="password" placeholder="Password" name="password" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input type="password" placeholder="Password Confirmation" name="password_conf" />
+                                </div>
+                            </div>
                             <a href="javascript:void(0);" class="btn jSubmit">Create your account</a>
                         </form>
                     </div>

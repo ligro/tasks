@@ -46,8 +46,9 @@
             })
         },
         errorMsg: function(msg) {
-            var $this = $(this);
-            console.log("%o, %s", $this, msg);
+            $(this)
+                .after('<span class="help-inline">'+msg+'</span>')
+                .closest('.control-group').addClass('error')
         }
     })
 })(Zepto)
