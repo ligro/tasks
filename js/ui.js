@@ -59,11 +59,6 @@
                  $(this).closest('.alert').remove()
              })
          },
-         closeModal: function(){
-             $('.modal').parent().remove()
-         },
-     //        $('<div>')
-     //            .modal('abouts', {}, {title: 'Abouts'})
         _loadTpl: function(name, data, end) {
             typeof dust.cache[name] === 'undefined'
                 && dust.loadSource(dust.compile($.templates[name], name))
