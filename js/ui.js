@@ -41,7 +41,7 @@
                   || typeof $.ui.notifyLevels[type] === "undefined"
                  ) && (type = "info")
 
-                 $._loadTpl(
+                 $.ui._loadTpl(
                      'alert',
                      {
                          level_label: $.ui.notifyLevels[type][0],

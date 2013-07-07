@@ -19,11 +19,7 @@
                     $('.tasksColumns').tasksColumns()
                 }
             })
-        },
-        _loadTpl: function(name, data, end) {
-            $.ui._loadTpl(name, data, end)
-        },
-
+        }
      }
 
      $.App.ui = {
