@@ -46,7 +46,7 @@ class Controller:
         pwdModel.save(datas)
 
         auth.logIn(user)
-        return user
+        return {'success': True}
 
 class User(Model):
     """user object"""

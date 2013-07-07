@@ -6,7 +6,7 @@
             window.location.reload(true)
         },
         userCreation : function(){
-            console.log('userCreation')
+            window.location.reload(true)
         }
     }
 
