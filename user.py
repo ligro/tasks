@@ -1,6 +1,8 @@
 import cherrypy
 from model import Model
 
+import auth
+
 class Controller:
     """User controller"""
 
@@ -42,6 +44,8 @@ class Controller:
                 }
         pwdModel = Password()
         pwdModel.save(datas)
+
+        auth.logIn(user)
         return user
 
 class User(Model):

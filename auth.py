@@ -51,6 +51,17 @@ def check_auth(*args, **kwargs):
 
 cherrypy.tools.auth = cherrypy.Tool('before_handler', check_auth)
 
+def logIn(user):
+    cherrypy.session[SESSION_KEY] = user['_id']
+    cherrypy.request.id = user['_id']
+
+def logOut():
+    sess = cherrypy.session
+    pseudo = sess.get(SESSION_KEY, None)
+    sess[SESSION_KEY] = None
+    if pseudo:
+        cherrypy.request.id = None
+
 def require(*conditions):
     """A decorator that appends conditions to the auth.require config
     variable."""
@@ -119,18 +130,11 @@ class controller(object):
         if user is None:
             return {'success': False, 'error': u"Incorrect pseudo or password."}
 
-        cherrypy.session[SESSION_KEY] = user['_id']
-        cherrypy.request.id = user['_id']
-        self.on_login(login)
+        logIn(user)
         return {'success': True}
 
     @cherrypy.expose
     def logout(self):
-        sess = cherrypy.session
-        pseudo = sess.get(SESSION_KEY, None)
-        sess[SESSION_KEY] = None
-        if pseudo:
-            cherrypy.request.id = None
-            self.on_logout(pseudo)
+        logOut()
         raise cherrypy.HTTPRedirect("/")
 
