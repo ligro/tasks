@@ -17,9 +17,11 @@ def check_credentials(pseudo, password):
     user = User().findOne({'$or':[{'pseudo' : pseudo},{'email' : pseudo}]})
     if user is None:
         return None
+
     pwd = Password().findById(user['_id'])
-    if pwd is None or pwd['password'] != password:
+    if pwd is None or not Password().check_pwd(pwd['password'], password):
         return None
+
     return user
 
     # An example implementation which uses an ORM could be:
