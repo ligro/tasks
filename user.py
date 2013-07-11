@@ -18,17 +18,22 @@ class Controller:
         errors = {}
         for field in formFields:
             if field['name'] not in kw:
-                errors[field['name']] = "%s field missing".format(field['name'])
+                errors[field['name']] = "{0} field missing".format(field['name'])
+
+        if 'password' not in errors and kw['password'] != kw['password_conf']:
+            errors['password_conf'] = "passwords are different"
+
+        userModel = User()
+        if 'pseudo' not in errors:
+            if userModel.findOne({'pseudo': kw['pseudo']}) is not None:
+                errors['pseudo'] = "pseudo already exists"
+
+        if 'email' not in errors:
+            if userModel.findOne({'email': kw['email']}) is not None:
+                errors['email'] = "email already exists"
 
         if len(errors) > 0:
             return {'error': True, 'msgs' : errors}
-
-        if kw['password'] != kw['password_conf']:
-            return {'error': True, 'msg': "passwords are different"}
-
-        userModel = User()
-        if userModel.findOne({'email': kw['email']}) is not None:
-            return {'error': True, 'msg': "email already exists"}
 
         datas = {
             'email': kw['email'],
@@ -39,7 +44,6 @@ class Controller:
 
         datas = {
                 '_id': userId,
-                'email': kw['email'],
                 'password': kw['password']
                 }
         pwdModel = Password()
