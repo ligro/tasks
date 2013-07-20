@@ -21,6 +21,7 @@ python2.7 index.py
 python2.7
 cherrypy3 (python-cherrypy3)
 mongodb
+python-flup
 
 ## TODO
 
