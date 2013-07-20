@@ -6,7 +6,7 @@
             // TODO already loaded / force reload
             $.ajax({
                 type: 'GET',
-                url: '/tasks',
+                url: '/tasks/',
                 // type of data we are expecting in return:
                 dataType: 'json',
                 success: function(data){
@@ -21,7 +21,7 @@
         loadState: function(){
             $.ajax({
                 type: 'GET',
-                url: '/state',
+                url: '/state/',
                 // type of data we are expecting in return:
                 dataType: 'json',
                 success: function(data){
@@ -42,7 +42,7 @@
             // TODO sync tasks with the server
             $.ajax({
                 type: 'POST',
-                url: '/savetask',
+                url: '/savetask/',
                 data: task,
                 dataType: 'json',
                 success: function(data, state, xhr){

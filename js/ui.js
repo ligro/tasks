@@ -21,7 +21,7 @@
             // retrieve templates
             $.ajax({
                 type: 'GET',
-                url: '/templates',
+                url: '/templates/',
                 // type of data we are expecting in return:
                 dataType: 'json',
                 success: function(data){
