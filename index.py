@@ -23,12 +23,12 @@ class App:
 
     @cherrypy.expose
     def index(self):
-        tpl = os.path.dirname(os.path.abspath(__file__))
         if auth.is_loggued()():
-            tpl += 'views/loggued_index.html'
+            tpl = 'views/loggued_index.html'
         else:
-            tpl += 'views/index.html'
+            tpl = 'views/index.html'
 
+        tpl = os.path.join(os.path.dirname(os.path.abspath(__file__)), tpl)
         with open(tpl, 'r') as f:
             lines = f.readlines()
         return lines
