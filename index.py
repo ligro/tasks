@@ -80,24 +80,32 @@ class App:
         taskObj = ts.findById(objId)
         return taskObj
 
-if __name__ == '__main__':
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    conf = {
-        '/js': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': os.path.join(current_dir, 'js'),
-            'tools.staticdir.content_types': {'js': 'application/javascript'}
-        },
-        '/css': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': os.path.join(current_dir, 'css'),
-            'tools.staticdir.content_types': {
-                'css': 'text/css',
-                'png': 'image/png',
-            }
+current_dir = os.path.dirname(os.path.abspath(__file__))
+conf = {
+    '/js': {
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': os.path.join(current_dir, 'js'),
+        'tools.staticdir.content_types': {'js': 'application/javascript'}
+    },
+    '/css': {
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': os.path.join(current_dir, 'css'),
+        'tools.staticdir.content_types': {
+            'css': 'text/css',
+            'png': 'image/png',
         }
     }
+}
+#cherrypy.config.update(conf)
 
+if __name__ == '__main__':
     cherrypy.server.socket_port = 8081
     cherrypy.server.socket_host = '0.0.0.0'
-    cherrypy.quickstart(App(), '/', config=conf)
+    cherrypy.quickstart(App(), '/', conf)
+else:
+    # launch by cherryd
+
+    cherrypy.tree.mount(App(), '/', conf)
+    # CherryPy autoreload must be disabled for the flup server to work
+    cherrypy.config.update({'engine.autoreload_on':False})
+
