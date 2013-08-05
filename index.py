@@ -97,16 +97,13 @@ conf = {
         }
     }
 }
-#cherrypy.config.update(conf)
+
+def application(environ, start_response):
+    cherrypy.tree.mount(App(), '/', conf)
+    return cherrypy.tree(environ, start_response)
 
 if __name__ == '__main__':
     cherrypy.server.socket_port = 8081
     cherrypy.server.socket_host = '0.0.0.0'
     cherrypy.quickstart(App(), '/', conf)
-else:
-    # launch by cherryd
-
-    cherrypy.tree.mount(App(), '/', conf)
-    # CherryPy autoreload must be disabled for the flup server to work
-    cherrypy.config.update({'engine.autoreload_on':False})
 
