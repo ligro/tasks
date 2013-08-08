@@ -9,7 +9,7 @@
             $(this).find('input, textarea').each(function(index, element){
                 var $this = $(this)
 
-                $this.val() !== ''
+                $this.attr('name') != ''
                     && (fields[$this.attr('name')] = $this.val())
             })
 
@@ -20,7 +20,7 @@
             var $this = this
             $.ajax({
                 type: 'POST',
-                url: this.data('url'),
+                url: this.attr('action'),
                 data: this.getFields(),
                 success: function(data){
                     if (data.success) {

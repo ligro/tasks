@@ -40,7 +40,7 @@
             typeof task === 'undefined'
                && (task = {})
 
-             $('<form>', {action: 'javascript:void(0);'})
+             $('<form class="jForm" action="/savetask">', {action: 'javascript:void(0);'})
                  .modal('addTask', task, {
                      title: 'Create task',
                      buttons: [
@@ -48,20 +48,21 @@
                      ]
                  })
                  .on('click', '#addTaskSave', function (){
-                     var $this = $(this)
+                     var $form = $(this).closest('form')
 
-                     task = $this.closest('form').getFields()
-                     $.task.save(task, function(){
-                         console.log('saved task')
+                     task = $form.getFields()
+                     if (typeof task.task === 'undefined') {
+                         $form.find('textarea[name="task"]').errorMsg('you must provide a task description');
+                         return;
+                     }
+
+                     $form.post(function(){
                          // success
-                         //FIXME move it to modal.js // event ?
+                         $(document.body).trigger('task:saved', [data])
+                         $(document.body).trigger('notify', ['Task saved', 'info'])
+                         $.App.tasks[data._id] = data
                          $.App.ui.closeModal()
-                     },
-                     function(msg){
-                         // error
-                         // display error
-                         console.log(msg)
-                     })
+                     });
                  })
          },
          abouts_link: function(){

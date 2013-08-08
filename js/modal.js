@@ -5,11 +5,9 @@
         modal: function(tpl, data, modalData){
             var $this = $(this)
 
-        console.log(data)
             $.ui._loadTpl(tpl, data, function(err, out) {
 
                 modalData.content = out
-        console.log(modalData)
                 $.ui._loadTpl('modal', modalData, function(err, out) {
 
                     $this.html($(out))
