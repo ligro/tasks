@@ -9,6 +9,7 @@ class Controller:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def create(self, **kw):
+
         formFields = [
                 {'name': 'pseudo'},
                 {'name': 'email'},
@@ -17,18 +18,18 @@ class Controller:
         ]
         errors = {}
         for field in formFields:
-            if field['name'] not in kw:
-                errors[field['name']] = "%s field missing".format(field['name'])
+            if field['name'] not in kw or kw[field['name']] == '':
+                errors[field['name']] = "can not be empty"
 
         if len(errors) > 0:
             return {'error': True, 'msgs' : errors}
 
         if kw['password'] != kw['password_conf']:
-            return {'error': True, 'msg': "passwords are different"}
+            return {'error': True, 'msgs': ["passwords are different"]}
 
         userModel = User()
         if userModel.findOne({'email': kw['email']}) is not None:
-            return {'error': True, 'msg': "email already exists"}
+            return {'error': True, 'msgs': "email already exists"}
 
         datas = {
             'email': kw['email'],

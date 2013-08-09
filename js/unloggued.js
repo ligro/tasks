@@ -29,6 +29,18 @@
             },
             validate: function($form){
                 var res = true;
+
+                $form.find('textarea, input').each(function(index){
+                    var $this = $(this)
+
+                    if ($this.attr('name') !== ''
+                        && $this.val() === ''
+                    ) {
+                        $this.errorMsg('can not be empty')
+                        res = false;
+                    }
+                })
+
                 return res;
             }
         }
