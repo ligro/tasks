@@ -18,13 +18,30 @@
         // post form
         post: function(success){
             var $this = this
+
+            // clear
+            $this.find('.jErrorMsg').remove();
+            $this.find('.control-group').removeClass('error');
+
+            if (typeof $.App[$this.data('method')] !== 'undefined'
+                && typeof $.App[$this.data('method')].validate !== 'undefined'
+            ) {
+                if (!$.App[$this.data('method')].validate($this)) {
+                    return
+                }
+            }
+
             $.ajax({
                 type: 'POST',
                 url: this.attr('action'),
                 data: this.getFields(),
                 success: function(data){
                     if (data.success) {
-                        $.App[$this.data('success')]()
+                        if (typeof $.App[$this.data('method')] !== 'undefined'
+                            && typeof $.App[$this.data('method')].success !== 'undefined'
+                        ) {
+                            $.App[$this.data('method')].success()
+                        }
 
                     } else if (typeof data.msgs === "undefined") {
                         $(document.body).trigger('notify', ['An error occured', 'error']);
@@ -47,7 +64,7 @@
         },
         errorMsg: function(msg) {
             $(this)
-                .after('<span class="help-inline">'+msg+'</span>')
+                .after('<span class="jErrorMsg help-inline">'+msg+'</span>')
                 .closest('.control-group').addClass('error')
         }
     })

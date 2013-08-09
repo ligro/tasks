@@ -2,11 +2,35 @@
     'use strict';
 
     $.App = {
-        login : function(){
-            window.location.reload(true)
+        login : {
+            success: function(){
+                window.location.reload(true)
+            },
+            validate: function($form){
+                var res = true;
+
+                $form.find('textarea, input').each(function(index){
+                    var $this = $(this)
+
+                    if ($this.attr('name') !== ''
+                        && $this.val() === ''
+                    ) {
+                        $this.errorMsg('can not be empty')
+                        res = false;
+                    }
+                })
+
+                return res;
+            }
         },
-        userCreation : function(){
-            window.location.reload(true)
+        userCreation: {
+            success: function(){
+                window.location.reload(true)
+            },
+            validate: function($form){
+                var res = true;
+                return res;
+            }
         }
     }
 
