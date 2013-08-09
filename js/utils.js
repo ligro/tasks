@@ -9,7 +9,7 @@
             $(this).find('input, textarea').each(function(index, element){
                 var $this = $(this)
 
-                $this.val() !== ''
+                $this.attr('name') != ''
                     && (fields[$this.attr('name')] = $this.val())
             })
 
@@ -17,20 +17,31 @@
         },
         // post form
         post: function(success){
-
             return this.each(function(){
                 var $this = $(this)
 
                 $this.find('.control-group').removeClass('error')
                 $this.find('.jErrorMsg').remove()
 
+                if (typeof $.App[$this.data('method')] !== 'undefined'
+                    && typeof $.App[$this.data('method')].validate !== 'undefined'
+                ) {
+                    if (!$.App[$this.data('method')].validate($this)) {
+                        return
+                    }
+                }
+
                 $.ajax({
                     type: $this.attr('method'),
-                    url: $this.data('url'),
+                    url: this.attr('action'),
                     data: $this.getFields(),
                     success: function(data){
                         if (data.success) {
-                            $.App[$this.data('success')]()
+                            if (typeof $.App[$this.data('method')] !== 'undefined'
+                                && typeof $.App[$this.data('method')].success !== 'undefined'
+                            ) {
+                                $.App[$this.data('method')].success()
+                            }
 
                         } else if (typeof data.msgs === "undefined") {
                             $(document.body).trigger('notify', ['An error occured', 'error']);
@@ -43,7 +54,7 @@
                                     continue;
                                 }
                                 $input.errorMsg(data.msgs[field])
-                            }
+                           }
                         }
                     },
                     error: function(xhr, type){

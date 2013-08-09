@@ -14,7 +14,7 @@
                     $(document.body).trigger('task:load')
                 },
                 error: function(xhr, type){
-                    // @TODO show ui error to specify we can't run
+                    $('#FatalError').show()
                 }
             })
         },
@@ -29,16 +29,11 @@
                     $(document.body).trigger('state:load')
                 },
                 error: function(xhr, type){
-                    // @TODO show ui error to specify we can't run
+                    $('#FatalError').show()
                 }
             })
         },
         save: function(task, success, error){
-            if (typeof task.task === 'undefined') {
-                // ui error
-                error('you must provide a task description');
-            }
-
             // TODO sync tasks with the server
             $.ajax({
                 type: 'POST',
@@ -47,13 +42,8 @@
                 dataType: 'json',
                 success: function(data, state, xhr){
                     // TODO verify the server return
-                    $.App.tasks[data._id] = data
-                    $(document.body).trigger('task:saved', [data])
                     success()
                 },
-                error: function(data, state, xhr){
-                    error('an error occured')
-                }
             })
         },
         findByState: function(state){

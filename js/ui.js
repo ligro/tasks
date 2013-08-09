@@ -12,6 +12,11 @@
          },
 
          init: function(){
+             $(document).on('submit', 'form.jForm', function(e){
+                 $(this).post()
+                 return false
+             })
+
              $.ui.initTemplates()
              $(document).one('templates:load', function(e){
                  $.ui.initNotifications()
@@ -29,7 +34,6 @@
                     $(document.body).trigger('templates:load')
                 },
                 error: function(xhr, type){
-                    // show ui error to specify we can't run
                     $('#FatalError').show()
                 }
             })
