@@ -40,7 +40,7 @@
                             if (typeof $.App[$this.data('method')] !== 'undefined'
                                 && typeof $.App[$this.data('method')].success !== 'undefined'
                             ) {
-                                $.App[$this.data('method')].success()
+                                $.App[$this.data('method')].success(data)
                             }
 
                         } else if (typeof data.msgs === "undefined") {

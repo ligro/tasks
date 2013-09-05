@@ -19,6 +19,27 @@
                     $('.tasksColumns').tasksColumns()
                 }
             })
+        },
+        addTask: {
+            success: function(data) {
+                $(document.body).trigger('task:saved', [data.datas])
+                $(document.body).trigger('notify', ['Task saved', 'info'])
+                $.App.tasks[data.datas._id] = data.datas
+                $.App.ui.closeModal()
+            },
+            validate: function($form) {
+                var res = true;
+
+                $form.find('textarea').each(function(index) {
+                    var $this = $(this)
+                    if ($this.val() === '') {
+                        $this.errorMsg('can not be empty')
+                        res = false
+                    }
+                })
+
+                return res
+            }
         }
      }
 
@@ -40,29 +61,10 @@
             typeof task === 'undefined'
                && (task = {})
 
-             $('<form class="jForm" action="/savetask">')
+             $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
                  .modal('addTask', task, {
                      title: 'Create task',
-                     buttons: [
-                         {name: 'Create', class: 'primary-btn', id: 'addTaskSave'}
-                     ]
-                 })
-                 .on('click', '#addTaskSave', function (){
-                     var $form = $(this).closest('form')
-
-                     task = $form.getFields()
-                     if (typeof task.task === 'undefined') {
-                         $form.find('textarea[name="task"]').errorMsg('you must provide a task description');
-                         return;
-                     }
-
-                     $form.post(function(){
-                         // success
-                         $(document.body).trigger('task:saved', [data])
-                         $(document.body).trigger('notify', ['Task saved', 'info'])
-                         $.App.tasks[data._id] = data
-                         $.App.ui.closeModal()
-                     });
+                     submit: {name: 'Create', class: 'primary-btn'}
                  })
          },
          abouts_link: function(){

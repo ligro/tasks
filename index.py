@@ -79,7 +79,7 @@ class App:
         kw['authorId'] = auth.userAuth['_id']
         objId = ts.save(kw)
         taskObj = ts.findById(objId)
-        return taskObj
+        return {'success': True, 'datas': taskObj}
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 conf = {
