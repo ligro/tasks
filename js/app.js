@@ -40,7 +40,7 @@
             typeof task === 'undefined'
                && (task = {})
 
-             $('<form class="jForm" action="/savetask">', {action: 'javascript:void(0);'})
+             $('<form class="jForm" action="/savetask">')
                  .modal('addTask', task, {
                      title: 'Create task',
                      buttons: [
