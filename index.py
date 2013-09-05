@@ -78,14 +78,19 @@ class App:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def savetask(self, **kw):
-        if kw == {}:
-            # fixme do a better handler
-            return False
+        # remove empty field
+        task = {}
+        for k in kw:
+            if len(kw[k]) > 0:
+                task[k] = kw[k]
+
+        if 'task' not in task:
+            return {'msgs': {'task': 'this can not be empty'}}
 
         ts = Task()
-        kw['authorId'] = auth.userAuth['_id']
-        kw['tags'] = [x.strip() for x in kw['tags'].split(',')]
-        objId = ts.save(kw)
+        task['authorId'] = auth.userAuth['_id']
+        task['tags'] = [x.strip() for x in task['tags'].split(',')]
+        objId = ts.save(task)
         taskObj = ts.findById(objId)
         return {'success': True, 'datas': taskObj}
 
