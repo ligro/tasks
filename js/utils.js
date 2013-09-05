@@ -16,7 +16,7 @@
             return fields
         },
         // post form
-        post: function(success){
+        post: function(){
             return this.each(function(){
                 var $this = $(this)
 
@@ -33,7 +33,7 @@
 
                 $.ajax({
                     type: $this.attr('method'),
-                    url: this.attr('action'),
+                    url: $this.attr('action'),
                     data: $this.getFields(),
                     success: function(data){
                         if (data.success) {
