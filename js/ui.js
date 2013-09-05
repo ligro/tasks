@@ -13,6 +13,7 @@
 
          init: function(){
              $(document).on('submit', 'form.jForm', function(e){
+                 e.preventDefault()
                  $(this).post()
                  return false
              })

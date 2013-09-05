@@ -18,7 +18,6 @@ class Controller:
         ]
         errors = {}
         for field in formFields:
-
             if field['name'] not in kw or kw[field['name']] == '':
                 errors[field['name']] = "can not be empty"
 
