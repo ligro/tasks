@@ -54,6 +54,13 @@ class App:
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
+    def tags(self):
+        tags = Task().collection.find({'authorId' : auth.userAuth['_id']})
+        return [] if tags is None else tags.distinct('tags')
+
+    @auth.require(auth.is_loggued())
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
     def tasks(self):
         return Task().find({'authorId' : auth.userAuth['_id']})
 
@@ -80,7 +87,7 @@ class App:
         kw['tags'] = [x.strip() for x in kw['tags'].split(',')]
         objId = ts.save(kw)
         taskObj = ts.findById(objId)
-        return taskObj
+        return {'success': True, 'datas': taskObj}
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 conf = {
