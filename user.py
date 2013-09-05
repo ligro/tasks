@@ -18,9 +18,9 @@ class Controller:
         ]
         errors = {}
         for field in formFields:
-<<<<<<< HEAD
-            if field['name'] not in kw:
-                errors[field['name']] = "{0} field missing".format(field['name'])
+
+            if field['name'] not in kw or kw[field['name']] == '':
+                errors[field['name']] = "can not be empty"
 
         if 'password' not in errors and kw['password'] != kw['password_conf']:
             errors['password_conf'] = "passwords are different"
@@ -36,20 +36,6 @@ class Controller:
 
         if len(errors) > 0:
             return {'error': True, 'msgs' : errors}
-=======
-            if field['name'] not in kw or kw[field['name']] == '':
-                errors[field['name']] = "can not be empty"
-
-        if len(errors) > 0:
-            return {'error': True, 'msgs' : errors}
-
-        if kw['password'] != kw['password_conf']:
-            return {'error': True, 'msgs': ["passwords are different"]}
-
-        userModel = User()
-        if userModel.findOne({'email': kw['email']}) is not None:
-            return {'error': True, 'msgs': "email already exists"}
->>>>>>> develop
 
         datas = {
             'email': kw['email'],
