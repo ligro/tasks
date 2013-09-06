@@ -33,6 +33,23 @@
                 }
             })
         },
+        loadTags: function(){
+            $.ajax({
+                type: 'GET',
+                url: '/tags/',
+                // type of data we are expecting in return:
+                dataType: 'json',
+                success: function(data){
+                    $.App.tags = data
+                    for (var k in data) {
+                        $(document.body).trigger('tags:add', data[k])
+                    }
+                },
+                error: function(xhr, type){
+                    $('#FatalError').show()
+                }
+            })
+        },
         save: function(task, success, error){
             // TODO sync tasks with the server
             $.ajax({
@@ -65,6 +82,7 @@
     Zepto(function($){
         $.task.loadTasks();
         $.task.loadState();
+        $.task.loadTags();
     })
 
 })(Zepto)
