@@ -64,7 +64,7 @@
              $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
                  .modal('addTask', task, {
                      title: 'Create task',
-                     submit: {name: 'Create', class: 'primary-btn'}
+                     submit: {name: 'Create', class: 'btn-primary'}
                  })
          },
          abouts_link: function(){
