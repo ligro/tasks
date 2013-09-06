@@ -50,19 +50,6 @@
                 }
             })
         },
-        save: function(task, success, error){
-            // TODO sync tasks with the server
-            $.ajax({
-                type: 'POST',
-                url: '/savetask/',
-                data: task,
-                dataType: 'json',
-                success: function(data, state, xhr){
-                    // TODO verify the server return
-                    success()
-                },
-            })
-        },
         findByState: function(state){
             var tasks = []
 
