@@ -3,6 +3,7 @@
 
     $.tags = {
         element: {},
+        tagsToHide: {},
         init: function(){
             $.tags.element = $('#tags')
             $(document).on('tags:add', function(e, tag){
@@ -13,19 +14,38 @@
             })
 
             $(document).on('click', '.jTagFilter', function(e){
-                var $this = $(this)
+                var $this = $(this),
+                    $label = $this.find('.label')
+
                 e.preventDefault()
-                $this.find('.label').toggleClass('label-info')
-                console.log($this.data('tag'))
-                $(document.body).trigger('tag:filter', [$this.data('tag')])
+                $label.toggleClass('label-info')
+                $(document.body).trigger('tag:filter', [
+                    $this.data('tag'), $label.hasClass('label-info')
+                ])
             })
 
-            $(document).on('tag:filter', function(e, tag){
-                console.log('tag:filter')
-                console.log('.jTagFilter'+tag)
-                console.log($('.jTagFilter'+tag))
-                $('.jTagFilter'+tag).toggle();
-                console.log($('.jTagFilter'+tag))
+            $(document).on('tag:filter', function(e, tag, selected) {
+                if (!selected) {
+                    delete $.tags.tagsToHide[tag]
+                    var count = 0;
+                    for (var k in $.tags.tagsToHide) {
+                        count = 1;
+                    }
+                    if (!count) {
+                        $('.task').show();
+                        return
+                    }
+                } else {
+                    $.tags.tagsToHide[tag] = tag;
+                }
+
+                $('.task').hide();
+
+                var classes = []
+                for (var i in $.tags.tagsToHide) {
+                    classes.push('.jTagFilter'+i)
+                }
+                $(classes.join(', ')).show();
             })
         }
     }
