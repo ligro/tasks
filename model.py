@@ -33,6 +33,7 @@ class Model(Storage):
         return self.collection.save(datas)
 
     def delete(self, spec):
+        spec['_id'] = bson.objectid.ObjectId(spec['_id'])
         return self.collection.remove(spec)
 
     def find(self, specs={}):

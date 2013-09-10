@@ -94,6 +94,17 @@ class App:
         taskObj = ts.findById(objId)
         return {'success': True, 'datas': taskObj}
 
+    @auth.require(auth.is_loggued())
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def rmtask(self, id):
+        task = {
+            '_id': id,
+            'authorId': auth.userAuth['_id']
+        }
+        # FIXME should we update with deleted state
+        Task().delete(task)
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 conf = {
     '/js': {
@@ -106,6 +117,12 @@ conf = {
         'tools.staticdir.dir': os.path.join(current_dir, 'css'),
         'tools.staticdir.content_types': {
             'css': 'text/css',
+        }
+    },
+    '/img': {
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': os.path.join(current_dir, 'img'),
+        'tools.staticdir.content_types': {
             'png': 'image/png',
         }
     }

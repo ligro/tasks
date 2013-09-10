@@ -60,10 +60,12 @@ div.column input {
 
 div.tasks div.task:hover {
     background-color : #F5F5F5;
+    border-radius: 6px;
 }
 
 div.task {
-    padding : 5px 0px;
+    padding : 5px;
+    width: auto;
 }
 
 div.task span {
