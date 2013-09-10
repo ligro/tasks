@@ -2,11 +2,16 @@
     'use strict';
 
     $.tags = {
+        tags: [],
+        // where we put the list of tags
         element: {},
         tagsToHide: {},
         init: function(){
             $.tags.element = $('#tags')
             $(document).on('tags:add', function(e, tag){
+                if ($.inArray(tag, $.tags.tags)) {
+                    $.tags.tags.push(tag)
+                }
                 $.tags.element.css('display', 'block')
                 $.ui._loadTpl('tag', {tag: tag}, function(err, out) {
                     $.tags.element.append(out)

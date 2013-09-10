@@ -76,7 +76,7 @@
                 // click on task
                 $this.on('click', '.tasks .task a', function(e){
                     var $this = $(this),
-                        task = $.App.tasks[$(e.target).closest('.task').data('id')]
+                        task = $.task.tasks[$(e.target).closest('.task').data('id')]
 
                     e.stopPropagation()
                     // load modal with task value
@@ -84,7 +84,7 @@
                 })
 
                 taskColumns.addColumn($this, 'backlog')
-                $.App.state.forEach(function(state){
+                $.task.state.forEach(function(state){
                     taskColumns.addColumn($this, state, state)
                 })
             })

@@ -2,7 +2,6 @@
     'use strict';
 
      $.App = {
-
         init: function() {
 
             $(document).one('templates:load', function(e){
@@ -11,7 +10,7 @@
 
             // TODO event on templates load
             $(document).one('state:load', function(e){
-                if (typeof $.App.tasks === 'undefined') {
+                if (!$.task.init) {
                     $(document).one('task:load', function(){
                         $('.tasksColumns').tasksColumns()
                     })
@@ -24,7 +23,7 @@
             success: function(data) {
                 $(document.body).trigger('task:saved', [data.datas])
                 $(document.body).trigger('notify', ['Task saved', 'info'])
-                $.App.tasks[data.datas._id] = data.datas
+                $.task.tasks[data.datas._id] = data.datas
                 $.App.ui.closeModal()
             },
             validate: function($form) {
