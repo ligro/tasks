@@ -89,7 +89,8 @@ class App:
 
         ts = Task()
         task['authorId'] = auth.userAuth['_id']
-        task['tags'] = [x.strip() for x in task['tags'].split(',')]
+        if 'tags' in task:
+            task['tags'] = [x.strip() for x in task['tags'].split(',')]
         objId = ts.save(task)
         taskObj = ts.findById(objId)
         return {'success': True, 'datas': taskObj}
