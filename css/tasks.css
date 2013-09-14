@@ -1,6 +1,7 @@
 body {
     position : relative;
     padding-top : 40px;
+    background-color : #FAFAFA;
 }
 
 section#page {
@@ -37,7 +38,7 @@ div.tasksColumns:before, div.tasksColumns:after {
 
 div.column {
     width: 250px;
-    border-right : 1px solid #999999;
+    border-right : 1px dotted #999999;
     height : 100%;
     padding-right : 2.12766%;
     margin-left: 2.12766%;
@@ -59,17 +60,29 @@ div.column input {
 }
 
 div.tasks div.task:hover {
-    background-color : #F5F5F5;
-    border-radius: 6px;
+    border: solid 2px #D8DDEE;
 }
 
 div.task {
     padding : 5px;
+    margin : 2px;
+    border-radius: 2px;
     width: auto;
+    background-color: #F1F3F9;
+    border: solid 2px #F1F3F9;
 }
 
 div.task span {
     min-height : 10px;
+}
+
+div.task a {
+    color : #344579;
+}
+
+div.task a:hover {
+    text-decoration : none;
+    color : #344579;
 }
 
 .row-fluid [class*="span"] {
