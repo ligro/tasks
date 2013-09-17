@@ -60,7 +60,7 @@ div.column input {
 }
 
 div.tasks div.task:hover {
-    border: solid 2px #D8DDEE;
+    border: solid 2px #C8CDEE;
 }
 
 div.task {
@@ -68,8 +68,8 @@ div.task {
     margin : 2px;
     border-radius: 2px;
     width: auto;
-    background-color: #F1F3F9;
-    border: solid 2px #F1F3F9;
+    background-color: #E8EDEE;
+    border: solid 2px #E8EDEE;
 }
 
 div.task span {
