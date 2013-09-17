@@ -1,15 +1,16 @@
 ;(function($) {
     'use strict';
 
-     $.ui = {
-         templates: {},
-         notifyLevels: {
-             debug: ['Dev debug', 'alert-info'],
-             info: ['Information', 'alert-info'],
-             success: ['Success', 'alert-success'],
-             warning: ['Warning', ''],
-             error: ['Error', 'alert-error']
-         },
+    $.ui = {
+        templates: {},
+        notifyLevels: {
+            debug: ['Dev debug', 'alert-info'],
+            info: ['Information', 'alert-info', 5000],
+            success: ['Success', 'alert-success', 5000],
+            warning: ['Warning', '', 5000],
+            error: ['Error', 'alert-error']
+        },
+        notifyId: 0,
 
          init: function(){
              $(document).on('submit', 'form.jForm', function(e){
@@ -46,18 +47,33 @@
                   || typeof $.ui.notifyLevels[type] === "undefined"
                  ) && (type = "info")
 
+                 var id = $.ui.notifyId++
+
                  $.ui._loadTpl(
                      'alert',
                      {
                          level_label: $.ui.notifyLevels[type][0],
                          class: $.ui.notifyLevels[type][1],
-                         msg: msg
+                         msg: msg,
+                         id: id
                      },
                      function(err, out) {
-                         $('#page')
-                            .prepend($(out))
+                         console.log(out)
+                         $('#page').prepend($(out))
                      }
                  )
+
+                 if ($.inArray(2, $.ui.notifyLevels[type])) {
+                    setTimeout(function(){
+                            $(document.body).trigger('notify:timeout', [id])
+                        },
+                        $.ui.notifyLevels[type][2]
+                    )
+                 }
+             })
+
+             $(document).on('notify:timeout', function(e, id){
+                 $('#notify-'+id).remove()
              })
 
              $(document).on('click', '.alert button.close', function(){
