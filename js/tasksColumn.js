@@ -54,22 +54,20 @@
                         $task = $('#task-'+task._id),
                         oldState = $task.closest('.column').data('state')
 
-                    if ($task.length != 0) {
-                        taskColumn.updateTask($task, task)
-                        // state changed ?
-                        if (task.state !== oldState) {
-                            $column = taskColumns.getColumnByState(task.state)
-                            // addcolumn
-                            if (typeof $column === 'undefined') {
-                                taskColumns.addColumn($this, task.state, task.state)
-                            } else {
-                                $column.append($task.html())
-                                $task.remove()
-                            }
-                        }
-                    } else {
+                    $column = taskColumns.getColumnByState(task.state)
+                    if (typeof $column === 'undefined') {
+                        taskColumns.addColumn($this, task.state, task.state)
                         $column = taskColumns.getColumnByState(task.state)
+                    }
+
+                    if ($task.length == 0) {
                         taskColumn.addTask($column, task)
+                    } else {
+                        taskColumn.updateTask($task, task)
+                        if (task.state !== oldState) {
+                            $column.append($task.html())
+                            $task.remove()
+                        }
                     }
                 })
 
