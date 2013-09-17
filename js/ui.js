@@ -58,7 +58,6 @@
                          id: id
                      },
                      function(err, out) {
-                         console.log(out)
                          $('#page').prepend($(out))
                      }
                  )
