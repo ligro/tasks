@@ -47,22 +47,18 @@ class App:
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def state(self):
-        tasks = Task().collection.find({'authorId' : auth.userAuth['_id']})
-        return [] if tasks is None else tasks.distinct('state')
-
-    @auth.require(auth.is_loggued())
-    @cherrypy.expose
-    @cherrypy.tools.json_out()
-    def tags(self):
-        tags = Task().collection.find({'authorId' : auth.userAuth['_id']})
-        return [] if tags is None else tags.distinct('tags')
-
-    @auth.require(auth.is_loggued())
-    @cherrypy.expose
-    @cherrypy.tools.json_out()
     def tasks(self):
-        return Task().find({'authorId' : auth.userAuth['_id']})
+        T = Task()
+        tasks = T.collection.find({'authorId' : auth.userAuth['_id']})
+        datas = { 'tags': {}, 'state': {}, 'projects': {} }
+        if (tasks is not None):
+            datas['tags'] = tasks.distinct('tags')
+            datas['state'] = tasks.distinct('state')
+            datas['projects'] = tasks.distinct('projects')
+        #for k in tasks:
+        #    datas['tasks'][k] = T._processAfterFind(tasks[k])
+        datas['tasks'] = T.find({'authorId' : auth.userAuth['_id']})
+        return datas
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose
