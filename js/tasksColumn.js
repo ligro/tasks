@@ -54,37 +54,56 @@
                         $task = $('#task-'+task._id),
                         oldState = $task.closest('.column').data('state')
 
-                    if ($task.length != 0) {
-                        taskColumn.updateTask($task, task)
-                        // state changed ?
-                        if (task.state !== oldState) {
-                            $column = taskColumns.getColumnByState(task.state)
-                            // addcolumn
-                            if (typeof $column === 'undefined') {
-                                taskColumns.addColumn($this, task.state, task.state)
-                            } else {
-                                $column.append($task.html())
-                                $task.remove()
-                            }
-                        }
-                    } else {
+                    $column = taskColumns.getColumnByState(task.state)
+                    if (typeof $column === 'undefined') {
+                        taskColumns.addColumn($this, task.state, task.state)
                         $column = taskColumns.getColumnByState(task.state)
+                    }
+
+                    if ($task.length == 0) {
                         taskColumn.addTask($column, task)
+                    } else {
+                        taskColumn.updateTask($task, task)
+                        if (task.state !== oldState) {
+                            $column.append($task.html())
+                            $task.remove()
+                        }
                     }
                 })
 
                 // click on task
-                $this.on('click', '.tasks .task a', function(e){
+                // TODO should be delayed to doument (will have only one bind)
+                $this.on('click', '.tasks .task a.jTaskModify', function(e){
                     var $this = $(this),
-                        task = $.App.tasks[$(e.target).closest('.task').data('id')]
+                        task = $.task.tasks[$(e.target).closest('.task').data('id')]
 
                     e.stopPropagation()
                     // load modal with task value
                     $.App.ui.taskEditModal(task)
                 })
 
+                // TODO should be delayed to doument (will have only one bind)
+                $this.on('click', '.tasks .task .jTaskRemove', function(e){
+                    var $task = $(this).parent(),
+                        id = $task.data('id')
+                    $.ajax({
+                        type: 'POST',
+                        url: '/rmtask/',
+                        data: {id: id},
+                        success: function(data){
+                            delete $.task.tasks.id
+                            $task.remove()
+                            $(document.body).trigger('notify', ['Task removed', 'info']);
+                        },
+                        error: function(xhr, type){
+                            $(document.body).trigger('notify', ['An error occured', 'error']);
+                        }
+                    })
+                    e.stopPropagation()
+                })
+
                 taskColumns.addColumn($this, 'backlog')
-                $.App.state.forEach(function(state){
+                $.task.state.forEach(function(state){
                     taskColumns.addColumn($this, state, state)
                 })
             })

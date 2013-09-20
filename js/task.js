@@ -2,6 +2,9 @@
     'use strict';
 
     $.task = {
+        init: false,
+        tasks: {},
+        state: {},
         loadTasks: function(){
             // TODO already loaded / force reload
             $.ajax({
@@ -10,11 +13,12 @@
                 // type of data we are expecting in return:
                 dataType: 'json',
                 success: function(data){
-                    $.App.tasks = data
+                    $.task.tasks = data
+                    $.task.init = true
                     $(document.body).trigger('task:load')
                 },
                 error: function(xhr, type){
-                    // @TODO show ui error to specify we can't run
+                    $('#FatalError').show()
                 }
             })
         },
@@ -29,30 +33,23 @@
                     $(document.body).trigger('state:load')
                 },
                 error: function(xhr, type){
-                    // @TODO show ui error to specify we can't run
+                    $('#FatalError').show()
                 }
             })
         },
-        save: function(task, success, error){
-            if (typeof task.task === 'undefined') {
-                // ui error
-                error('you must provide a task description');
-            }
-
-            // TODO sync tasks with the server
+        loadTags: function(){
             $.ajax({
-                type: 'POST',
-                url: '/savetask/',
-                data: task,
+                type: 'GET',
+                url: '/tags/',
+                // type of data we are expecting in return:
                 dataType: 'json',
-                success: function(data, state, xhr){
-                    // TODO verify the server return
-                    $.App.tasks[data._id] = data
-                    $(document.body).trigger('task:saved', [data])
-                    success()
+                success: function(data){
+                    for (var k in data) {
+                        $(document.body).trigger('tags:add', data[k])
+                    }
                 },
-                error: function(data, state, xhr){
-                    error('an error occured')
+                error: function(xhr, type){
+                    $('#FatalError').show()
                 }
             })
         },
@@ -60,21 +57,19 @@
             var tasks = []
 
             // TODO init load ?
-           $.each($.App.tasks, function(index, item){
+           $.each($.task.tasks, function(index, item){
                item.state === state
                    && (tasks.push(item))
            })
 
            return tasks
-        },
-        find: function(query){
-
         }
     }
 
     Zepto(function($){
         $.task.loadTasks();
         $.task.loadState();
+        $.task.loadTags();
     })
 
 })(Zepto)

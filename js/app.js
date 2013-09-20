@@ -2,7 +2,6 @@
     'use strict';
 
      $.App = {
-
         init: function() {
 
             $(document).one('templates:load', function(e){
@@ -11,7 +10,7 @@
 
             // TODO event on templates load
             $(document).one('state:load', function(e){
-                if (typeof $.App.tasks === 'undefined') {
+                if (!$.task.init) {
                     $(document).one('task:load', function(){
                         $('.tasksColumns').tasksColumns()
                     })
@@ -19,6 +18,32 @@
                     $('.tasksColumns').tasksColumns()
                 }
             })
+        },
+        addTask: {
+            success: function(data) {
+                $.App.ui.closeModal()
+                $(document.body).trigger('task:saved', [data.datas])
+                $(document.body).trigger('notify', ['Task saved', 'info'])
+                $.task.tasks[data.datas._id] = data.datas
+                for (var k in data.datas.tags) {
+                    if (-1 == $.inArray(data.datas.tags[k], $.tags.tags)) {
+                        $(document.body).trigger('tags:add', [data.datas.tags[k]])
+                    }
+                }
+            },
+            validate: function($form) {
+                var res = true;
+
+                $form.find('textarea').each(function(index) {
+                    var $this = $(this)
+                    if ($this.val() === '') {
+                        $this.errorMsg('can not be empty')
+                        res = false
+                    }
+                })
+
+                return res
+            }
         }
      }
 
@@ -40,28 +65,10 @@
             typeof task === 'undefined'
                && (task = {})
 
-             $('<form>', {action: 'javascript:void(0);'})
+             $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
                  .modal('addTask', task, {
                      title: 'Create task',
-                     buttons: [
-                         {name: 'Create', class: 'primary-btn', id: 'addTaskSave'}
-                     ]
-                 })
-                 .on('click', '#addTaskSave', function (){
-                     var $this = $(this)
-
-                     task = $this.closest('form').getFields()
-                     $.task.save(task, function(){
-                         console.log('saved task')
-                         // success
-                         //FIXME move it to modal.js // event ?
-                         $.App.ui.closeModal()
-                     },
-                     function(msg){
-                         // error
-                         // display error
-                         console.log(msg)
-                     })
+                     submit: {name: 'Create', class: 'btn-primary'}
                  })
          },
          abouts_link: function(){

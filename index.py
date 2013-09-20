@@ -54,6 +54,13 @@ class App:
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
+    def tags(self):
+        tags = Task().collection.find({'authorId' : auth.userAuth['_id']})
+        return [] if tags is None else tags.distinct('tags')
+
+    @auth.require(auth.is_loggued())
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
     def tasks(self):
         return Task().find({'authorId' : auth.userAuth['_id']})
 
@@ -71,15 +78,33 @@ class App:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def savetask(self, **kw):
-        if kw == {}:
-            # fixme do a better handler
-            return False
+        # remove empty field
+        task = {}
+        for k in kw:
+            if len(kw[k]) > 0:
+                task[k] = kw[k]
+
+        if 'task' not in task:
+            return {'msgs': {'task': 'this can not be empty'}}
 
         ts = Task()
-        kw['authorId'] = auth.userAuth['_id']
-        objId = ts.save(kw)
+        task['authorId'] = auth.userAuth['_id']
+        if 'tags' in task:
+            task['tags'] = [x.strip() for x in task['tags'].split(',')]
+        objId = ts.save(task)
         taskObj = ts.findById(objId)
-        return taskObj
+        return {'success': True, 'datas': taskObj}
+
+    @auth.require(auth.is_loggued())
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def rmtask(self, id):
+        task = {
+            '_id': id,
+            'authorId': auth.userAuth['_id']
+        }
+        # FIXME should we update with deleted state
+        Task().delete(task)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 conf = {
@@ -93,6 +118,12 @@ conf = {
         'tools.staticdir.dir': os.path.join(current_dir, 'css'),
         'tools.staticdir.content_types': {
             'css': 'text/css',
+        }
+    },
+    '/img': {
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': os.path.join(current_dir, 'img'),
+        'tools.staticdir.content_types': {
             'png': 'image/png',
         }
     }

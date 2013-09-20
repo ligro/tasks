@@ -1,6 +1,7 @@
 body {
     position : relative;
     padding-top : 40px;
+    background-color : #FAFAFA;
 }
 
 section#page {
@@ -36,16 +37,12 @@ div.tasksColumns:before, div.tasksColumns:after {
 }
 
 div.column {
-    /**/
-    max-width: 250px;
-    /**/
-    border-right : 1px solid #999999;
+    width: 250px;
+    border-right : 1px dotted #999999;
     height : 100%;
     padding-right : 2.12766%;
-    /**
-    width: 31.9149%;
-    /**/
     margin-left: 2.12766%;
+    margin-bottom: 20px;
     float: left;
     height: 100%;
 }
@@ -63,15 +60,29 @@ div.column input {
 }
 
 div.tasks div.task:hover {
-    background-color : #F5F5F5;
+    border: solid 2px #C8CDEE;
 }
 
 div.task {
-    padding : 5px 0px;
+    padding : 5px;
+    margin : 2px;
+    border-radius: 2px;
+    width: auto;
+    background-color: #E8EDEE;
+    border: solid 2px #E8EDEE;
 }
 
 div.task span {
     min-height : 10px;
+}
+
+div.task a {
+    color : #344579;
+}
+
+div.task a:hover {
+    text-decoration : none;
+    color : #344579;
 }
 
 .row-fluid [class*="span"] {
