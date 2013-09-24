@@ -15,11 +15,11 @@
             })
 
             $(document).on('task:load', function(e){
-                for (i in $.task.projects) {
-                    $.ui._loadTpl('project', {project: $.task.projects[i]}, function(err, out) {
+                $.each($.task.projects, function(index, project) {
+                    $.ui._loadTpl('project', {project: project}, function(err, out) {
                         $.projects.element.append(out)
                     })
-                }
+                })
                 $.ui._loadTpl('project', {project: 'default', label: 'label-info'}, function(err, out) {
                     $.projects.element.append(out)
                 })

@@ -54,7 +54,7 @@ class App:
         if (tasks is not None):
             datas['tags'] = tasks.distinct('tags')
             datas['state'] = tasks.distinct('state')
-            datas['projects'] = tasks.distinct('projects')
+            datas['projects'] = tasks.distinct('project')
         #for k in tasks:
         #    datas['tasks'][k] = T._processAfterFind(tasks[k])
         datas['tasks'] = T.find({'authorId' : auth.userAuth['_id']})
