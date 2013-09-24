@@ -5,17 +5,30 @@
         element: {},
         init: function(){
             $.projects.element = $('#projects')
-            $(document).on('tasks:load', function(e, tag){
-                if ($.task.projects.length > 1) {
-                    // display project list
-                } else {
-                    // hide dropdown, display add link
+
+            $(document).on('click', '.jProjectSelect', function(e){
+                // FIXME filter ?
+                var $this = $(this)
+
+                e.preventDefault()
+                $(document.body).trigger('project:select', [$this.data('project')])
+            })
+
+            $(document).on('task:load', function(e){
+                for (i in $.task.projects) {
+                    $.ui._loadTpl('project', {project: $.task.projects[i]}, function(err, out) {
+                        $.projects.element.append(out)
+                    })
                 }
+                $.ui._loadTpl('project', {project: 'default', label: 'label-info'}, function(err, out) {
+                    $.projects.element.append(out)
+                })
             })
         }
     }
 
     Zepto(function($) {
+        $.projects.init();
     })
 
 })(Zepto)
