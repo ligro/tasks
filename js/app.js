@@ -65,13 +65,16 @@
          },
          taskEditModal: function(task){
             typeof task === 'undefined'
-               && (task = {})
+                && (task = {})
 
-             $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
-                 .modal('addTask', task, {
-                     title: 'Create task',
-                     submit: {name: 'Create', class: 'btn-primary'}
-                 })
+            typeof task.project === 'undefined'
+                && (task.project = $.projects.current)
+
+            $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
+                .modal('addTask', task, {
+                    title: 'Create task',
+                    submit: {name: 'Create', class: 'btn-primary'}
+                })
          },
          abouts_link: function(){
              $('<div>')
