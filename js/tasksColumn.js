@@ -69,6 +69,8 @@
                             $task.remove()
                         }
                     }
+
+                    $(document.body).trigger('task:refresh')
                 })
 
                 // click on task

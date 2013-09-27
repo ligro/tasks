@@ -2,11 +2,35 @@
     'use strict';
 
     $.task = {
-        init: false,
+        initialized: false,
         tasks: {},
         state: {},
         projects: {},
-        loadTasks: function(){
+        init: function(){
+
+            $(document).on('task:refresh', function(){
+                $('.task').hide();
+
+                var classes = [],
+                    projectClass = 'jProject'+($.projects.current == $.projects._default ? '' : $.projects.current)
+
+                for (var i in $.tags.tagsToShow) {
+                    classes.push('.jTagFilter'+i)
+                }
+
+                if (classes.length == 0) {
+                    $('.'+projectClass).show()
+                } else {
+                // FIXME try to only use the css selector
+                    $(classes.join(', ')).each(function(index, element){
+                        var $element = $(element)
+                        if ($element.hasClass(projectClass)) {
+                            $element.show()
+                        }
+                    })
+                }
+            })
+
             // TODO already loaded / force reload
             $.ajax({
                 type: 'GET',
@@ -15,10 +39,13 @@
                 dataType: 'json',
                 success: function(data){
                     $.task.tasks = data.tasks
-                    $.task.projects = data.projects
                     // TODO add event state:add
                     $.task.state = data.state
-                    $.task.init = true
+                    $.task.initialized = true
+
+                    for (var k in data.projects) {
+                        $(document.body).trigger('project:add', [data.projects[k]])
+                    }
 
                     for (var k in data.tags) {
                         $(document.body).trigger('tags:add', [data.tags[k]])
@@ -46,7 +73,7 @@
     }
 
     Zepto(function($){
-        $.task.loadTasks();
+        $.task.init();
     })
 
 })(Zepto)

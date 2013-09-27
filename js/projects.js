@@ -15,6 +15,7 @@
                     $.projects.element.find('.label-info').removeClass('label-info')
                     element.find('.label').toggleClass('label-info')
                     $.projects.current = element.data('project')
+                    $(document.body).trigger('task:refresh')
                 }
             })
 
@@ -25,12 +26,14 @@
                 $(document.body).trigger('project:select', [$this, $this.data('project')])
             })
 
-            $(document).on('task:load', function(e){
-                $.each($.task.projects, function(index, project) {
-                    $.ui._loadTpl('project', {project: project}, function(err, out) {
-                        $.projects.element.append(out)
-                    })
+            $(document).on('project:add', function(e, project){
+                $.ui._loadTpl('project', {project: project}, function(err, out) {
+                    $.projects.element.append(out)
                 })
+            })
+
+            $(document).one('task:load', function(e){
+                // add default project
                 $.ui._loadTpl('project', {project: $.projects._default}, function(err, out) {
                     $.projects.element.append(out)
                     var el = $.projects.element.find('.jProjectSelect[data-project="'+$.projects._default+'"]')

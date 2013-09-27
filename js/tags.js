@@ -37,20 +37,14 @@
                         count = 1;
                     }
                     if (!count) {
-                        $('.task').show();
+                        $(document.body).trigger('task:refresh')
                         return
                     }
                 } else {
                     $.tags.tagsToShow[tag] = tag;
                 }
 
-                $('.task').hide();
-
-                var classes = []
-                for (var i in $.tags.tagsToShow) {
-                    classes.push('.jTagFilter'+i)
-                }
-                $(classes.join(', ')).show();
+                $(document.body).trigger('task:refresh')
             })
         }
     }
