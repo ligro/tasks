@@ -5,7 +5,7 @@
         tags: [],
         // where we put the list of tags
         element: {},
-        tagsToHide: {},
+        tagsToShow: {},
         init: function(){
             $.tags.element = $('#tags')
             $(document).on('tags:add', function(e, tag){
@@ -31,9 +31,9 @@
 
             $(document).on('tag:filter', function(e, tag, selected) {
                 if (!selected) {
-                    delete $.tags.tagsToHide[tag]
+                    delete $.tags.tagsToShow[tag]
                     var count = 0;
-                    for (var k in $.tags.tagsToHide) {
+                    for (var k in $.tags.tagsToShow) {
                         count = 1;
                     }
                     if (!count) {
@@ -41,13 +41,13 @@
                         return
                     }
                 } else {
-                    $.tags.tagsToHide[tag] = tag;
+                    $.tags.tagsToShow[tag] = tag;
                 }
 
                 $('.task').hide();
 
                 var classes = []
-                for (var i in $.tags.tagsToHide) {
+                for (var i in $.tags.tagsToShow) {
                     classes.push('.jTagFilter'+i)
                 }
                 $(classes.join(', ')).show();
