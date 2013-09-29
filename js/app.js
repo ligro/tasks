@@ -23,7 +23,7 @@
         },
         addTask: {
             success: function(data) {
-                $.App.ui.closeModal()
+                $.modal.closeModal()
                 $(document.body).trigger('task:saved', [data.datas])
                 $(document.body).trigger('notify', ['Task saved', 'info'])
                 $.task.tasks[data.datas._id] = data.datas
@@ -59,9 +59,6 @@
                  }
              })
 
-         },
-         closeModal: function(){
-             $('.modal').parent().remove()
          },
          taskEditModal: function(task){
             typeof task === 'undefined'
