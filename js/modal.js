@@ -5,6 +5,8 @@
         modal: function(tpl, data, modalData){
             var $this = $(this)
 
+            $.modal.closeModal()
+
             $.ui._loadTpl(tpl, data, function(err, out) {
 
                 modalData.content = out
@@ -20,4 +22,22 @@
             return $this
         }
     })
+
+    $.modal = {
+        init: function(){
+            $(document).on('keypress', function(e){
+                if (e.keyCode == '27') {
+                    $.modal.closeModal()
+                }
+            })
+        },
+        closeModal: function(){
+            $('.modal').parent().remove()
+        }
+   }
+
+    Zepto(function($) {
+        $.modal.init()
+    })
+
 })(Zepto)
