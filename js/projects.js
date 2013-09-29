@@ -27,9 +27,11 @@
             })
 
             $(document).on('project:add', function(e, project){
-                $.ui._loadTpl('project', {project: project}, function(err, out) {
-                    $.projects.element.append(out)
-                })
+                if (project !== $.projects._default) {
+                    $.ui._loadTpl('project', {project: project}, function(err, out) {
+                        $.projects.element.append(out)
+                    })
+                }
             })
 
             $(document).one('task:load', function(e){
