@@ -6,13 +6,9 @@
     <div class="modal-body">
         {content|s}
     </div>
+    {?submit}
     <div class="modal-footer">
-
-        {#buttons}
-        <a {?id}id="{id}"{/id} href="{?href}{href}{:else}javascript:void(0);{/href}" class="btn{?class} {class}{/class}">{name}</a>
-        {/buttons}
-        {?submit}
         <input type="submit" class="btn{?submit.class} {submit.class}{/submit.class}" value="{submit.name}" />
-        {/submit}
     </div>
+    {/submit}
 </div>

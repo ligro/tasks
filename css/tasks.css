@@ -88,3 +88,15 @@ div.task a:hover {
 .row-fluid [class*="span"] {
     min-height : 10px;
 }
+
+/* help modal */
+/* TODO */
+#help {
+    color: #F89406;
+    background: none repeat scroll 0 0 rgba(34, 34, 34, 0.8);
+}
+
+#help .modal-header {
+    border-bottom: 1px solid #303030;
+}
+
