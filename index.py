@@ -6,6 +6,7 @@ from admin import Admin
 import auth
 import user
 from task import Task
+from taskconfig import config
 
 # TODO make it RESTful http://docs.cherrypy.org/stable/progguide/REST.html
 class App:
@@ -130,7 +131,7 @@ def application(environ, start_response):
     return cherrypy.tree(environ, start_response)
 
 if __name__ == '__main__':
-    cherrypy.server.socket_port = 8081
-    cherrypy.server.socket_host = '0.0.0.0'
+    cherrypy.server.socket_port = config['httpserver']['port']
+    cherrypy.server.socket_host = config['httpserver']['host']
     cherrypy.quickstart(App(), '/', conf)
 

@@ -1,11 +1,11 @@
-#from pymongo import MongoClient
 import pymongo, bson
+from taskconfig import config
 
 class Storage(object):
     def __init__(self):
         # retrieve these datas from config
-        self.connection = pymongo.Connection()
-        self.db = self.connection.tasks
+        self.connection = pymongo.Connection(config['database']['host'], config['database']['port'])
+        self.db = self.connection[config['database']['db_name']]
 
 class Model(Storage):
     def __init__(self):
