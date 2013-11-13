@@ -14,6 +14,9 @@ class App:
     _cp_config = {
         'tools.sessions.on': True,
         'tools.sessions.timeout': 60*24*30,
+        'tools.sessions.storage_type': "file",
+        # todo move that in config file
+        'tools.sessions.storage_path': "/tmp/sessions/dev_tasks",
         'tools.auth.on': True
     }
 
