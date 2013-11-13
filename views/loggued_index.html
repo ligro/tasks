@@ -27,11 +27,13 @@
             </div>
         </section>
         <section id="page" class="container-fluid">
-            <div id="projects">
-                <span>Projects :</span>
-            </div>
-            <div id="tags" style="display:none;">
-                <span>Filter on tags :</span>
+            <div class="filter">
+                <form action="javascript:void(0);" class="jTaskFilter form-search">
+                     <div class="input-append">
+                         <input type="text" name="filter" class="span2 search-query">
+                         <button type="submit" class="btn">Search</button>
+                     </div>
+                </form>
             </div>
             <div class="tasksColumns">
             </div>
@@ -42,8 +44,6 @@
     <script type="application/javascript" src="/js/utils.js"></script>
     <script type="application/javascript" src="/js/ui.js"></script>
     <script type="application/javascript" src="/js/modal.js"></script>
-    <script type="application/javascript" src="/js/projects.js"></script>
-    <script type="application/javascript" src="/js/tags.js"></script>
     <script type="application/javascript" src="/js/task.js"></script>
     <script type="application/javascript" src="/js/tasksColumn.js"></script>
     <script type="application/javascript" src="/js/app.js"></script>

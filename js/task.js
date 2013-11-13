@@ -7,34 +7,17 @@
         state: {},
         projects: {},
         init: function(){
+            $.task.get({})
+        },
+        get: function(options) {
+            $.extend(options, {limit: 20})
 
-            $(document).on('task:refresh', function(){
-                $('.task').hide();
-
-                var classes = [],
-                    projectClass = 'jProject'+($.projects.current == $.projects._default ? '' : $.projects.current)
-
-                for (var i in $.tags.tagsToShow) {
-                    classes.push('.jTagFilter'+i)
-                }
-
-                if (classes.length == 0) {
-                    $('.'+projectClass).show()
-                } else {
-                // FIXME try to only use the css selector
-                    $(classes.join(', ')).each(function(index, element){
-                        var $element = $(element)
-                        if ($element.hasClass(projectClass)) {
-                            $element.show()
-                        }
-                    })
-                }
-            })
 
             // TODO already loaded / force reload
             $.ajax({
                 type: 'GET',
                 url: '/tasks/',
+                data: options,
                 // type of data we are expecting in return:
                 dataType: 'json',
                 success: function(data){

@@ -6,20 +6,9 @@
 
             $(document).one('templates:load', function(e){
                 $.App.ui.init();
+                // load page content
             })
 
-            // TODO event on templates load
-            $(document).one('state:load', function(e){
-                if (!$.task.initialized) {
-                    $(document).one('task:load', function(){
-                        $('.tasksColumns').tasksColumns()
-                        $(document.body).trigger('task:refresh')
-                    })
-                } else {
-                    $('.tasksColumns').tasksColumns()
-                    $(document.body).trigger('task:refresh')
-                }
-            })
         },
         addTask: {
             success: function(data) {
