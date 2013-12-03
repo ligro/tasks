@@ -36,7 +36,7 @@ class Model(Storage):
         spec['_id'] = bson.objectid.ObjectId(spec['_id'])
         return self.collection.remove(spec)
 
-    def find(self, specs={}):
+    def find(self, specs={}, limit=None):
         objs = {}
         for obj in self.collection.find(specs):
             objs[obj['_id']] = self._processAfterFind(obj)

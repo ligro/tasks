@@ -6,7 +6,16 @@
 
             $(document).one('templates:load', function(e){
                 $.App.ui.init();
-                // load page content
+            })
+
+            $(document).on('ui:refresh', function(e){
+                // iterate on task add it in the view
+                var $page = $('#page .tasksColumns')
+                for (var taskId in $.task.tasks) {
+                    $.ui._loadTpl('task', $.task.tasks[taskId], function(err, out) {
+                        $page.append($(out))
+                    })
+                }
             })
 
         },
@@ -52,9 +61,6 @@
          taskEditModal: function(task){
             typeof task === 'undefined'
                 && (task = {})
-
-            typeof task.project === 'undefined'
-                && (task.project = $.projects.current)
 
             $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
                 .modal('addTask', task, {

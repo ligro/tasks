@@ -16,6 +16,7 @@ class App:
         'tools.sessions.timeout': 60*24*30,
         'tools.sessions.storage_type': "file",
         # todo move that in config file
+        # todo check this dir exists or create it
         'tools.sessions.storage_path': "/tmp/sessions/dev_tasks",
         'tools.auth.on': True
     }
@@ -51,18 +52,9 @@ class App:
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def tasks(self):
+    def tasks(self, limit=20):
         T = Task()
-        tasks = T.collection.find({'authorId' : auth.userAuth['_id']})
-        datas = { 'tags': {}, 'state': {}, 'projects': {} }
-        if (tasks is not None):
-            datas['tags'] = tasks.distinct('tags')
-            datas['state'] = tasks.distinct('state')
-            datas['projects'] = tasks.distinct('project')
-        #for k in tasks:
-        #    datas['tasks'][k] = T._processAfterFind(tasks[k])
-        datas['tasks'] = T.find({'authorId' : auth.userAuth['_id']})
-        return datas
+        return {'tasks' : T.find({'authorId' : auth.userAuth['_id']}, limit=limit)}
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose
