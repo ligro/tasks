@@ -27,19 +27,11 @@ python-flup
 
 ### in progress
 
-  * limit tasks by users
-
 ### next
 
- * add ssl
-
- * be configurable (at list ip/port)
-
- * add project settings
+ * add filtering (choose a technology)
 
  * allow to specify some persistent status
- * sort state column
- * allow to sort column
 
  * add password forget
  * add translation
