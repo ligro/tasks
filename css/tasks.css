@@ -10,6 +10,10 @@ section#page {
     text-align: center;
 }
 
+section#page .moreBtn {
+    margin-bottom: 20px;
+}
+
 div.whatIsThisBox {
     text-align: center;
 }
@@ -25,6 +29,7 @@ div.logInBox input, div.createUserBox input {
 
 div.tasksColumns {
     margin: 0px auto;
+    margin-bottom: 20px;
 }
 
 div.tasksColumns:after {

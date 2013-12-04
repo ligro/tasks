@@ -8,15 +8,26 @@
                 $.App.ui.init();
             })
 
-            $(document).on('ui:refresh', function(e){
+            $(document).on('ui:refresh', function(e, more, tasks){
                 // iterate on task add it in the view
                 var $page = $('#page .tasksColumns')
                 $('.totalTask').html($.task.nbtasks)
-                for (var taskId in $.task.tasks) {
-                    $.ui._loadTpl('task', $.task.tasks[taskId], function(err, out) {
+                for (var taskId in tasks) {
+                    $.ui._loadTpl('task', tasks[taskId], function(err, out) {
                         $page.append($(out))
                     })
                 }
+                if (more) {
+                    $('.moreBtn').css('display', '')
+                } else {
+                    $('.moreBtn').css('display', 'none')
+                }
+            })
+
+            $(document).on('click', '#page .moreBtn button', function(e) {
+                e.preventDefault()
+                // TODO retrieve query
+                $.task.get({offset: $.task.nbtasksLoaded})
             })
 
         },
