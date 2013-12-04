@@ -11,6 +11,7 @@
             $(document).on('ui:refresh', function(e){
                 // iterate on task add it in the view
                 var $page = $('#page .tasksColumns')
+                $('.totalTask').html($.task.nbtasks)
                 for (var taskId in $.task.tasks) {
                     $.ui._loadTpl('task', $.task.tasks[taskId], function(err, out) {
                         $page.append($(out))

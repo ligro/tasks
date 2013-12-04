@@ -54,7 +54,11 @@ class App:
     @cherrypy.tools.json_out()
     def tasks(self, limit=20):
         T = Task()
-        return {'tasks' : T.find({'authorId' : auth.userAuth['_id']}, limit=limit)}
+        [tasks, total] = T.find({'authorId' : auth.userAuth['_id']}, limit=limit, withTotal=True)
+        return {
+            'tasks' : tasks,
+            'nbTasks' : total,
+        }
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose

@@ -4,6 +4,7 @@
     $.task = {
         initialized: false,
         tasks: {},
+        nbtasks: 0,
         init: function(){
             $.task.get({})
         },
@@ -20,6 +21,7 @@
                 dataType: 'json',
                 success: function(data){
                     $.task.tasks = data.tasks
+                    $.task.nbtasks = data.nbTasks
 
                     $(document.body).trigger('ui:refresh')
                 },

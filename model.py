@@ -36,10 +36,14 @@ class Model(Storage):
         spec['_id'] = bson.objectid.ObjectId(spec['_id'])
         return self.collection.remove(spec)
 
-    def find(self, specs={}, limit=None):
+    def find(self, specs={}, limit=None, withTotal=False):
         objs = {}
-        for obj in self.collection.find(specs):
+        cursor = self.collection.find(specs)
+        for obj in cursor:
             objs[obj['_id']] = self._processAfterFind(obj)
+        if withTotal:
+            total = cursor.count()
+            return [objs, total]
         return objs
 
     def findOne(self, specs):
