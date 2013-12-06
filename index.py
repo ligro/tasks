@@ -6,6 +6,7 @@ from admin import Admin
 import auth
 import user
 from task import Task
+import search
 from taskconfig import config
 
 # TODO make it RESTful http://docs.cherrypy.org/stable/progguide/REST.html
@@ -52,13 +53,19 @@ class App:
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def tasks(self, offset=0, limit=20):
+    def tasks(self, offset=0, limit=20, query=None):
         T = Task()
         if not isinstance(offset, int):
             offset = int(offset)
         if not isinstance(limit, int):
             limit = int(limit)
-        [tasks, total] = T.find({'authorId' : auth.userAuth['_id']}, limit=limit, withTotal=True, skip=offset)
+        if query is None:
+            [tasks, total] = T.find({'authorId' : auth.userAuth['_id']}, limit=limit, withTotal=True, skip=offset)
+        else:
+            results = search.search.query(query)
+            import pprint
+            pprint.pprint(results)
+
         return {
             'tasks' : tasks,
             'nbTasks' : total,
@@ -92,6 +99,7 @@ class App:
         if 'tags' in task:
             task['tags'] = [x.strip() for x in task['tags'].split(',')]
         objId = ts.save(task)
+        # TODO index
         taskObj = ts.findById(objId)
         return {'success': True, 'datas': taskObj}
 

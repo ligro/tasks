@@ -4,3 +4,6 @@ port = 8081
 
 [database]
 db_name = dev_tasks
+
+[index]
+path = /var/run/task/index.db

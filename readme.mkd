@@ -27,6 +27,9 @@ python-flup
 
 ### in progress
 
+ * index the db
+ * allow to search in the db
+
 ### next
 
  * add filtering (choose a technology)

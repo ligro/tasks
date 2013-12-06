@@ -14,6 +14,9 @@ config = {
             'port': None,
             'db_name': 'task'
             },
+        'index': {
+            'path': 'index.db'
+            }
         }
 
 
@@ -31,7 +34,6 @@ for section in cp.sections():
             #warning
             continue
 
-        import pprint
         if section in spec and option in spec[section]:
             method = spec[section][option]
         else:
