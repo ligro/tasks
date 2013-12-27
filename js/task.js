@@ -31,7 +31,6 @@
                     $.task.nbtasks = data.nbTasks
 
                     var more = $.task.nbtasksLoaded < $.task.nbtasks
-                console.log(more)
                    $(document.body).trigger('ui:refresh', [more, data.tasks])
                 },
                 error: function(xhr, type){
