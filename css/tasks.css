@@ -10,6 +10,19 @@ section#page {
     text-align: center;
 }
 
+section#page section.column {
+    margin-left : 10px;
+    width: 400px;
+}
+
+section#page section.column textarea {
+    width: 100%;
+}
+
+section#page section.column p {
+    text-align: left;
+}
+
 section#page .moreBtn {
     margin-bottom: 20px;
 }

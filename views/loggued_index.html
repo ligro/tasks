@@ -26,9 +26,9 @@
                 <strong>Fatal error</strong> a technical error occured, the site broken
             </div>
         </section>
-        <section id="page" class="container-fluid">
-            <div class="row-fluid">
-                <div class="span8 offset2">
+        <section id="page">
+            <section class="column">
+                <div>
                     <form action="/tasks/" class="form-search jForm" data-method="search">
                          <div class="input-append">
                              <input type="text" name="query" class="search-query input-large" value="">
@@ -37,17 +37,16 @@
                          </div>
                     </form>
                 </div>
-            </div>
-            <div class="row-fluid">
-                <div class="span2 offset2">
-                    Found : <span class="totalTask"></span>
+                <div>
+                    <textarea rows="4" name="task" placeholder="What is your task ?" style="display:none"></textarea>
                 </div>
-                <div class="tasksColumns span8 offset2">
+                <p> Found : <span class="totalTask"></span> </p>
+                <div class="tasksColumns">
                 </div>
-                <div class="moreBtn span8 offset2" style="display:none;">
+                <div class="moreBtn" style="display:none;">
                     <button class="btn btn-large btn-block" type="button">More</button>
                 </div>
-            </div>
+            </section>
         </section>
     </body>
     <script type="application/javascript" src="/js/zepto.min.js"></script>
