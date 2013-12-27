@@ -16,12 +16,16 @@ T = task.Task()
 offset = 0
 limit = 50
 while True:
+    print "get tasks from {} to {}".format(offset, limit)
     tasks = T.find({}, limit=limit, skip=offset)
     if len(tasks) == 0:
         break
+    print "index {} tasks".format(len(tasks))
     for task in tasks:
         search.index(tasks[task])
-    print "index task from {} to {}".format(offset, limit)
     search.flush()
+    if len(tasks) < limit:
+        break
 
     offset += limit
+

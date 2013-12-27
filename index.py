@@ -62,9 +62,8 @@ class App:
         if query is None:
             [tasks, total] = T.find({'authorId' : auth.userAuth['_id']}, limit=limit, withTotal=True, skip=offset)
         else:
-            results = search.search.query(query)
-            import pprint
-            pprint.pprint(results)
+            tasks = search.query(query, limit, offset)
+            total = len(tasks)
 
         return {
             'tasks' : tasks,
