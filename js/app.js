@@ -27,9 +27,9 @@
             })
 
             $(document).on('click', '#page .moreBtn button', function(e) {
+                var $search = $('#page input.search-query')
                 e.preventDefault()
-                // TODO retrieve query
-                $.task.get({offset: $.task.nbtasksLoaded})
+                $.task.get({offset: $.task.nbtasksLoaded, query: $search.val()})
             })
 
         },
