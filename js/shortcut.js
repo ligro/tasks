@@ -19,11 +19,15 @@
         init: function(shortcuts) {
             $.extend($.shortcuts.shortcuts, shortcuts)
             $(document).on('keypress', function(e){
+                //console.log(e.target)
+                // FIXME issue to unfocus from the search
+                // FIXME issue when focus is on a link or a button
                 if (e.target !== document.body) {
                     return true;
                 }
                 var code = (e.charCode == 0) ? e.keyCode : e.charCode
-                /**console.log(e)
+                /**
+                console.log(e)
                 console.log(code)
                 /**/
                 if (typeof $.shortcuts.shortcuts[code] === 'object'
@@ -42,6 +46,13 @@
                 'key': 'c',
                 'desc': 'Create a new task',
                 'func' : function(e){ $.App.ui.taskEditModal() }
+            },
+            47: {
+                'key': '/',
+                'desc': 'Perform search',
+                'func' : function(e){
+                    $('#page input.search-query').focus()
+                }
             }
         })
     })
