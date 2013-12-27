@@ -29,9 +29,10 @@
         <section id="page" class="container-fluid">
             <div class="filter row-fluid">
                 <div class="span8 offset2">
-                    <form action="javascript:void(0);" class="jTaskFilter form-search">
+                    <form action="/tasks/" class="form-search jForm" data-method="search">
                          <div class="input-append">
-                             <input type="text" name="filter" class="search-query input-large">
+                             <input type="text" name="query" class="search-query input-large" value="">
+                             <input type="hidden" name="limit" value="20">
                              <button type="submit" class="btn">Search</button>
                          </div>
                     </form>

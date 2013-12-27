@@ -1,16 +1,18 @@
 ;(function($) {
     'use strict';
 
-     $.App = {
+    $.App = {
         init: function() {
 
             $(document).one('templates:load', function(e){
                 $.App.ui.init();
             })
 
-            $(document).on('ui:refresh', function(e, more, tasks){
+            $(document).on('ui:refresh', function(e, more, tasks, replace){
                 // iterate on task add it in the view
                 var $page = $('#page .tasksColumns')
+                if (replace) { $page.html('') }
+
                 $('.totalTask').html($.task.nbtasks)
                 for (var taskId in tasks) {
                     $.ui._loadTpl('task', tasks[taskId], function(err, out) {
@@ -56,8 +58,13 @@
 
                 return res
             }
+        },
+        search: {
+            success: function (data) {
+                $.task.add(data, /*replace*/true)
+            }
         }
-     }
+    }
 
      $.App.ui = {
          init: function(){

@@ -36,7 +36,8 @@
                     url: $this.attr('action'),
                     data: $this.getFields(),
                     success: function(data){
-                        if (data.success) {
+                        // data.success is mandatory for POST requests but not for others
+                        if ($this.attr('method') != 'POST' || data.success) {
                             if (typeof $.App[$this.data('method')] !== 'undefined'
                                 && typeof $.App[$this.data('method')].success !== 'undefined'
                             ) {

@@ -26,18 +26,26 @@
                 // type of data we are expecting in return:
                 dataType: 'json',
                 success: function(data){
-                    $.extend($.task.tasks, data.tasks)
-                    $.task.nbtasksLoaded += options.limit
-                    $.task.nbtasks = data.nbTasks
-
-                    var more = $.task.nbtasksLoaded < $.task.nbtasks
-                   $(document.body).trigger('ui:refresh', [more, data.tasks])
+                    $.task.add(data, /*replace*/false)
                 },
                 error: function(xhr, type){
                     $('#FatalError').show()
                 }
             })
         },
+        add: function(data, replace) {
+            if (replace) {
+                $.task.tasks = data.tasks
+                $.task.nbtasksLoaded = data.tasks.len
+            } else {
+                $.extend($.task.tasks, data.tasks)
+                $.task.nbtasksLoaded += data.tasks.len
+            }
+            $.task.nbtasks = data.nbTasks
+
+            var more = $.task.nbtasksLoaded < $.task.nbtasks
+            $(document.body).trigger('ui:refresh', [more, data.tasks, replace])
+        }
     }
 
     Zepto(function($){

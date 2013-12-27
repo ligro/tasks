@@ -53,16 +53,17 @@ class App:
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def tasks(self, offset=0, limit=20, query=None):
+    def tasks(self, offset=0, limit=20, query=''):
         T = Task()
         if not isinstance(offset, int):
             offset = int(offset)
         if not isinstance(limit, int):
             limit = int(limit)
-        if query is None:
+        if len(query) == 0:
             [tasks, total] = T.find({'authorId' : auth.userAuth['_id']}, limit=limit, withTotal=True, skip=offset)
         else:
             tasks = search.query(query, limit, offset)
+            # FIXME this should be the total of results without limit
             total = len(tasks)
 
         return {
