@@ -59,16 +59,19 @@ class App:
             offset = int(offset)
         if not isinstance(limit, int):
             limit = int(limit)
+
         if len(query) == 0:
-            [tasks, total] = T.find({'authorId' : auth.userAuth['_id']}, limit=limit, withTotal=True, skip=offset)
-        else:
-            tasks = search.query(query, limit, offset)
-            # FIXME this should be the total of results without limit
-            total = len(tasks)
+            query = 'task:*'
+
+        results = search.query(query, limit, offset)
+
+        tasks = []
+        for row in results:
+            tasks.append(row.data)
 
         return {
             'tasks' : tasks,
-            'nbTasks' : total,
+            'nbTasks' : results.matches_estimated,
         }
 
     @auth.require(auth.is_loggued())
@@ -99,8 +102,9 @@ class App:
         if 'tags' in task:
             task['tags'] = [x.strip() for x in task['tags'].split(',')]
         objId = ts.save(task)
-        # TODO index
         taskObj = ts.findById(objId)
+        search.index(taskObj)
+        search.flush()
         return {'success': True, 'datas': taskObj}
 
     @auth.require(auth.is_loggued())

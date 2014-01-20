@@ -11,9 +11,7 @@ def index(task):
     doc.fields.append(xappy.Field('authorId', task['authorId']))
     doc.fields.append(xappy.Field('task', task['task']))
     if 'tags' in task:
-        for tag in task['tags']:
-            if len(tag):
-                doc.fields.append(xappy.Field('tag', tag))
+        doc.fields.append(xappy.Field('tags', ' '.join(task['tags'])))
 
     _index.add_doc(doc)
 
@@ -26,12 +24,7 @@ def query(query, limit, offset=0):
     if auth.userAuth is not None:
         fq = _index._sconn.query_field('authorId', auth.userAuth['_id'])
     q = _index._sconn.query_filter(q, fq)
-    rows = _index._sconn.search(q, offset, limit)
-
-    results = []
-    for row in rows:
-        results.append(row.data)
-    return results
+    return _index._sconn.search(q, offset, limit)
 
 class Index:
     _sconn = None
@@ -57,10 +50,12 @@ class Index:
 
         self._iconn.add_field_action('id', xappy.FieldActions.INDEX_EXACT)
         self._iconn.add_field_action('id', xappy.FieldActions.STORE_CONTENT)
-        self._iconn.add_field_action('authorId', xappy.FieldActions.INDEX_EXACT)
 
-        self._iconn.add_field_action('tag', xappy.FieldActions.INDEX_EXACT)
-        self._iconn.add_field_action('tag', xappy.FieldActions.STORE_CONTENT)
+        self._iconn.add_field_action('authorId', xappy.FieldActions.INDEX_EXACT)
+        self._iconn.add_field_action('authorId', xappy.FieldActions.STORE_CONTENT)
+
+        self._iconn.add_field_action('tags', xappy.FieldActions.INDEX_FREETEXT)
+        self._iconn.add_field_action('tags', xappy.FieldActions.STORE_CONTENT)
         # FIXME fatal error
         #self._iconn.add_field_action('tag', xappy.FieldActions.FACET, type='string')
 
