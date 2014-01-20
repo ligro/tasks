@@ -1,9 +1,9 @@
-<div class="row-fluid task{#tags} jTagFilter{.}{/tags} jProject{project}" data-id="{_id}" id="task-{_id}">
+<div class="row-fluid task{#tag} jTagFilter{.}{/tag} jProject{project}" data-id="{_id}" id="task-{_id}">
     <button class="jTaskRemove close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
     <a href="javascript:void(0);" title="Modify" class="jTaskModify">
         <div>
         {task}
         </div>
-        {#tags}<span class="label">{.}</span>&nbsp;{/tags}
+        {#tag}<span class="label">{.}</span>&nbsp;{/tag}
     </a>
 </div>

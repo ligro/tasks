@@ -10,8 +10,8 @@ def index(task):
     doc.fields.append(xappy.Field('id', task['_id']))
     doc.fields.append(xappy.Field('authorId', task['authorId']))
     doc.fields.append(xappy.Field('task', task['task']))
-    if 'tags' in task:
-        doc.fields.append(xappy.Field('tags', ' '.join(task['tags'])))
+    if 'tag' in task:
+        doc.fields.append(xappy.Field('tag', ' '.join(task['tag'])))
 
     _index.add_doc(doc)
 
@@ -54,8 +54,8 @@ class Index:
         self._iconn.add_field_action('authorId', xappy.FieldActions.INDEX_EXACT)
         self._iconn.add_field_action('authorId', xappy.FieldActions.STORE_CONTENT)
 
-        self._iconn.add_field_action('tags', xappy.FieldActions.INDEX_FREETEXT)
-        self._iconn.add_field_action('tags', xappy.FieldActions.STORE_CONTENT)
+        self._iconn.add_field_action('tag', xappy.FieldActions.INDEX_FREETEXT)
+        self._iconn.add_field_action('tag', xappy.FieldActions.STORE_CONTENT)
         # FIXME fatal error
         #self._iconn.add_field_action('tag', xappy.FieldActions.FACET, type='string')
 

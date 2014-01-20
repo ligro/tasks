@@ -22,6 +22,8 @@ while True:
         break
     print "index {} tasks".format(len(tasks))
     for task in tasks:
+        if 'tags' in tasks[task]:
+            tasks[task]['tag'] = tasks[task]['tags']
         search.index(tasks[task])
     search.flush()
     if len(tasks) < limit:
