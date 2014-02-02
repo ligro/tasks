@@ -1,17 +1,23 @@
 # -*- encoding: UTF-8 -*-
 import os
-import xappy
+import xapian
 
 import auth
 from taskconfig import config
 
 def index(task):
-    doc = xappy.UnprocessedDocument()
-    doc.fields.append(xappy.Field('id', task['_id']))
-    doc.fields.append(xappy.Field('authorId', task['authorId']))
-    doc.fields.append(xappy.Field('task', task['task']))
+
+    doc = xapian.Document()
+
+    doc.set_data(task['task'])
+    indexer = _index.get_indexer()
+    indexer.set_document(doc)
+    indexer.index_text(task['task'])
+    
+    doc.add_value(0, task['_id'])
+    doc.add_value(1, task['authorId'])
     if 'tag' in task:
-        doc.fields.append(xappy.Field('tag', ' '.join(task['tag'])))
+        doc.add_value(2, ' '.join(task['tag']))
 
     _index.add_doc(doc)
 
@@ -19,60 +25,53 @@ def flush():
     _index.flush()
 
 def query(query, limit, offset=0):
-    _index._sconn.reopen()
-    q = _index._sconn.query_parse(query, default_op=_index._sconn.OP_OR)
-    if auth.userAuth is not None:
-        fq = _index._sconn.query_field('authorId', auth.userAuth['_id'])
-    q = _index._sconn.query_filter(q, fq)
-    return _index._sconn.search(q, offset, limit)
+    #q = _index.query_parser.parse_query(query, default_op=_index._sconn.OP_OR)
+    q = _index.query_parser.parse_query(query)
+    enquire = _index.get_enquire()
+    enquire.set_query(q)
+    #if auth.userAuth is not None:
+    #    fq = _index._sconn.query_field('authorId', auth.userAuth['_id'])
+    #q = _index._sconn.query_filter(q, fq)
+    return enquire.get_mset(offset, limit)
+    #return enquire.get_mset(offset, limit, checkatleast=1000, getfacets=True)
 
 class Index:
-    _sconn = None
-    _iconn = None
+    _sdb = None
+    _idb = None
+    query_parser = None
 
     def __init__(self):
-        if os.path.isdir(config['index']['path']):
-            self.open_index(config['index']['path'])
-        else:
-            self.create_index(config['index']['path'])
+        self.open_index(config['index']['path'])
 
     def __del__(self):
-        if self._sconn:
-            self._sconn.close()
-        if self._iconn:
-            self._iconn.flush()
-            self._iconn.close()
-
-    def create_index(self, dbpath):
-        """Create a new index, and set up its field structure.
-        """
-        self._iconn = xappy.IndexerConnection(dbpath)
-
-        self._iconn.add_field_action('id', xappy.FieldActions.INDEX_EXACT)
-        self._iconn.add_field_action('id', xappy.FieldActions.STORE_CONTENT)
-
-        self._iconn.add_field_action('authorId', xappy.FieldActions.INDEX_EXACT)
-        self._iconn.add_field_action('authorId', xappy.FieldActions.STORE_CONTENT)
-
-        self._iconn.add_field_action('tag', xappy.FieldActions.INDEX_FREETEXT)
-        self._iconn.add_field_action('tag', xappy.FieldActions.STORE_CONTENT)
-        # FIXME fatal error
-        #self._iconn.add_field_action('tag', xappy.FieldActions.FACET, type='string')
-
-        self._iconn.add_field_action('task', xappy.FieldActions.INDEX_FREETEXT, language='en')
-        self._iconn.add_field_action('task', xappy.FieldActions.STORE_CONTENT)
-
-        self._sconn = xappy.SearchConnection(dbpath)
+        if self._sdb:
+            self._sdb.close()
+        if self._idb:
+            self._idb.flush()
+            self._idb.close()
 
     def open_index(self, dbpath):
         """Open an existing index. """
-        self._sconn = xappy.SearchConnection(dbpath)
-        self._iconn = xappy.IndexerConnection(dbpath)
+        self._idb = xapian.WritableDatabase(dbpath, xapian.DB_CREATE_OR_OPEN)
+        self._sdb = xapian.Database(dbpath)
+
+        self.query_parser = xapian.QueryParser()
+        self.query_parser.set_database(self._sdb)
+
+    def get_enquire(self):
+        return xapian.Enquire(self._sdb)
+
+    def get_indexer(self):
+        indexer = xapian.TermGenerator()
+        stemmer = xapian.Stem("english")
+        indexer.set_stemmer(stemmer)
+	return indexer
+
 
     def flush(self):
-        self._iconn.flush()
+        self._idb.flush()
 
     def add_doc(self, doc):
-        self._iconn.add(doc)
+        self._idb.add_document(doc)
 
 _index = Index()

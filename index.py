@@ -64,14 +64,22 @@ class App:
             query = 'task:*'
 
         results = search.query(query, limit, offset)
+        from pprint import pprint
+        #pprint(results.get_suggested_facets())
 
         tasks = []
         for row in results:
-            tasks.append(row.data)
+            tasks.append({
+                'task': row.document.get_data(),
+                '_id': row.document.get_value(0),
+                'authorId': row.document.get_value(1),
+                'tag': row.document.get_value(2)
+            })
 
         return {
             'tasks' : tasks,
-            'nbTasks' : results.matches_estimated,
+            'nbTasks' : results.get_matches_estimated(),
+        #    'facets' : results.get_suggested_facets()
         }
 
     @auth.require(auth.is_loggued())

@@ -29,16 +29,13 @@ python-flup
 
  * index the db
  * allow to search in the db
+ * add filtering (choose a technology)
 
 ### next
 
- * add filtering (choose a technology)
-
- * allow to specify some persistent status
-
- * add password forget
- * add translation
- * add contact form
+ * faceting on tags
+ * easily filter on tags
+ * display a resume of similar documents
 
 ### done
 
