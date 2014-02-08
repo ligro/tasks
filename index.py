@@ -64,23 +64,8 @@ class App:
             query = 'task:*'
 
         results = search.query(query, limit, offset)
-        from pprint import pprint
-        #pprint(results.get_suggested_facets())
 
-        tasks = []
-        for row in results:
-            tasks.append({
-                'task': row.document.get_data(),
-                '_id': row.document.get_value(0),
-                'authorId': row.document.get_value(1),
-                'tag': row.document.get_value(2)
-            })
-
-        return {
-            'tasks' : tasks,
-            'nbTasks' : results.get_matches_estimated(),
-        #    'facets' : results.get_suggested_facets()
-        }
+        return results
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose
@@ -125,6 +110,13 @@ class App:
         }
         # FIXME should we update with deleted state
         Task().delete(task)
+
+    @auth.require(auth.is_loggued())
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def reindex(self):
+        return search.reindex()
+
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 conf = {
