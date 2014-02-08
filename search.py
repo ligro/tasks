@@ -21,10 +21,8 @@ def index(task):
     indexer.index_text(task['task'])
 
     # index values
-    doc.add_value(0, task['_id'])
-    doc.add_value(1, task['authorId'])
     if 'tag' in task:
-        doc.add_value(2, '/'.join(task['tag']))
+        doc.add_value(2, ' '.join(task['tag']))
 
     # store data
     doc.set_data(json.dumps(task))
@@ -33,24 +31,30 @@ def index(task):
     idterm = u"Q" + task['_id']
     doc.add_boolean_term(idterm)
 
+    # add author
+    doc.add_boolean_term(u'XM' + task['authorId'])
+
     _index.add_doc(idterm, doc)
 
 def flush():
     _index.flush()
 
 def query(query, limit, offset=0):
-    #q = _index.query_parser.parse_query(query, default_op=_index._sconn.OP_OR)
-    q = _index.query_parser.parse_query(query)
+    if query == '':
+        q = xapian.Query.MatchAll
+    else:
+        q = _index.query_parser.parse_query(query)
+
+    if auth.userAuth is not None:
+        fq = xapian.Query(u'XM' + auth.userAuth['_id'])
+        q = xapian.Query(xapian.Query.OP_FILTER, q, fq)
+
     enquire = _index.get_enquire()
     enquire.set_query(q)
 
     # facet
     spy = xapian.ValueCountMatchSpy(2)
     enquire.add_matchspy(spy)
-
-    #if auth.userAuth is not None:
-    #    fq = _index._sconn.query_field('authorId', auth.userAuth['_id'])
-    #q = _index._sconn.query_filter(q, fq)
 
     tasks = {}
     matches = enquire.get_mset(offset, limit)
