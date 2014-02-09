@@ -8,42 +8,8 @@ from taskconfig import config
 from task import Task
 
 lang = 'en'
-
-def index(task):
-
-    doc = xapian.Document()
-
-    doc.set_data(task['task'])
-    indexer = _index.get_indexer()
-    indexer.set_document(doc)
-
-    # index text
-    indexer.index_text(task['task'])
-
-    # index tag as value for facet
-    if 'tags' in task:
-        # this is not the best way to do that
-        doc.add_value(2, ' '.join(task['tags']))
-
-    # store data
-    doc.set_data(json.dumps(task))
-
-    # add id
-    idterm = u"Q" + task['_id']
-    doc.add_boolean_term(idterm)
-
-    # add author
-    doc.add_boolean_term(u'XA' + task['authorId'])
-
-    # add tags for filtering
-    if 'tags' in task:
-        for tag in task['tags']:
-            doc.add_boolean_term(u'XT' + tag.lower())
-
-    _index.add_doc(idterm, doc)
-
-def flush():
-    _index.flush()
+# for facet query
+checkatlist = 10000
 
 def query(query, limit, offset=0):
     if len(query):
@@ -63,14 +29,14 @@ def query(query, limit, offset=0):
     enquire.add_matchspy(spy)
 
     tasks = {}
-    matches = enquire.get_mset(offset, limit)
+    matches = enquire.get_mset(offset, limit, min(checkatlist, _index._sdb.get_doccount()))
     for match in matches:
         tasks[match.docid] = json.loads(match.document.get_data())
 
     # facet
-    tags = []
+    tags = {}
     for facet in spy.values():
-        tags.append(facet.term)
+        tags[facet.term] = facet.termfreq
 
     return {
         'tasks': tasks,
@@ -104,23 +70,63 @@ def reindex():
 
     return {'msg' : logs}
 
+def index(task):
+
+    doc = xapian.Document()
+
+    doc.set_data(task['task'])
+    indexer = _index.get_indexer()
+    indexer.set_document(doc)
+
+    # index text
+    indexer.index_text(task['task'])
+
+    # index tag as value for facet
+    if 'tag' in task:
+        if isinstance(task['tag'], list):
+            # this is not the best way to do that
+            doc.add_value(2, ','.join(task['tag']))
+        else:
+            doc.add_value(2, task['tag'])
+
+    # store data
+    doc.set_data(json.dumps(task))
+
+    # add id
+    idterm = u"Q" + task['_id']
+    doc.add_boolean_term(idterm)
+
+    # add author
+    doc.add_boolean_term(u'XA' + task['authorId'])
+
+    # add tags for filtering
+    if 'tag' in task:
+        if isinstance(task['tag'], list):
+            for tag in task['tag']:
+                doc.add_boolean_term(u'XT' + tag.lower())
+        else:
+            doc.add_boolean_term(u'XT' + task['tag'].lower())
+
+    _index.add_doc(idterm, doc)
+
+def flush():
+    _index.flush()
+
+
 class Index:
     _sdb = None
     _idb = None
     query_parser = None
 
     def __init__(self):
-        self.open_index(config['index']['path'])
+        self.open_index()
 
     def __del__(self):
-        if self._sdb:
-            self._sdb.close()
-        if self._idb:
-            self._idb.flush()
-            self._idb.close()
+        self.close_index()
 
-    def open_index(self, dbpath):
+    def open_index(self):
         """Open an existing index. """
+        dbpath = config['index']['path']
         self._idb = xapian.WritableDatabase(dbpath, xapian.DB_CREATE_OR_OPEN)
         self._sdb = xapian.Database(dbpath)
 
@@ -128,6 +134,17 @@ class Index:
         self.query_parser.set_database(self._sdb)
         self.query_parser.set_stemmer(xapian.Stem(lang))
         self.query_parser.add_boolean_prefix("tag", "XT")
+
+    def close_index(self):
+        if self._sdb:
+            self._sdb.close()
+        if self._idb:
+            self._idb.flush()
+            self._idb.close()
+
+    def reopen(self):
+        self.close_index()
+        self.open_index()
 
     def get_enquire(self):
         return xapian.Enquire(self._sdb)
@@ -141,7 +158,6 @@ class Index:
 
     def flush(self):
         self._idb.flush()
-        # todo close the db connection
 
     def add_doc(self, id, doc):
         self._idb.replace_document(id, doc)
