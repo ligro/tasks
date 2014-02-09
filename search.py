@@ -20,9 +20,10 @@ def index(task):
     # index text
     indexer.index_text(task['task'])
 
-    # index values
-    if 'tag' in task:
-        doc.add_value(2, ' '.join(task['tag']))
+    # index tag as value for facet
+    if 'tags' in task:
+        # this is not the best way to do that
+        doc.add_value(2, ' '.join(task['tags']))
 
     # store data
     doc.set_data(json.dumps(task))
@@ -32,7 +33,12 @@ def index(task):
     doc.add_boolean_term(idterm)
 
     # add author
-    doc.add_boolean_term(u'XM' + task['authorId'])
+    doc.add_boolean_term(u'XA' + task['authorId'])
+
+    # add tags for filtering
+    if 'tags' in task:
+        for tag in task['tags']:
+            doc.add_boolean_term(u'XT' + tag.lower())
 
     _index.add_doc(idterm, doc)
 
@@ -40,13 +46,13 @@ def flush():
     _index.flush()
 
 def query(query, limit, offset=0):
-    if query == '':
-        q = xapian.Query.MatchAll
-    else:
+    if len(query):
         q = _index.query_parser.parse_query(query)
+    else:
+        q = xapian.Query.MatchAll
 
     if auth.userAuth is not None:
-        fq = xapian.Query(u'XM' + auth.userAuth['_id'])
+        fq = xapian.Query(u'XA' + auth.userAuth['_id'])
         q = xapian.Query(xapian.Query.OP_FILTER, q, fq)
 
     enquire = _index.get_enquire()
@@ -120,6 +126,8 @@ class Index:
 
         self.query_parser = xapian.QueryParser()
         self.query_parser.set_database(self._sdb)
+        self.query_parser.set_stemmer(xapian.Stem(lang))
+        self.query_parser.add_boolean_prefix("tag", "XT")
 
     def get_enquire(self):
         return xapian.Enquire(self._sdb)
@@ -133,6 +141,7 @@ class Index:
 
     def flush(self):
         self._idb.flush()
+        # todo close the db connection
 
     def add_doc(self, id, doc):
         self._idb.replace_document(id, doc)
