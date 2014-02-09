@@ -60,9 +60,6 @@ class App:
         if not isinstance(limit, int):
             limit = int(limit)
 
-        if len(query) == 0:
-            query = 'task:*'
-
         results = search.query(query, limit, offset)
 
         return results
