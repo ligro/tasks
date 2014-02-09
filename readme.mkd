@@ -27,18 +27,24 @@ python-flup
 
 ### in progress
 
- * index the db
- * allow to search in the db
- * add filtering (choose a technology)
+ * faceting on tags handle multiple tags
 
 ### next
 
- * faceting on tags
+
+ 1. handle pagination
+ 2. allow to save queries, and easily retrieve it
+ 3. handle multiple column view
+
  * easily filter on tags
+ * handle mobile view
  * display a resume of similar documents
 
 ### done
 
  * add inscription, login
+ * index the db
+ * allow to search in the db
+ * add filtering (choose a technology)
 
 
