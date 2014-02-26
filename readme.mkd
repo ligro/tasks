@@ -27,16 +27,15 @@ python-flup
 
 ### in progress
 
- * faceting on tags handle multiple tags
-
 ### next
 
 
- 1. handle pagination
- 2. allow to save queries, and easily retrieve it
- 3. handle multiple column view
+ 1. display faceting
+ 2. handle pagination
+ 3. easily filter on tags
+ 4. allow to save queries, and easily retrieve it
+ 5. handle multiple column view
 
- * easily filter on tags
  * handle mobile view
  * display a resume of similar documents
 

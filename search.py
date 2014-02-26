@@ -25,8 +25,12 @@ def query(query, limit, offset=0):
     enquire.set_query(q)
 
     # facet
-    spy = xapian.ValueCountMatchSpy(2)
-    enquire.add_matchspy(spy)
+    spy1 = xapian.ValueCountMatchSpy(3)
+    enquire.add_matchspy(spy1)
+    spy2 = xapian.ValueCountMatchSpy(4)
+    enquire.add_matchspy(spy2)
+    spy3 = xapian.ValueCountMatchSpy(5)
+    enquire.add_matchspy(spy3)
 
     tasks = {}
     matches = enquire.get_mset(offset, limit, min(checkatlist, _index._sdb.get_doccount()))
@@ -35,8 +39,11 @@ def query(query, limit, offset=0):
 
     # facet
     tags = {}
-    for facet in spy.values():
-        tags[facet.term] = facet.termfreq
+    for spy in [spy1, spy2, spy3]:
+        for facet in spy.values():
+            if facet.term not in tags:
+                tags[facet.term] = 0
+            tags[facet.term] += facet.termfreq
 
     return {
         'tasks': tasks,
@@ -81,13 +88,19 @@ def index(task):
     # index text
     indexer.index_text(task['task'])
 
+    if 'created_at' in task:
+        doc.add_value(2, task['created_at'])
+
     # index tag as value for facet
     if 'tag' in task:
         if isinstance(task['tag'], list):
             # this is not the best way to do that
-            doc.add_value(2, ','.join(task['tag']))
+            i = 3
+            for tag in task['tag']:
+                doc.add_value(i, tag)
+                i += 1
         else:
-            doc.add_value(2, task['tag'])
+            doc.add_value(3, task['tag'])
 
     # store data
     doc.set_data(json.dumps(task))
@@ -157,7 +170,8 @@ class Index:
 
 
     def flush(self):
-        self._idb.flush()
+        self.reopen()
+
 
     def add_doc(self, id, doc):
         self._idb.replace_document(id, doc)

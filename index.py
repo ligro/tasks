@@ -89,8 +89,8 @@ class App:
 
         ts = Task()
         task['authorId'] = auth.userAuth['_id']
-        if 'tags' in task:
-            task['tags'] = [x.strip() for x in task['tags'].split(',')]
+        if 'tag' in task:
+            task['tag'] = [x.strip() for x in task['tag'].split(',')]
         objId = ts.save(task)
         taskObj = ts.findById(objId)
         search.index(taskObj)
