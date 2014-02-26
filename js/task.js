@@ -36,10 +36,10 @@
         add: function(data, replace) {
             if (replace) {
                 $.task.tasks = data.tasks
-                $.task.nbtasksLoaded = data.tasks.len
+                $.task.nbtasksLoaded = data.tasks.length
             } else {
                 $.extend($.task.tasks, data.tasks)
-                $.task.nbtasksLoaded += data.tasks.len
+                $.task.nbtasksLoaded += data.tasks.length
             }
             $.task.nbtasks = data.nbTasks
 

@@ -32,10 +32,10 @@ def query(query, limit, offset=0):
     spy3 = xapian.ValueCountMatchSpy(5)
     enquire.add_matchspy(spy3)
 
-    tasks = {}
+    tasks = []
     matches = enquire.get_mset(offset, limit, min(checkatlist, _index._sdb.get_doccount()))
     for match in matches:
-        tasks[match.docid] = json.loads(match.document.get_data())
+        tasks.append(json.loads(match.document.get_data()))
 
     # facet
     tags = {}

@@ -27,20 +27,21 @@ python-flup
 
 ### in progress
 
+ * display faceting
+
 ### next
 
 
- 1. display faceting
- 2. handle pagination
- 3. easily filter on tags
- 4. allow to save queries, and easily retrieve it
- 5. handle multiple column view
+ 2. easily filter on tags
+ 3. allow to save queries, and easily retrieve it
+ 4. handle multiple column view
 
  * handle mobile view
  * display a resume of similar documents
 
 ### done
 
+ * handle pagination
  * add inscription, login
  * index the db
  * allow to search in the db
