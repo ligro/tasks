@@ -6,9 +6,11 @@
 
             $(document).one('templates:load', function(e){
                 $.App.ui.init();
+                // perform an empty search to fill the page with task and tags
+                $('#formsearch').post()
             })
 
-            $(document).on('ui:refresh', function(e, more, tasks, replace){
+            $(document).on('task:refresh', function(e, more, tasks, replace){
                 // iterate on task add it in the view
                 var $page = $('#page .tasksColumns')
                 if (replace) { $page.html('') }
@@ -32,6 +34,15 @@
                 $.task.get({offset: $.task.nbtasksLoaded, query: $search.val()})
             })
 
+            $(document).on('click', '#page .tags a.jTagFilter', function(e) {
+                var $searchInput = $("#formsearch input.search-query"),
+                    search = $searchInput.val()
+
+                e.preventDefault()
+
+                search += 'tag:' + $(e.target).closest('a.jTagFilter').attr('data-tag')
+                $("#formsearch input.search-query").val(search)
+            })
         },
         addTask: {
             success: function(data) {

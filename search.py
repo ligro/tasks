@@ -2,6 +2,7 @@
 import os
 import xapian
 import json
+from collections import OrderedDict
 
 import auth
 from taskconfig import config
@@ -44,6 +45,9 @@ def query(query, limit, offset=0):
             if facet.term not in tags:
                 tags[facet.term] = 0
             tags[facet.term] += facet.termfreq
+
+    # sort facets
+    tags = OrderedDict(sorted(tags.items(), key=lambda t: t[1], reverse=True))
 
     return {
         'tasks': tasks,

@@ -27,20 +27,19 @@ python-flup
 
 ### in progress
 
- * display faceting
-
 ### next
 
-
- 2. easily filter on tags
- 3. allow to save queries, and easily retrieve it
- 4. handle multiple column view
+ 1. change the backend from mongo to something else (sql ?)
+ 2. allow to save queries, and easily retrieve it
+ 3. handle multiple column view
 
  * handle mobile view
  * display a resume of similar documents
 
 ### done
 
+ * easily filter on tags
+ * facetting on tag
  * handle pagination
  * add inscription, login
  * index the db

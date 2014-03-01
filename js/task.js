@@ -6,9 +6,6 @@
         tasks: {},
         nbtasksLoaded: 0,
         nbtasks: 0,
-        init: function(){
-            $.task.get({})
-        },
         get: function(options) {
             $.extend(options, {limit: 20})
 
@@ -44,12 +41,11 @@
             $.task.nbtasks = data.nbTasks
 
             var more = $.task.nbtasksLoaded < $.task.nbtasks
-            $(document.body).trigger('ui:refresh', [more, data.tasks, replace])
+            $(document.body).trigger('task:refresh', [more, data.tasks, replace])
+            if (replace) {
+                $(document.body).trigger('tag:refresh', [data.tags])
+            }
         }
     }
-
-    Zepto(function($){
-        $.task.init();
-    })
 
 })(Zepto)
