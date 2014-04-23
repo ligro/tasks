@@ -22,6 +22,7 @@ python2.7
 cherrypy3 (python-cherrypy3)
 mongodb
 python-flup
+xapian (python bindings and lib)
 
 ## TODO
 
@@ -29,12 +30,14 @@ python-flup
 
 ### next
 
- 1. change the backend from mongo to something else (sql ?)
+ 1. fix the task edition
  2. allow to save queries, and easily retrieve it
  3. handle multiple column view
  4. enhance shorcuts
 
+ * task edition inline
  * handle mobile view
+ * enhance tag edition
  * display a resume of similar documents
 
 ### done

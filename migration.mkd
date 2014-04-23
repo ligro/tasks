@@ -1,0 +1,4 @@
+# from 0.1 to 0.2
+
+in mongodb : db.copyDatabase('tasks', 'backup')
+python2 migratedb.py
