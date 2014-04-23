@@ -1,6 +1,6 @@
-from model_mongo import Model
+from model import Model
 
-class TaskMongo(Model):
+class Task(Model):
     def __init__(self):
         super(Task, self).__init__()
         self.collection = self.db.task

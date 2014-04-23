@@ -27,14 +27,12 @@ python-flup
 
 ### in progress
 
- 1. change the backend from mongo to sql (allow to configure the driver)
-
 ### next
 
- 1. allow to save queries, and easily retrieve it
- 2. migrate to python3
+ 1. change the backend from mongo to something else (sql ?)
+ 2. allow to save queries, and easily retrieve it
  3. handle multiple column view
- 4. enhance shortcuts
+ 4. enhance shorcuts
 
  * handle mobile view
  * display a resume of similar documents
