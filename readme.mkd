@@ -36,6 +36,7 @@ xapian (python bindings and lib)
  4. enhance shorcuts
 
  * task edition inline
+ * fix issues when you are disconnected (display a login modal form)
  * handle mobile view
  * enhance tag edition
  * display a resume of similar documents
