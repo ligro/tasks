@@ -62,7 +62,7 @@
                      }
                  )
 
-                 if ($.inArray(2, $.ui.notifyLevels[type])) {
+                 if ($.inArray(2, $.ui.notifyLevels[type]) != -1) {
                     setTimeout(function(){
                             $(document.body).trigger('notify:timeout', [id])
                         },
