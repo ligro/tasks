@@ -71,15 +71,10 @@
         addTask: {
             success: function(data) {
                 $.modal.closeModal()
-                $(document.body).trigger('task:saved', [data.datas])
                 $(document.body).trigger('notify', ['Task saved', 'info'])
                 $.task.tasks[data.datas._id] = data.datas
-                // update tags not in tags list
-                for (var k in data.datas.tag) {
-                    if (-1 == $.inArray(data.datas.tag[k], $.tags.tags)) {
-                        $(document.body).trigger('tags:add', [data.datas.tag[k]])
-                    }
-                }
+                $(document.body).trigger('task:refresh')
+
             },
             validate: function($form) {
                 var res = true;

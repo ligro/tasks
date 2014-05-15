@@ -4,14 +4,7 @@
         {/_id}
         <textarea class="span12" rows="4" name="task" placeholder="What is your task ?">{?task}{task}{/task}</textarea>
     </div>
-    <div class="control-group row-fluid">
-        <input type="text" name="state" placeholder="state" {?state}value="{state}"{/state} />
-    </div>
     <div class="row-fluid">
         <input type="text" name="tag" placeholder="tags" {?tag}value="{tag}"{/tag}/>
         <span class="help-block">You can add several tags, by separating them by comma</span>
-    </div>
-    <div class="row-fluid">
-        <input type="text" name="project" {?project}value="{project}"{/project}/>
-        <span class="help-block">Left empty to add on the default project</span>
     </div>
