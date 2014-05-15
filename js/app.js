@@ -9,8 +9,7 @@
                 // perform an empty search to fill the page with task and tags
                 $('#formsearch').post()
             })
-
-            $(document).on('task:refresh', function(e, more, tasks, replace){
+            .on('task:refresh', function(e, more, tasks, replace){
                 // iterate on task add it in the view
                 var $page = $('#page .tasksColumns')
                 if (replace) { $page.html('') }
@@ -27,14 +26,12 @@
                     $('.moreBtn').css('display', 'none')
                 }
             })
-
-            $(document).on('click', '#page .moreBtn button', function(e) {
+            .on('click', '#page .moreBtn button', function(e) {
                 var $search = $('#page input.search-query')
                 e.preventDefault()
                 $.task.get({offset: $.task.nbtasksLoaded, query: $search.val()})
             })
-
-            $(document).on('click', '#page .tags a.jTagFilter', function(e) {
+            .on('click', '#page .tags a.jTagFilter', function(e) {
                 var $searchInput = $("#formsearch input.search-query"),
                     search = $searchInput.val()
 
@@ -42,6 +39,33 @@
 
                 search += 'tag:' + $(e.target).closest('a.jTagFilter').attr('data-tag')
                 $("#formsearch input.search-query").val(search)
+            })
+            .on('click', '.task .jTaskModify', function(e){
+                var $this = $(this),
+                    task = $.task.tasks[$(e.target).closest('.task').data('id')]
+
+                e.stopPropagation()
+                // load modal with task value
+                $.App.ui.taskEditModal(task)
+            })
+            .on('click', '.task .jTaskRemove', function(e){
+                var $task = $(this).parent(),
+                    id = $task.data('id')
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/rmtask/',
+                    data: {id: id},
+                    success: function(data){
+                        delete $.task.tasks.id
+                        $task.remove()
+                        $(document.body).trigger('notify', ['Task removed', 'info']);
+                    },
+                    error: function(xhr, type){
+                        $(document.body).trigger('notify', ['An error occured', 'error']);
+                    }
+                })
+                e.stopPropagation()
             })
         },
         addTask: {
