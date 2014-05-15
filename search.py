@@ -110,7 +110,7 @@ def index(task):
     doc.set_data(json.dumps(task))
 
     # add id
-    idterm = u"Q" + task['_id']
+    idterm = _getDocIdFromTask(task)
     doc.add_boolean_term(idterm)
 
     # add author
@@ -126,9 +126,15 @@ def index(task):
 
     _index.add_doc(idterm, doc)
 
+def delete(task):
+    idterm = _getDocIdFromTask(task)
+    _index.del_doc(idterm)
+
 def flush():
     _index.flush()
 
+def _getDocIdFromTask(task):
+    return u"Q" + task['_id']
 
 class Index:
     _sdb = None
@@ -170,14 +176,15 @@ class Index:
         indexer = xapian.TermGenerator()
         stemmer = xapian.Stem("english")
         indexer.set_stemmer(stemmer)
-	return indexer
-
+        return indexer
 
     def flush(self):
         self.reopen()
 
-
     def add_doc(self, id, doc):
         self._idb.replace_document(id, doc)
+
+    def del_doc(self, id):
+        self._idb.delete_document(id)
 
 _index = Index()

@@ -93,6 +93,7 @@ class App:
             task['tag'] = [x.strip() for x in task['tag'].split(',')]
         objId = ts.save(task)
         taskObj = ts.findById(objId)
+        # move that code into task.save
         search.index(taskObj)
         search.flush()
         return {'success': True, 'datas': taskObj}
@@ -105,8 +106,10 @@ class App:
             '_id': id,
             'authorId': auth.userAuth['_id']
         }
-        # FIXME should we update with deleted state
+        search.delete(task)
+        search.flush()
         Task().delete(task)
+        return {'success': True}
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose
