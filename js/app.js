@@ -109,13 +109,17 @@
 
          },
          taskEditModal: function(task){
-            typeof task === 'undefined'
-                && (task = {})
+             var button = 'Modify'
+             if (typeof task === 'undefined') {
+                 task = {}
+                 button = 'Create'
+             }
 
-            $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
+
+             $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
                 .modal('addTask', task, {
-                    title: 'Create task',
-                    submit: {name: 'Create', class: 'btn-primary'}
+                    title: 'Task',
+                    submit: {name: button, class: 'btn-primary'}
                 })
          },
          abouts_link: function(){
