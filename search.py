@@ -3,6 +3,7 @@ import os
 import xapian
 import json
 from collections import OrderedDict
+import threading
 
 import auth
 from taskconfig import config
@@ -139,11 +140,12 @@ def _getDocIdFromTask(task):
 
 class Index:
     _sdb = None
-    _idb = None
     query_parser = None
+    _semaphore = None
 
     def __init__(self):
         self.open_index()
+        self._semaphore = threading.Semaphore(1)
 
     def __del__(self):
         self.close_index()
@@ -151,7 +153,6 @@ class Index:
     def open_index(self):
         """Open an existing index. """
         dbpath = config['index']['path']
-        self._idb = xapian.WritableDatabase(dbpath, xapian.DB_CREATE_OR_OPEN)
         self._sdb = xapian.Database(dbpath)
 
         self.query_parser = xapian.QueryParser()
@@ -162,9 +163,6 @@ class Index:
     def close_index(self):
         if self._sdb:
             self._sdb.close()
-        if self._idb:
-            self._idb.flush()
-            self._idb.close()
 
     def reopen(self):
         self.close_index()
@@ -182,10 +180,25 @@ class Index:
     def flush(self):
         self.reopen()
 
+    def _openWritableIndex(self):
+        dbpath = config['index']['path']
+        return xapian.WritableDatabase(dbpath, xapian.DB_CREATE_OR_OPEN)
+
+    def _closeWritableIndex(self, idb):
+        idb.flush()
+        idb.close()
+
     def add_doc(self, id, doc):
-        self._idb.replace_document(id, doc)
+        with self._semaphore:
+            idb = self._openWritableIndex()
+            idb.replace_document(id, doc)
+            self._closeWritableIndex(idb)
 
     def del_doc(self, id):
-        self._idb.delete_document(id)
+        with self._semaphore:
+            idb = self._openWritableIndex()
+            idb.delete_document(id)
+            self._closeWritableIndex(idb)
+
 
 _index = Index()
