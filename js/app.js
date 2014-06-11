@@ -33,11 +33,12 @@
             })
             .on('click', '#page .tags a.jTagFilter', function(e) {
                 var $searchInput = $("#formsearch input.search-query"),
-                    search = $searchInput.val()
+                    search = $searchInput.val();
 
-                e.preventDefault()
+                e.preventDefault();
 
-                search += 'tag:' + $(e.target).closest('a.jTagFilter').attr('data-tag')
+                (search != '') && (search += ' AND ')
+                search += 'tag:"' + $(e.target).closest('a.jTagFilter').attr('data-tag') + '"'
                 $("#formsearch input.search-query").val(search)
             })
             .on('click', '.task .jTaskModify', function(e){
