@@ -1,8 +1,6 @@
 # Tasks
 
-Application to manage your tasks
-Today it doesn't include user connection/management
-Centered on tasks (backlog + kanban) more than projects/features
+Application to manage notes.
 
 ## Features
 
@@ -30,7 +28,7 @@ xapian (python bindings and lib)
 
 ### next
 
- 1. fix the task edition
+ 1. fix task deletion
  2. allow to save queries, and easily retrieve it
  3. handle multiple column view
  4. enhance shorcuts
@@ -43,6 +41,7 @@ xapian (python bindings and lib)
 
 ### done
 
+ * fix the task edition
  * easily filter on tags
  * facetting on tag
  * handle pagination
