@@ -10,11 +10,6 @@ section#page {
     text-align: center;
 }
 
-section#page section.column {
-    margin-left : 10px;
-    width: 400px;
-}
-
 section#page section.column textarea {
     width: 100%;
 }

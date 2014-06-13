@@ -7,10 +7,11 @@
             $(document).one('templates:load', function(e){
                 $.App.ui.init();
                 // perform an empty search to fill the page with task and tags
-                $('#formsearch').post()
+                $('.jFormSearch').post()
             })
             .on('task:refresh', function(e, more, tasks, replace){
                 // iterate on task add it in the view
+                // FIXME
                 var $page = $('#page .tasksColumns')
                 if (replace) { $page.html('') }
 
@@ -25,6 +26,8 @@
                 } else {
                     $('.moreBtn').css('display', 'none')
                 }
+
+                // TODO center the column if needed (mobile / tablet)
             })
             .on('click', '#page .moreBtn button', function(e) {
                 var $search = $('#page input.search-query')
@@ -67,6 +70,14 @@
                     }
                 })
                 e.stopPropagation()
+            })
+            .on('click', '.jColumnAdd', function(e) {
+                $("#page").append($.templates.column)
+                /*
+                console.log($('#page:lastChild .column'))
+                $('#page:lastChild .column').column()
+                console.log($('#page:lastChild .jFormSearch'))
+                */
             })
         },
         addTask: {

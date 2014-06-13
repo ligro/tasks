@@ -27,10 +27,11 @@
                 <strong>Fatal error</strong> a technical error occured, the site is broken.
             </div>
         </section>
-        <section id="page">
-            <section class="column">
+        <section id="page" class="row-fluid">
+            <i class="jColumnAdd icon-plus close"></i>
+            <section class="column span4 offset4">
                 <div>
-                    <form id="formsearch" action="/tasks/" class="form-search jForm" data-method="search">
+                    <form action="/tasks/" class="form-search jForm jFormSearch" data-method="search">
                          <div class="input-append">
                              <input type="text" name="query" class="search-query input-large" value="">
                              <input type="hidden" name="limit" value="20">
@@ -59,6 +60,7 @@
     <script type="application/javascript" src="/js/modal.js"></script>
     <script type="application/javascript" src="/js/task.js"></script>
     <script type="application/javascript" src="/js/tag.js"></script>
+    <script type="application/javascript" src="/js/column.js"></script>
     <script type="application/javascript" src="/js/app.js"></script>
     <script type="application/javascript" src="/js/shortcut.js"></script>
 </html>
