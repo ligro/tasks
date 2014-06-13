@@ -5,9 +5,13 @@ body {
 }
 
 section#page {
-    margin-top : 20px;
     height : auto;
     text-align: center;
+}
+
+section#page section.column {
+    margin-top: 20px;
+    /*need a limit*/
 }
 
 section#page section.column textarea {
@@ -15,6 +19,7 @@ section#page section.column textarea {
 }
 
 section#page section.column p {
+    padding-left: 10px;
     text-align: left;
 }
 
@@ -36,7 +41,6 @@ div.logInBox input, div.createUserBox input {
 }
 
 div.tasks {
-    margin: 0px auto;
     margin-bottom: 20px;
 }
 
@@ -44,21 +48,14 @@ div.tasks:after {
     clear: both;
 }
 
-div.tasks:before, div.tasks:after {
-    content: "";
-    display: table;
-    line-height: 0;
-}
-
-div.tasks div.task:hover {
+div.task:hover {
     border: solid 2px #C8CDEE;
 }
 
 div.task {
     padding : 5px;
-    margin : 2px;
+    margin-bottom : 2px;
     border-radius: 2px;
-    width: auto;
     background-color: #E8EDEE;
     border: solid 2px #E8EDEE;
 }
@@ -74,10 +71,6 @@ div.task a {
 div.task a:hover {
     text-decoration : none;
     color : #344579;
-}
-
-.row-fluid [class*="span"] {
-    min-height : 10px;
 }
 
 /* help modal */
