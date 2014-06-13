@@ -35,42 +35,19 @@ div.logInBox input, div.createUserBox input {
     margin-right: auto;
 }
 
-div.tasksColumns {
+div.tasks {
     margin: 0px auto;
     margin-bottom: 20px;
 }
 
-div.tasksColumns:after {
+div.tasks:after {
     clear: both;
 }
 
-div.tasksColumns:before, div.tasksColumns:after {
+div.tasks:before, div.tasks:after {
     content: "";
     display: table;
     line-height: 0;
-}
-
-div.column {
-    width: 250px;
-    border-right : 1px dotted #999999;
-    height : 100%;
-    padding-right : 2.12766%;
-    margin-left: 2.12766%;
-    margin-bottom: 20px;
-    float: left;
-    height: 100%;
-}
-
-div.column:first-child {
-    margin-left: 0px;
-}
-
-div.column:last-child {
-    border : 0;
-}
-
-div.column input {
-    width : 100%;
 }
 
 div.tasks div.task:hover {

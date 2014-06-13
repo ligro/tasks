@@ -12,7 +12,7 @@
             .on('task:refresh', function(e, more, tasks, replace){
                 // iterate on task add it in the view
                 // FIXME
-                var $page = $('#page .tasksColumns')
+                var $page = $('#page .tasks')
                 if (replace) { $page.html('') }
 
                 $('.totalTask').html($.task.nbtasks)
