@@ -28,12 +28,10 @@ xapian (python bindings and lib)
 
 ### next
 
- 1. fix task deletion
- 2. allow to save queries, and easily retrieve it
- 3. handle multiple column view
- 4. enhance shorcuts
+ 1. allow to save queries, and easily retrieve it
+ 2. enhance shorcuts
 
- * task edition inline
+ * task edition/creation inline
  * fix issues when you are disconnected (display a login modal form)
  * handle mobile view
  * enhance tag edition
@@ -41,6 +39,7 @@ xapian (python bindings and lib)
 
 ### done
 
+ * handle multiple column view
  * fix the task edition
  * easily filter on tags
  * facetting on tag
