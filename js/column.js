@@ -24,11 +24,11 @@
                 $this
                 .on('click', '.tags a.jTagFilter', function(e) {
                     var search = $searchInput.val()
-                    e.preventDefault()
+                    e.preventDefault();
 
                     (search != '') && (search += ' AND ')
                     search += 'tag:"' + $(e.target).closest('a.jTagFilter').attr('data-tag') + '"'
-                    $("#formsearch input.search-query").val(search)
+                    $searchInput.val(search)
                 })
                 .on('click', '.moreBtn button', function(e) {
                     e.preventDefault()
@@ -72,13 +72,20 @@
                         columns[$this.data('id')].tasks = {}
                     })
                     .on('post:success', function(e, data){
-                        // TODO add tags id needed
                         $.extend(columns[$this.data('id')].tasks, data.tasks)
                         columns[$this.data('id')].total = data.nbTasks
 
                         $totalTask.html(columns[$this.data('id')].total)
 
-                        // iterate on task add it in the view
+                        // update tag view
+                        $tags.html('')
+                        for (var tag in data.tags) {
+                            $.ui._loadTpl('tag', {'tag': tag, 'nb': data.tags[tag]}, function(err, out) {
+                                $tags.append($(out))
+                            })
+                        }
+
+                        // add tasks in view
                         for (var taskId in data.tasks) {
                             $.ui._loadTpl('task', data.tasks[taskId], function(err, out) {
                                 $tasks.append($(out))
