@@ -12,12 +12,8 @@
                    $tags = $this.find('.tags'),
                    $totalTask = $this.find('.totalTask'),
                    $tasks = $this.find('.tasks'),
+                   $moreBtn = $('.moreBtn'),
                    id = columns.length
-
-                columns[id] = {
-                    tasks: {},
-                    total: 0
-                }
 
                 $this.data('id', id)
 
@@ -32,7 +28,7 @@
                 })
                 .on('click', '.moreBtn button', function(e) {
                     e.preventDefault()
-                    $searchForm.post({offset: columns[$this.data('id')].tasks.length})
+                    $searchForm.post({offset: columns[$this.data('id')].loaded})
                 })
                 .on('click', '.task .jTaskModify', function(e){
                     var id = $(e.target).closest('.task').data('id')
@@ -68,8 +64,11 @@
                     .on('submit', function(e, data){
                         $totalTask.html('-')
                         $tasks.html('')
-                        columns[$this.data('id')].total = 0
-                        columns[$this.data('id')].tasks = {}
+                        columns[$this.data('id')] = {
+                            tasks: {},
+                            loaded: 0,
+                            total: 0
+                        }
                     })
                     .on('post:success', function(e, data){
                         $.extend(columns[$this.data('id')].tasks, data.tasks)
@@ -90,14 +89,14 @@
                             $.ui._loadTpl('task', data.tasks[taskId], function(err, out) {
                                 $tasks.append($(out))
                             })
+                            columns[$this.data('id')].loaded++
                         }
 
-                        $('.moreBtn').css('display',
-                            columns[$this.data('id')].total > columns[$this.data('id')].tasks.length ? '' : 'none'
-                        )
+                        $moreBtn.css('display', columns[$this.data('id')].total > columns[$this.data('id')].loaded ? '' : 'none')
                     })
 
-                $searchForm.post()
+                // submit and not post to force to reset column[id]
+                $searchForm.submit()
             })
         }
     })
