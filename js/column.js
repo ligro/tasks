@@ -17,7 +17,18 @@
 
                 $this.data('id', id)
 
+                // display or not the close button
+                $('.column .jColumnClose').css('display', id != 0 ? '' : 'none')
+
                 $this
+                .on('click', '.jColumnClose', function(e) {
+                    e.preventDefault()
+                    if (columns.length == 1) {
+                        $(document.body).trigger('notify', ['Impossible to remove the last column', 'warning']);
+                        return
+                    }
+                    $this.remove()
+                })
                 .on('click', '.tags a.jTagFilter', function(e) {
                     var search = $searchInput.val()
                     e.preventDefault();

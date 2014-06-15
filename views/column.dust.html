@@ -1,21 +1,18 @@
             <section class="column span4">
-                <div>
-                    <form action="/tasks/" class="form-search jForm jFormSearch">
-                         <div class="input-append">
-                             <input type="text" name="query" class="search-query input-medium" value="">
-                             <input type="hidden" name="limit" value="20">
-                             <button type="submit" class="btn"><i class="icon-search"></i></button>
-                         </div>
-                    </form>
-                </div>
-                <div class="tags">
-                </div>
+                <button class="jColumnClose close">&times;</button>
+                <form action="/tasks/" class="form-search jForm jFormSearch">
+                     <div class="input-append">
+                         <input type="text" name="query" class="search-query input-medium" value="">
+                         <input type="hidden" name="limit" value="20">
+                         <button type="submit" class="btn"><i class="icon-search"></i></button>
+                     </div>
+                </form>
+                <div class="tags"></div>
                 <div>
                     <textarea rows="4" name="task" placeholder="What is your task ?" style="display:none"></textarea>
                 </div>
                 <p> Found : <span class="totalTask"></span> </p>
-                <div class="tasks">
-                </div>
+                <div class="tasks"> </div>
                 <div class="moreBtn" style="display:none;">
                     <button class="btn btn-large btn-block" type="button">More</button>
                 </div>
