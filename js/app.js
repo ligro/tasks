@@ -7,42 +7,7 @@
             $(document).one('templates:load', function(e){
                 $.App.ui.init();
                 // perform an empty search to fill the page with task and tags
-                $('.jFormSearch').post()
-            })
-            .on('task:refresh', function(e, more, tasks, replace){
-                // iterate on task add it in the view
-                // FIXME
-                var $page = $('#page .tasks')
-                if (replace) { $page.html('') }
-
-                $('.totalTask').html($.task.nbtasks)
-                for (var taskId in tasks) {
-                    $.ui._loadTpl('task', tasks[taskId], function(err, out) {
-                        $page.append($(out))
-                    })
-                }
-                if (more) {
-                    $('.moreBtn').css('display', '')
-                } else {
-                    $('.moreBtn').css('display', 'none')
-                }
-
-                // TODO center the column if needed (mobile / tablet)
-            })
-            .on('click', '#page .moreBtn button', function(e) {
-                var $search = $('#page input.search-query')
-                e.preventDefault()
-                $.task.get({offset: $.task.nbtasksLoaded, query: $search.val()})
-            })
-            .on('click', '#page .tags a.jTagFilter', function(e) {
-                var $searchInput = $("#formsearch input.search-query"),
-                    search = $searchInput.val();
-
-                e.preventDefault();
-
-                (search != '') && (search += ' AND ')
-                search += 'tag:"' + $(e.target).closest('a.jTagFilter').attr('data-tag') + '"'
-                $("#formsearch input.search-query").val(search)
+                $.App.addColumn()
             })
             .on('click', '.task .jTaskModify', function(e){
                 var $this = $(this),
@@ -72,13 +37,15 @@
                 e.stopPropagation()
             })
             .on('click', '.jColumnAdd', function(e) {
-                $("#page").append($.templates.column)
-                /*
-                console.log($('#page:lastChild .column'))
-                $('#page:lastChild .column').column()
-                console.log($('#page:lastChild .jFormSearch'))
-                */
+                $.App.addColumn()
             })
+        },
+        addColumn: function(){
+            var columns
+
+            $("#page").append($.templates.column)
+            columns = $('#page .column')
+            $(columns[columns.length - 1]).column()
         },
         addTask: {
             success: function(data) {

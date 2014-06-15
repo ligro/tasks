@@ -2,7 +2,6 @@
     'use strict';
 
     $.task = {
-        initialized: false,
         tasks: {},
         nbtasksLoaded: 0,
         nbtasks: 0,
@@ -41,7 +40,7 @@
             $.task.nbtasks = data.nbTasks
 
             var more = $.task.nbtasksLoaded < $.task.nbtasks
-            $(document.body).trigger('task:refresh', [more, data.tasks, replace])
+            $(document.body).trigger('task:refreshed', [more, data.tasks, replace])
             if (replace) {
                 $(document.body).trigger('tag:refresh', [data.tags])
             }

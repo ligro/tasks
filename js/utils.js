@@ -16,7 +16,7 @@
             return fields
         },
         // post form
-        post: function(){
+        post: function(data = {}){
             return this.each(function(){
                 var $this = $(this)
 
@@ -31,10 +31,11 @@
                     }
                 }
 
+                $.extend(data, $this.getFields())
                 $.ajax({
                     type: $this.attr('method'),
                     url: $this.attr('action'),
-                    data: $this.getFields(),
+                    data: data,
                     success: function(data){
                         // data.success is mandatory for POST requests but not for others
                         if ($this.attr('method') != 'POST' || data.success) {
@@ -43,9 +44,11 @@
                             ) {
                                 $.App[$this.data('method')].success(data)
                             }
+                            $this.trigger('post:success', data)
 
                         } else if (typeof data.msgs === "undefined") {
                             $(document.body).trigger('notify', ['An error occured', 'error']);
+                            $this.trigger('post:error')
                         } else {
                             var $input, field;
                             for (field in data.msgs) {
@@ -55,11 +58,13 @@
                                     continue;
                                 }
                                 $input.errorMsg(data.msgs[field])
-                           }
+                            }
+                            $this.trigger('post:error', data)
                         }
                     },
                     error: function(xhr, type){
                         $(document.body).trigger('notify', ['An error occured', 'error']);
+                        $this.trigger('post:error')
                     }
                 })
             })
