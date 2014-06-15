@@ -7,10 +7,10 @@ body {
 section#page {
     height : auto;
     text-align: center;
+    margin-top: 20px;
 }
 
 section#page section.column {
-    margin-top: 20px;
     /*need a limit*/
 }
 
