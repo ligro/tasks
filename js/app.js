@@ -9,33 +9,6 @@
                 // perform an empty search to fill the page with task and tags
                 $.App.addColumn()
             })
-            .on('click', '.task .jTaskModify', function(e){
-                var $this = $(this),
-                    task = $.task.tasks[$(e.target).closest('.task').data('id')]
-
-                e.stopPropagation()
-                // load modal with task value
-                $.App.ui.taskEditModal(task)
-            })
-            .on('click', '.task .jTaskRemove', function(e){
-                var $task = $(this).parent(),
-                    id = $task.data('id')
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/rmtask/',
-                    data: {id: id},
-                    success: function(data){
-                        delete $.task.tasks.id
-                        $task.remove()
-                        $(document.body).trigger('notify', ['Task removed', 'info']);
-                    },
-                    error: function(xhr, type){
-                        $(document.body).trigger('notify', ['An error occured', 'error']);
-                    }
-                })
-                e.stopPropagation()
-            })
             .on('click', '.jColumnAdd', function(e) {
                 $.App.addColumn()
             })
@@ -47,11 +20,11 @@
             columns = $('#page .column')
             $(columns[columns.length - 1]).column()
         },
+        // jForm success method
         addTask: {
             success: function(data) {
                 $.modal.closeModal()
                 $(document.body).trigger('notify', ['Task saved', 'info'])
-                $.task.tasks[data.datas._id] = data.datas
                 $(document.body).trigger('task:refresh')
 
             },
@@ -69,11 +42,6 @@
                 return res
             }
         },
-        search: {
-            success: function (data) {
-                $.task.add(data, /*replace*/true)
-            }
-        }
     }
 
      $.App.ui = {
@@ -96,6 +64,10 @@
 
 
              $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
+                .on('post:success', function (e){
+                    // reload all columns
+                    $(".column").trigger('task:refresh')
+                })
                 .modal('addTask', task, {
                     title: 'Task',
                     submit: {name: button, class: 'btn-primary'}
