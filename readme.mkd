@@ -28,15 +28,21 @@ xapian (python bindings and lib)
 
 ### next
 
- 1. fix issues when you are disconnected (display a login modal form)
- 2. allow to save queries, and easily retrieve it
- 3. make columns stackable horizontally only
- 4. enhance shorcuts
+ 1. do not refresh tasks if the query is empty (on task edition/suppression) just remove from the list
+ 2. fix issues when you are disconnected (display a login modal form)
+ 3. allow to save queries, and easily retrieve it
+ 4. alert display (with modals)
+ 5. make columns stackable horizontally only
+ 6. enhance shorcuts
 
  * task edition/creation inline
  * migrate to bootstrap3
   * handle mobile view
  * enhance tag edition
+ * merge and cache static files (css, js) for production
+ * allow to color tags
+ * send inscription mail
+ * add forgot pwd link
 
 ### done
 
