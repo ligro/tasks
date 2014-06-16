@@ -28,14 +28,15 @@ xapian (python bindings and lib)
 
 ### next
 
- 1. allow to save queries, and easily retrieve it
- 2. enhance shorcuts
+ 1. fix issues when you are disconnected (display a login modal form)
+ 2. allow to save queries, and easily retrieve it
+ 3. make columns stackable horizontally only
+ 4. enhance shorcuts
 
  * task edition/creation inline
- * fix issues when you are disconnected (display a login modal form)
- * handle mobile view
+ * migrate to bootstrap3
+  * handle mobile view
  * enhance tag edition
- * display a resume of similar documents
 
 ### done
 
