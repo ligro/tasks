@@ -63,8 +63,10 @@
                         }
                     },
                     error: function(xhr, type){
-                        $(document.body).trigger('notify', ['An error occured', 'error']);
-                        $this.trigger('post:error')
+                        if (xhr.status != 403) {
+                            $(document.body).trigger('notify', ['An error occured', 'error']);
+                            $this.trigger('post:error')
+                        }
                     }
                 })
             })
@@ -77,4 +79,21 @@
             })
         }
     })
+
+    Zepto(function($){
+        $(document).on('ajaxError', function(e){
+            if (e.data[0].status == 403) {
+                // you should login
+                $('<form action="/auth/login/" method="POST" class="jForm" data-method="login">')
+                    .on('post:success', function (e){
+                        e.target.remove()
+                    })
+                    .modal('login', {}, {
+                        title: 'Log in',
+                        submit: {name: 'Log in', class: 'btn-primary'}
+                    })
+            }
+        })
+    })
+
 })(Zepto)

@@ -5,8 +5,6 @@
         modal: function(tpl, data, modalData){
             var $this = $(this)
 
-            $.modal.closeModal()
-
             $.ui._loadTpl(tpl, data, function(err, out) {
 
                 modalData.content = out

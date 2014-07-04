@@ -28,8 +28,7 @@ xapian (python bindings and lib)
 
 ### next
 
- 1. do not refresh tasks if the query is empty (on task edition/suppression) just remove from the list
- 2. fix issues when you are disconnected (display a login modal form)
+ 2. do not refresh tasks if the query is empty (on task edition/suppression) just remove from the list
  3. allow to save queries, and easily retrieve it
  4. alert display (with modals)
  5. make columns stackable horizontally only
@@ -37,7 +36,7 @@ xapian (python bindings and lib)
 
  * task edition/creation inline
  * migrate to bootstrap3
-  * handle mobile view
+ * handle mobile view
  * enhance tag edition
  * merge and cache static files (css, js) for production
  * allow to color tags
@@ -46,6 +45,7 @@ xapian (python bindings and lib)
 
 ### done
 
+ * fix issues when you are disconnected (display a login modal form)
  * handle multiple column view
  * fix the task edition
  * easily filter on tags
@@ -55,5 +55,4 @@ xapian (python bindings and lib)
  * index the db
  * allow to search in the db
  * add filtering (choose a technology)
-
 
