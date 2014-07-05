@@ -28,11 +28,11 @@ xapian (python bindings and lib)
 
 ### next
 
- 2. do not refresh tasks if the query is empty (on task edition/suppression) just remove from the list
- 3. allow to save queries, and easily retrieve it
- 4. alert display (with modals)
- 5. make columns stackable horizontally only
- 6. enhance shorcuts
+ 1. do not refresh tasks if the query is empty (on task edition/suppression) just remove from the list
+ 2. allow to save queries, and easily retrieve it
+ 3. alert display (with modals)
+ 4. make columns stackable horizontally only
+ 5. enhance shorcuts
 
  * tag autocompletion
  * task edition/creation inline
