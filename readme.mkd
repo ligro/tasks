@@ -34,6 +34,7 @@ xapian (python bindings and lib)
  5. make columns stackable horizontally only
  6. enhance shorcuts
 
+ * tag autocompletion
  * task edition/creation inline
  * migrate to bootstrap3
  * handle mobile view
