@@ -62,7 +62,7 @@
                      }
                  )
 
-                 if (typeof $.ui.notifyLevels[type] != 'undefined') {
+                 if (typeof $.ui.notifyLevels[type][2] != 'undefined') {
                     setTimeout(function(){
                             $(document.body).trigger('notify:timeout', [id])
                         },
@@ -72,8 +72,6 @@
              })
 
              $(document).on('notify:timeout', function(e, id){
-                 console.log(e)
-                 console.log(id)
                  $('#notify-'+id).remove()
              })
 
