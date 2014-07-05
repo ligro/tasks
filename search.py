@@ -153,7 +153,12 @@ class Index:
     def open_index(self):
         """Open an existing index. """
         dbpath = config['index']['path']
-        self._sdb = xapian.Database(dbpath)
+        try:
+            self._sdb = xapian.Database(dbpath)
+        except xapian.DatabaseOpeningError:
+            # create the db
+            self._openWritableIndex()
+            self._sdb = xapian.Database(dbpath)
 
         self.query_parser = xapian.QueryParser()
         self.query_parser.set_database(self._sdb)
