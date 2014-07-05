@@ -27,6 +27,12 @@ section#page .moreBtn {
     margin-bottom: 20px;
 }
 
+.alerts {
+    position: absolute;
+    right: 10px;
+    z-index: 101;
+}
+
 div.whatIsThisBox {
     text-align: center;
 }

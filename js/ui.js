@@ -58,7 +58,7 @@
                          id: id
                      },
                      function(err, out) {
-                         $('#page').prepend($(out))
+                         $('.alerts').prepend($(out))
                      }
                  )
 
