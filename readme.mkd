@@ -34,9 +34,11 @@ xapian (python bindings and lib)
  4. make columns stackable horizontally only
  5. enhance shorcuts
 
+ * migrate to python3
+ * migrate to bootstrap3
+ * migrate to from mongo to sql backend
  * tag autocompletion
  * task edition/creation inline
- * migrate to bootstrap3
  * handle mobile view
  * enhance tag edition
  * merge and cache static files (css, js) for production
