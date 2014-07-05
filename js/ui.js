@@ -5,8 +5,8 @@
         templates: {},
         notifyLevels: {
             debug: ['Dev debug', 'alert-info'],
-            info: ['Information', 'alert-info', 5000],
-            success: ['Success', 'alert-success', 5000],
+            info: ['Information', 'alert-info', 3000],
+            success: ['Success', 'alert-success', 3000],
             warning: ['Warning', '', 5000],
             error: ['Error', 'alert-error']
         },
@@ -62,7 +62,7 @@
                      }
                  )
 
-                 if ($.inArray(2, $.ui.notifyLevels[type]) != -1) {
+                 if (typeof $.ui.notifyLevels[type] != 'undefined') {
                     setTimeout(function(){
                             $(document.body).trigger('notify:timeout', [id])
                         },
@@ -72,6 +72,8 @@
              })
 
              $(document).on('notify:timeout', function(e, id){
+                 console.log(e)
+                 console.log(id)
                  $('#notify-'+id).remove()
              })
 
