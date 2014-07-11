@@ -3,18 +3,17 @@
 
     var dashboards = {
         $el: null,
-        current: null,
         add: function(id, name) {
-            if (dashboards.current == null) {
-                this.select(id)
+            if ($.App.dashboardId == null) {
+                $.App.dashboardId = id
             }
             dashboards.$el.append('<option value="' + id + '">' + name + '</option>')
         },
         select: function(id) {
 
-            if (dashboards.current != id) {
-                dashboards.current = id
-                $(document.body).trigger('dashboard:change', [dashboards.current])
+            if ($.App.dashboardId != dashboards.$el.val()) {
+                $.App.dashboardId = dashboards.$el.val()
+                $('.column').trigger('task:refresh')
             }
         }
     }

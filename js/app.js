@@ -2,6 +2,7 @@
     'use strict';
 
     $.App = {
+        dashboardId: null,
         init: function() {
             $(document).one('templates:load', function(e){
                 $.App.ui.init();
