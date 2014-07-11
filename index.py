@@ -5,6 +5,7 @@ import cherrypy
 from admin import Admin
 import auth
 import user
+import dashboard
 from task import Task
 import search
 from taskconfig import config
@@ -29,6 +30,7 @@ class App:
         self.auth = auth.controller()
         self.admin = Admin()
         self.user = user.Controller()
+        self.dashboard = dashboard.Controller()
 
     @cherrypy.expose
     def index(self):
@@ -52,6 +54,22 @@ class App:
             with open(tpl, 'r') as f:
                 templates[tplName] = ' '.join(f.readlines())
         return templates
+
+    @cherrypy.expose
+    @auth.require(auth.is_loggued())
+    @cherrypy.tools.json_out()
+    def dashboards(self):
+        dashboards = {}
+        D = dashboard.Dashboard()
+        dashboards = D.find({'userId': auth.userAuth['_id']}, limit=20)
+        if dashboards == {}:
+            dashboard.addDefault()
+            dashboards = D.find({'userId': auth.userAuth['_id']}, limit=20)
+
+        for id in dashboards:
+            del dashboards[id]['_id']
+
+        return dashboards
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose
