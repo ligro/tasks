@@ -30,7 +30,7 @@ section#page .moreBtn {
 .alerts {
     position: absolute;
     right: 10px;
-    z-index: 101;
+    z-index: 1060;
 }
 
 div.whatIsThisBox {
