@@ -23,6 +23,7 @@
         // jForm success method
         addTask: {
             success: function(data) {
+                // FIXME should be merged with .on 'post:success'
                 $.modal.closeModal()
                 $(document.body).trigger('notify', ['Task saved', 'info'])
                 $(document.body).trigger('task:refresh')
@@ -65,6 +66,7 @@
 
              $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
                 .on('post:success', function (e){
+                    // FIXME should be merged with addTask.success
                     // reload all columns
                     $(".column").trigger('task:refresh')
                 })
