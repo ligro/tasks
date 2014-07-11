@@ -28,10 +28,9 @@ xapian (python bindings and lib)
 
 ### next
 
- 1. do not refresh tasks if the query is empty (on task edition/suppression) just remove from the list
- 2. allow to save queries, and easily retrieve it
- 4. make columns stackable horizontally only
- 5. enhance shorcuts
+ 1. allow to save queries, and easily retrieve it
+ 2. make columns stackable horizontally only
+ 3. enhance shorcuts (navigation)
 
  * migrate to python3
  * migrate to bootstrap3
@@ -39,11 +38,11 @@ xapian (python bindings and lib)
  * tag autocompletion
  * task edition/creation inline
  * handle mobile view
- * enhance tag edition
  * merge and cache static files (css, js) for production
  * allow to color tags
  * send inscription mail
  * add forgot pwd link
+ * do not refresh tasks if the query is empty (on task edition/suppression) just remove from the list
 
 ### done
 
