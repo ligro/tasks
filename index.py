@@ -23,6 +23,9 @@ class App:
     }
 
     def __init__(self):
+        if not os.path.isdir(self._cp_config['tools.sessions.storage_path']):
+            os.makedirs(self._cp_config['tools.sessions.storage_path'])
+
         self.auth = auth.controller()
         self.admin = Admin()
         self.user = user.Controller()
