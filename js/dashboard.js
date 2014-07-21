@@ -3,17 +3,18 @@
 
     var dashboards = {
         $el: null,
+        current: null,
         add: function(id, name) {
-            if ($.App.dashboardId == null) {
-                $.App.dashboardId = id
+            if (dashboards.current == null) {
+                dashboards.current = id
             }
             dashboards.$el.append('<option value="' + id + '">' + name + '</option>')
         },
         select: function(id) {
 
-            if ($.App.dashboardId != dashboards.$el.val()) {
-                $.App.dashboardId = dashboards.$el.val()
-                $('.column').trigger('task:refresh')
+            if (dashboards.current != dashboards.$el.val()) {
+                dashboards.current = dashboards.$el.val()
+                $(document.body).trigger('dashboard:change', [dashboards.current])
             }
         }
     }
@@ -34,10 +35,11 @@
                 for (var dashboardId in data) {
                     dashboards.add(dashboardId, data[dashboardId].name)
                 }
-                dashboards.add("", "Add a new dashboard")
+                dashboards.add("", "All my tasks")
+                dashboards.add("add", "Add a new dashboard")
 
                 dashboards.$el.on('change', function (e) {
-                    if (dashboards.$el.val() == '') {
+                    if (dashboards.$el.val() == 'add') {
                         // launch modal to add a new dashboard
                          $('<form class="jForm" action="/dashboard/add" method="POST">')
                             .on('post:success', function (e, data){
@@ -55,6 +57,7 @@
                         dashboards.select(dashboards.$el.val())
                     }
                 })
+
             },
             error: function(xhr, type){
                 $('#FatalError').show()

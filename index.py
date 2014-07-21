@@ -74,14 +74,16 @@ class App:
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def tasks(self, offset=0, limit=20, query=''):
-        T = Task()
+    def tasks(self, dashboardId=None, offset=0, limit=20, query=''):
+        if dashboardId == '':
+            dashboardId = None
+
         if not isinstance(offset, int):
             offset = int(offset)
         if not isinstance(limit, int):
             limit = int(limit)
 
-        results = search.query(query, limit, offset)
+        results = search.query(query, dashboardId, limit, offset)
 
         return results
 

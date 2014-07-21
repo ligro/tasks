@@ -13,7 +13,7 @@ lang = 'en'
 # for facet query
 checkatlist = 10000
 
-def query(query, limit, offset=0):
+def query(query, dashboardId, limit, offset=0):
     if len(query):
         q = _index.query_parser.parse_query(query)
     else:
@@ -21,6 +21,10 @@ def query(query, limit, offset=0):
 
     if auth.userAuth is not None:
         fq = xapian.Query(u'XA' + auth.userAuth['_id'])
+        q = xapian.Query(xapian.Query.OP_FILTER, q, fq)
+
+    if dashboardId is not None:
+        fq = xapian.Query(u'XD' + dashboardId)
         q = xapian.Query(xapian.Query.OP_FILTER, q, fq)
 
     enquire = _index.get_enquire()
@@ -117,6 +121,10 @@ def index(task):
 
     # add author
     doc.add_boolean_term(u'XA' + task['authorId'])
+
+    if 'dashboardId' in task:
+        # add dashboard
+        doc.add_boolean_term(u'XD' + task['dashboardId'])
 
     # add tags for filtering
     if 'tag' in task:

@@ -1,6 +1,13 @@
 ;(function($) {
     'use strict';
 
+    /**
+     * [
+     *  'tasks' : {},
+     *  'total' : 0, // total number of tasks
+     *  'loaded': 0  // number of tasks loaded (displayed
+     * ]
+     */
     var columns = []
 
     $.extend($.fn, {
@@ -46,6 +53,7 @@
 
                     e.preventDefault()
 
+                    // TODO store only one time tasks
                     $.App.ui.taskEditModal(columns[$this.data('id')].tasks[id])
                 })
                 .on('click', '.task .jTaskRemove', function(e){
@@ -107,8 +115,17 @@
                     })
 
                 // submit and not post to force to reset column[id]
+                // TODO, to this when dashboard are ready
                 $searchForm.submit()
             })
         }
     })
+
+    Zepto(function($){
+        $(document).on('dashboard:change', function(e, dashboardId){
+            $('.jInputDashboardId').val(dashboardId)
+            $('.jFormSearch').trigger('task:refresh')
+        })
+    })
+
 })(Zepto)
