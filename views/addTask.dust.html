@@ -2,6 +2,9 @@
         {?_id}
         <input type="hidden" name="_id" value="{_id}" />
         {/_id}
+        {?dashboardId}
+        <input type="hidden" name="dashboardId" value="{dashboardId}" />
+        {/dashboardId}
         <textarea class="span12" rows="4" name="task" placeholder="What is your task ?">{?task}{task}{/task}</textarea>
     </div>
     <div class="row-fluid">

@@ -11,6 +11,9 @@
             .on('click', '.jColumnAdd', function(e) {
                 $.App.addColumn()
             })
+            .on('dashboard:change', function(e, dashboardId) {
+                $.App.dashboardId = dashboardId
+            })
         },
         addColumn: function(){
             var columns
@@ -62,6 +65,9 @@
                  button = 'Create'
              }
 
+             if ($.App.dashboardId !== null) {
+                task.dashboardId = $.App.dashboardId;
+             }
 
              $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
                 .on('post:success', function (e){

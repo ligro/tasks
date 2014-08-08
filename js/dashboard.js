@@ -6,14 +6,14 @@
         current: null,
         add: function(id, name) {
             if (dashboards.current == null) {
-                dashboards.current = id
+                this.select(id)
             }
             dashboards.$el.append('<option value="' + id + '">' + name + '</option>')
         },
         select: function(id) {
 
-            if (dashboards.current != dashboards.$el.val()) {
-                dashboards.current = dashboards.$el.val()
+            if (dashboards.current != id) {
+                dashboards.current = id
                 $(document.body).trigger('dashboard:change', [dashboards.current])
             }
         }
@@ -30,7 +30,6 @@
                     $('#FatalError').show()
                     return
                 }
-
 
                 for (var dashboardId in data) {
                     dashboards.add(dashboardId, data[dashboardId].name)
@@ -57,7 +56,6 @@
                         dashboards.select(dashboards.$el.val())
                     }
                 })
-
             },
             error: function(xhr, type){
                 $('#FatalError').show()
