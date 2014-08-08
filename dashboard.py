@@ -37,5 +37,5 @@ class Dashboard(Model):
             'name': 'Default',
             'userId': auth.userAuth['_id']
         }
-        D.save(dashboard)
+        self.save(dashboard)
 

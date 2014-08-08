@@ -26,6 +26,8 @@ xapian (python bindings and lib)
 
 ### in progress
 
+add dashboard
+
 ### next
 
  1. allow to save queries, and easily retrieve it

@@ -63,7 +63,7 @@ class App:
         D = dashboard.Dashboard()
         dashboards = D.find({'userId': auth.userAuth['_id']}, limit=20)
         if dashboards == {}:
-            dashboard.addDefault()
+            D.addDefault()
             dashboards = D.find({'userId': auth.userAuth['_id']}, limit=20)
 
         for id in dashboards:
