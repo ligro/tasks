@@ -31,9 +31,10 @@ add dashboard
 ### next
 
  1. allow to save queries, and easily retrieve it
- 2. make columns stackable horizontally only
- 3. enhance shorcuts (navigation)
+ 2. markdown
 
+ * make columns stackable horizontally only
+ * enhance shorcuts (navigation)
  * migrate to python3
  * migrate to bootstrap3
  * migrate to from mongo to sql backend
@@ -45,6 +46,7 @@ add dashboard
  * send inscription mail
  * add forgot pwd link
  * do not refresh tasks if the query is empty (on task edition/suppression) just remove from the list
+ * add dashboard in URLS anchor
 
 ### done
 
