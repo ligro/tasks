@@ -27,6 +27,7 @@ xapian (python bindings and lib)
 ### in progress
 
 add dashboard
+Still need something to migrate tasks to a dashboard (at least a script, may be something in the interface too) ?
 
 ### next
 

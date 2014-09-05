@@ -10,16 +10,17 @@
         <header class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
-                    <a class="brand" href="#">Tasks Manager</a>
+                    <a class="brand" href="">Tasks Manager</a>
                     <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li><a href="javascript:void(0);" class="jLink" data-func="addtask">Create task</a></li>
-                            <li><a href="javascript:void(0);" class="jLink" data-func="abouts">abouts</a></li>
-                            <li><select class="jDashboard">
-                                </select></li>
-                            <li><a href="/reindex">Reindexation</a></li>
-                            <li><a href="/auth/logout">Log out</a></li>
-                        </ul>
+                        <p class="navbar-text pull-right">
+                            <a href="javascript:void(0);" class="jLink navbar-link" data-func="abouts">abouts</a>
+                            -
+                            <a href="/auth/logout" class="navbar-link">Log out</a>
+                        </p>
+                        <p class="navbar-text">
+                            <select class="jDashboard"></select>
+                            <a href="javascript:void(0);" class="jLink navbar-link" data-func="addtask">Create task</a>
+                        </p>
                     </div>
                 </div>
             </div>
