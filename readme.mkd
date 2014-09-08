@@ -29,6 +29,8 @@ xapian (python bindings and lib)
 add dashboard
 Still need something to migrate tasks to a dashboard (at least a script, may be something in the interface too) ?
 
+Try to use bootstrap js components.
+
 ### next
 
  1. allow to save queries, and easily retrieve it
