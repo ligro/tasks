@@ -5,13 +5,15 @@
         $el: null,
         current: null,
         add: function(id, name) {
+            console.log(id)
+            console.log(dashboards.current)
             if (dashboards.current == null) {
                 this.select(id)
             }
             dashboards.$el.append('<option value="' + id + '">' + name + '</option>')
         },
         select: function(id) {
-
+console.log("select " + id);
             if (dashboards.current != id) {
                 dashboards.current = id
                 $(document.body).trigger('dashboard:change', [dashboards.current])

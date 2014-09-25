@@ -122,10 +122,10 @@
     })
 
     Zepto(function($){
-        $(document).on('dashboard:change', function(e, dashboardId){
-            $('.jInputDashboardId').val(dashboardId)
-            $('.jFormSearch').trigger('task:refresh')
-        })
+        //$(document).on('dashboard:change', function(e, dashboardId){
+        //    $('.jInputDashboardId').val(dashboardId)
+        //    $('.jFormSearch').trigger('task:refresh')
+        //})
     })
 
 })(Zepto)

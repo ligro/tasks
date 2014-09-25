@@ -5,22 +5,46 @@
         init: function() {
             $(document).one('templates:load', function(e){
                 $.App.ui.init();
-                // perform an empty search to fill the page with task and tags
-                $.App.addColumn()
             })
             .on('click', '.jColumnAdd', function(e) {
                 $.App.addColumn()
             })
             .on('dashboard:change', function(e, dashboardId) {
+                var cpt = 0,
+                    dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
+                // window.localStorage.setItem('dashboards:queries', JSON.stringify({'540f6ece4888112648a68ccd':['', 'tag:"atag"']}))
+
+                console.log('dashboard:change ' + dashboardId)
                 $.App.dashboardId = dashboardId
+                $('#page .column').remove()
+
+                if (typeof dashboardsQueries[$.App.dashboardId] !== 'undefined') {
+                    if (dashboardsQueries[$.App.dashboardId].length) {
+                        $.each(dashboardsQueries[$.App.dashboardId], function(i, query){
+                            $.App.addColumn(query)
+                        })
+                    }
+                }
+
+                if ($('#page .column').length == 0) {
+                    $.App.addColumn()
+                }
             })
         },
-        addColumn: function(){
-            var columns
+        addColumn: function(query = '') {
+            console.log("addColumn %s", query);
+            var columns, datas
 
-            $("#page").append($.templates.column)
-            columns = $('#page .column')
-            $(columns[columns.length - 1]).column()
+            datas = {
+                'query': query,
+                'dashboardId': $.App.dashboardId
+            }
+
+            $.ui._loadTpl('column', {'query': query}, function(err, out) {
+                $("#page").append($(out))
+                columns = $('#page .column')
+                $(columns[columns.length - 1]).column()
+            })
         },
         // jForm success method
         addTask: {
