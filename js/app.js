@@ -51,7 +51,6 @@
                 // FIXME should be merged with .on 'post:success'
                 $.modal.closeModal()
                 $(document.body).trigger('notify', ['Task saved', 'info'])
-                $(document.body).trigger('task:refresh')
 
             },
             validate: function($form) {

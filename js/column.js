@@ -90,6 +90,7 @@
                         }
                     })
                     .on('post:success', function(e, data){
+                        console.log('post:success')
                         $.extend(columns[$this.data('id')].tasks, data.tasks)
                         columns[$this.data('id')].total = data.nbTasks
 
@@ -122,17 +123,9 @@
                     })
 
                 // submit and not post to force to reset column[id]
-                // TODO, to this when dashboard are ready
                 $searchForm.submit()
             })
         }
-    })
-
-    Zepto(function($){
-        //$(document).on('dashboard:change', function(e, dashboardId){
-        //    $('.jInputDashboardId').val(dashboardId)
-        //    $('.jFormSearch').trigger('task:refresh')
-        //})
     })
 
 })(Zepto)
