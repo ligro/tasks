@@ -3,12 +3,29 @@
 
     /**
      * [
+     *  'element' : {},
      *  'tasks' : {},
      *  'total' : 0, // total number of tasks
      *  'loaded': 0  // number of tasks loaded (displayed
      * ]
      */
-    var columns = []
+    var columns = {},
+        nbColumns = 0,
+        columnsId = 0
+
+    function saveColumns()
+    {
+        var dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
+        dashboardsQueries[$.App.dashboardId] = []
+
+        $.each(columns, function(i, column) {
+            if (typeof column !== 'undefined') {
+                dashboardsQueries[$.App.dashboardId].push(column.element.find('input.search-query').val())
+            }
+        })
+
+        window.localStorage.setItem('dashboards:queries', JSON.stringify(dashboardsQueries))
+    }
 
     $.extend($.fn, {
         column: function(){
@@ -20,9 +37,16 @@
                    $totalTask = $this.find('.totalTask'),
                    $tasks = $this.find('.tasks'),
                    $moreBtn = $('.moreBtn'),
-                   id = columns.length
+                   id = columnsId++
 
+                nbColumns++
                 $this.data('id', id)
+                columns[id] = {
+                    element: $this,
+                    tasks: {},
+                    loaded: 0,
+                    total: 0
+                }
 
                 // display or not the close button
                 $('.column .jColumnClose').css('display', id != 0 ? '' : 'none')
@@ -30,11 +54,16 @@
                 $this
                 .on('click', '.jColumnClose', function(e) {
                     e.preventDefault()
-                    if (columns.length == 1) {
+                    if (nbColumns == 1) {
                         $(document.body).trigger('notify', ['Impossible to remove the last column', 'warning']);
                         return
                     }
                     $this.remove()
+                    // remove the entry in the array
+                    nbColumns--
+                    delete columns[$this.data('id')]
+                    // erase and save all queries
+                    saveColumns()
                 })
                 .on('click', '.tags a.jTagFilter', function(e) {
                     var search = $searchInput.val()
@@ -83,14 +112,11 @@
                     .on('submit', function(e, data){
                         $totalTask.html('-')
                         $tasks.html('')
-                        columns[$this.data('id')] = {
-                            tasks: {},
-                            loaded: 0,
-                            total: 0
-                        }
+                        columns[$this.data('id')].tasks = {}
+                        columns[$this.data('id')].loaded = 0
+                        columns[$this.data('id')].total = 0
                     })
                     .on('post:success', function(e, data){
-                        console.log('post:success')
                         $.extend(columns[$this.data('id')].tasks, data.tasks)
                         columns[$this.data('id')].total = data.nbTasks
 
@@ -114,12 +140,7 @@
 
                         $moreBtn.css('display', columns[$this.data('id')].total > columns[$this.data('id')].loaded ? '' : 'none')
 
-                        var dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
-                        typeof dashboardsQueries[$.App.dashboardId] === 'undefined'
-                          && (dashboardsQueries[$.App.dashboardId] = {})
-                        dashboardsQueries[$.App.dashboardId][$this.data('id')] = $searchInput.val()
-                        console.log("%s, %o", id, dashboardsQueries);
-                        window.localStorage.setItem('dashboards:queries', JSON.stringify(dashboardsQueries))
+                        saveColumns()
                     })
 
                 // submit and not post to force to reset column[id]
@@ -127,5 +148,33 @@
             })
         }
     })
+
+    Zepto(function($){
+        $(document).on('dashboard:change', function(e, dashboardId){
+            var cpt = 0,
+            dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
+
+            $.App.dashboardId = dashboardId
+
+            // reset
+            $('#page .column').remove()
+            columns = []
+            nbColumns = 0
+            columnsId = 0
+
+            if (typeof dashboardsQueries[dashboardId] !== 'undefined') {
+                if (dashboardsQueries[dashboardId].length) {
+                    $.each(dashboardsQueries[dashboardId], function(i, query){
+                        $.App.addColumn(query)
+                    })
+                }
+            }
+
+            if (columns == 0) {
+                $.App.addColumn()
+            }
+        })
+    })
+
 
 })(Zepto)

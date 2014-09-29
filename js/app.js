@@ -9,29 +9,8 @@
             .on('click', '.jColumnAdd', function(e) {
                 $.App.addColumn()
             })
-            .on('dashboard:change', function(e, dashboardId) {
-                var cpt = 0,
-                    dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
-
-                console.log('dashboard:change ' + dashboardId)
-                $.App.dashboardId = dashboardId
-                $('#page .column').remove()
-
-                if (typeof dashboardsQueries[$.App.dashboardId] !== 'undefined') {
-                    if (dashboardsQueries[$.App.dashboardId].length) {
-                        $.each(dashboardsQueries[$.App.dashboardId], function(i, query){
-                            $.App.addColumn(query)
-                        })
-                    }
-                }
-
-                if ($('#page .column').length == 0) {
-                    $.App.addColumn()
-                }
-            })
         },
         addColumn: function(query = '') {
-            console.log("addColumn %s", query);
             var columns, datas
 
             datas = {
@@ -39,7 +18,7 @@
                 'dashboardId': $.App.dashboardId
             }
 
-            $.ui._loadTpl('column', {'query': query}, function(err, out) {
+            $.ui._loadTpl('column', datas, function(err, out) {
                 $("#page").append($(out))
                 columns = $('#page .column')
                 $(columns[columns.length - 1]).column()
