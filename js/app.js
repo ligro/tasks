@@ -12,7 +12,6 @@
             .on('dashboard:change', function(e, dashboardId) {
                 var cpt = 0,
                     dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
-                // window.localStorage.setItem('dashboards:queries', JSON.stringify({'540f6ece4888112648a68ccd':['', 'tag:"atag"']}))
 
                 console.log('dashboard:change ' + dashboardId)
                 $.App.dashboardId = dashboardId

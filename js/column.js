@@ -112,6 +112,13 @@
                         }
 
                         $moreBtn.css('display', columns[$this.data('id')].total > columns[$this.data('id')].loaded ? '' : 'none')
+
+                        var dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
+                        typeof dashboardsQueries[$.App.dashboardId] === 'undefined'
+                          && (dashboardsQueries[$.App.dashboardId] = {})
+                        dashboardsQueries[$.App.dashboardId][$this.data('id')] = $searchInput.val()
+                        console.log("%s, %o", id, dashboardsQueries);
+                        window.localStorage.setItem('dashboards:queries', JSON.stringify(dashboardsQueries))
                     })
 
                 // submit and not post to force to reset column[id]

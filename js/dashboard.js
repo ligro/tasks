@@ -5,18 +5,14 @@
         $el: null,
         current: null,
         add: function(id, name) {
-            console.log(id)
-            console.log(dashboards.current)
-            if (dashboards.current == null) {
-                this.select(id)
-            }
             dashboards.$el.append('<option value="' + id + '">' + name + '</option>')
         },
         select: function(id) {
-console.log("select " + id);
+            console.log("select %s", id);
             if (dashboards.current != id) {
                 dashboards.current = id
                 $(document.body).trigger('dashboard:change', [dashboards.current])
+                window.localStorage.setItem('dashboardId', dashboards.current)
             }
         }
     }
@@ -32,8 +28,10 @@ console.log("select " + id);
                     $('#FatalError').show()
                     return
                 }
+                var defaultDashboardId = false
 
                 for (var dashboardId in data) {
+                    !defaultDashboardId && (defaultDashboardId = dashboardId)
                     dashboards.add(dashboardId, data[dashboardId].name)
                 }
                 dashboards.add("", "All my tasks")
@@ -58,6 +56,13 @@ console.log("select " + id);
                         dashboards.select(dashboards.$el.val())
                     }
                 })
+
+                var currentDashboardId = window.localStorage.getItem('dashboardId')
+                if (!currentDashboardId) {
+                    currentDashboardId = defaultDashboardId
+                }
+                dashboards.$el.val(currentDashboardId)
+                dashboards.select(currentDashboardId)
             },
             error: function(xhr, type){
                 $('#FatalError').show()
