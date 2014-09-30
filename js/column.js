@@ -16,6 +16,9 @@
     function saveColumns()
     {
         var dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
+        if (dashboardsQueries == null) {
+            dashboardsQueries = {}
+        }
         dashboardsQueries[$.App.dashboardId] = []
 
         $.each(columns, function(i, column) {
@@ -162,7 +165,7 @@
             nbColumns = 0
             columnsId = 0
 
-            if (typeof dashboardsQueries[dashboardId] !== 'undefined') {
+            if (dashboardsQueries && typeof dashboardsQueries[dashboardId] !== 'undefined') {
                 if (dashboardsQueries[dashboardId].length) {
                     $.each(dashboardsQueries[dashboardId], function(i, query){
                         $.App.addColumn(query)
