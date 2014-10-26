@@ -29,10 +29,6 @@ Try to use bootstrap js components.
 
 ### next
 
- 1. allow to save queries, and easily retrieve it
- 2. markdown
-
-
  * make columns stackable horizontally only
  * enhance shorcuts (navigation)
  * review the api (allow to add notes from somewhere else
@@ -53,6 +49,7 @@ Try to use bootstrap js components.
 
 ### done
 
+ * allow to save queries, and easily retrieve it
  * alert display (with modals)
  * fix issues when you are disconnected (display a login modal form)
  * handle multiple column view
