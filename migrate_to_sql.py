@@ -9,20 +9,38 @@ import models
 from pprint import pprint
 
 users = User().find()
-for id in users:
-    users[id]['password'] = Password().findById(id)['password']
-    user = models.User(users[id])
+for userId in users:
+    oldUser = users[userId]
+    oldUser['password'] = Password().findById(userId)['password']
+    user = models.User(pseudo=oldUser['pseudo'], email=oldUser['email'], password=oldUser['password'])
+    user.genId()
     models.session.add(user)
-    del users[id]
 
-tasks = Task().find()
-for id in tasks:
-    tasks[id]['tasks[id]Id'] = tasks[id]['authorId']
-    del tasks[id]['authorId']
-    models.session.add(models.Task(tasks[id]))
-    del tasks[id]
+    pprint(user.id)
 
-dashboards = Dashboard().find()
-for id in dashboards:
-    models.session.add(models.Dashboard(dashboards[id]))
+    dashboards = Dashboard().find({'authorId':userId})
+    dashboardIdMapping = {}
+    for dashboardId in dashboards:
+        dashboard = models.Dashboard(dashboards[dashboardId])
+        dashboard.genId()
+        models.session.add(userId=userId, name=dashboards[dashboardId]['name'])
+        dashboardIdMapping[dashboardId] = dashboard.id
+        pprint(dashboard.id)
 
+    tasks = Task().find({'authorId':userId})
+    for id in tasks:
+        if tasks[id]['dashboardId'] in dashboardIdMapping:
+            dashboardId = dashboardIdMapping[tasks[id]['dashboardId']]
+        else:
+            dashboardId = None
+        #task = models.Task(userId=userId, dashboardId=dashboardId, task=tasks[id]['task'])
+        task = models.Task(userId=userId, dashboardId=dashboardId, task=tasks[id]['task'])
+        for tag in tasks[id]['tag']:
+            task.tags.append(models.TaskTag(name=tag))
+        task.genId()
+        models.session.add(task)
+        pprint(task.id)
+
+        task.task += ' yo'
+
+models.session.commit()
