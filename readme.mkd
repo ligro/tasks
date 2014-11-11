@@ -27,6 +27,10 @@ Still need something to migrate tasks to a dashboard (at least a script, may be 
 
 Try to use bootstrap js components.
 
+x migration script
+_ admin to check datas (sqlite concurrency issue)
+_ rewrite code to use new models
+
 ### next
 
  * make columns stackable horizontally only
