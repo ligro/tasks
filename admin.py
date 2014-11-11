@@ -1,3 +1,4 @@
+import os
 import cherrypy
 from models import session, User, Dashboard, Task
 
@@ -13,7 +14,12 @@ class Admin:
 
     @cherrypy.expose
     def index(self):
-        return """This is the admin only area."""
+        tpl = 'views/admin.html'
+
+        tpl = os.path.join(os.path.dirname(os.path.abspath(__file__)), tpl)
+        with open(tpl, 'r') as f:
+            lines = f.readlines()
+        return lines
 
     @cherrypy.expose
     @cherrypy.tools.json_out()

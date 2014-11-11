@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tasks Manager - Admin</title>
+        <link href="/css/normalize.css" rel="stylesheet" media="screen">
+        <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/css/tasks.css" rel="stylesheet" media="screen">
+    </head>
+    <body>
+        <header class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="">Tasks Manager</a>
+                    <div class="nav-collapse collapse">
+                        <p class="navbar-text pull-right">
+                            <a href="javascript:void(0);" class="jLink navbar-link" data-func="abouts">Abouts</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section id="FatalError" style="display:none;">
+            <div class="alert alert-error">
+                <strong>Fatal error</strong> a technical error occured, the site broken
+            </div>
+        </section>
+        <section id="page" class="container-fluid">
+            <div class="row-fluid">
+                <form action="user" class="form-search jForm">
+                     <input type="hidden" name="limit" value="20">
+                </form>
+                <div class="users"> </div>
+            </div>
+        </section>
+    </body>
+    <script type="application/javascript" src="/js/zepto.min.js"></script>
+    <script type="application/javascript" src="/js/dust-full-0.3.0.min.js"></script>
+    <script type="application/javascript" src="/js/utils.js"></script>
+    <script type="application/javascript" src="/js/ui.js"></script>
+    <script type="application/javascript" src="/js/modal.js"></script>
+    <script type="application/javascript" src="/js/admin.js"></script>
+</html>
