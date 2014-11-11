@@ -1,4 +1,5 @@
 import cherrypy
+from models import session, User, Dashboard, Task
 
 # admin area
 class Admin:
@@ -13,5 +14,38 @@ class Admin:
     @cherrypy.expose
     def index(self):
         return """This is the admin only area."""
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def user(self, offset=0, limit=10):
+        users = []
+        for row in session.query(User).order_by(User.id).limit(limit).offset(offset).all():
+            user = {
+                'id' : row.id,
+                'pseudo' : row.pseudo,
+                'email' : row.email,
+            }
+            users.append(user)
+
+        return users
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def dashboard(self, userId, offset=0, limit=10):
+        dashboards = []
+        query = session.query(Dashboard)
+        query.filter(Dashboard.userId == userId)
+
+        query.order_by(Dashboard.id).limit(limit).offset(offset)
+
+        for row in query.all():
+            user = {
+                'id' : row.id,
+                'pseudo' : row.pseudo,
+                'email' : row.email,
+            }
+            users.append(user)
+
+        return users
 
 
