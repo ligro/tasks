@@ -23,7 +23,7 @@ class Admin:
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def user(self, offset=0, limit=10):
+    def user(self, offset=0, limit=10, email=None, pseudo=None):
         users = []
         for row in session.query(User).order_by(User.id).limit(limit).offset(offset).all():
             user = {
@@ -33,7 +33,22 @@ class Admin:
             }
             users.append(user)
 
-        return users
+        return {'users' : users}
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def usertasks(self, offset=0, limit=10, userId=None):
+        tasks = []
+        for row in session.query(Task).order_by(Task.id).limit(limit).offset(offset).all():
+            task = {
+                'id' : row.id,
+                'task' : row.task,
+                'tag' : [tag.name for tag in row.tags],
+                'dashboard' : row.dashboard.name if row.dashboard is not None else None,
+            }
+            tasks.append(task)
+
+        return {'tasks' : tasks}
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -45,13 +60,12 @@ class Admin:
         query.order_by(Dashboard.id).limit(limit).offset(offset)
 
         for row in query.all():
-            user = {
+            dashboard = {
                 'id' : row.id,
-                'pseudo' : row.pseudo,
-                'email' : row.email,
+                'name' : row.name,
             }
-            users.append(user)
+            dashboards.append(dashboard)
 
-        return users
+        return {'dashboards' : dashboards}
 
 

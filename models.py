@@ -17,7 +17,8 @@ logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 Base = declarative_base()
 
 # TODO add this in config
-engine = create_engine('sqlite:///task.db')
+# TODO force to use only one connection per thread with sqlite
+engine = create_engine('sqlite:///task.db', connect_args={'check_same_thread':False})
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -60,6 +61,7 @@ class Task(Base, TBase):
     dashboardId = Column(String(24), ForeignKey('dashboard.id', onupdate="CASCADE", ondelete="CASCADE"))
     task = Column(UnicodeText())
 
+    dashboard = relationship('Dashboard')
     tags = relationship('TaskTag', order_by='TaskTag.name')
 
 class TaskTag(Base):

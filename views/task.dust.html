@@ -1,8 +1,11 @@
 <div class="task" data-id="{_id}" id="task-{_id}">
+    {^nobuttons}
     <i class="jTaskRemove close icon-trash"></i>
     <i class="jTaskModify close icon-pencil"></i>
+    {/nobuttons}
     <div>
     {task}
     </div>
     {#tag}<span class="label">{.}</span>&nbsp;{/tag}
+    {?dashboard}<span class="label">{.}</span>&nbsp;{/dashboard}
 </div>
