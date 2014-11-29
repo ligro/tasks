@@ -25,7 +25,7 @@ class Admin:
     @cherrypy.tools.json_out()
     def user(self, offset=0, limit=10, email=None, pseudo=None):
         users = []
-        for row in session.query(User).order_by(User.id).limit(limit).offset(offset).all():
+        for row in session.query(User).order_by(User.createdAt).limit(limit).offset(offset).all():
             user = {
                 'id' : row.id,
                 'pseudo' : row.pseudo,
@@ -39,7 +39,8 @@ class Admin:
     @cherrypy.tools.json_out()
     def usertasks(self, offset=0, limit=10, userId=None):
         tasks = []
-        for row in session.query(Task).order_by(Task.id).limit(limit).offset(offset).all():
+        from pprint import pprint
+        for row in session.query(Task).filter(Task.userId == userId).order_by(Task.createdAt).limit(limit).offset(offset).all():
             task = {
                 'id' : row.id,
                 'task' : row.task,

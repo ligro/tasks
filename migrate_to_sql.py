@@ -18,12 +18,12 @@ for userId in users:
 
     pprint(user.id)
 
-    dashboards = Dashboard().find({'authorId':userId})
+    dashboards = Dashboard().find({'userId':userId})
     dashboardIdMapping = {}
     for dashboardId in dashboards:
-        dashboard = models.Dashboard(dashboards[dashboardId])
+        dashboard = models.Dashboard(userId=user.id, name=dashboards[dashboardId]["name"])
         dashboard.genId()
-        models.session.add(userId=userId, name=dashboards[dashboardId]['name'])
+        models.session.add(dashboard)
         dashboardIdMapping[dashboardId] = dashboard.id
         pprint(dashboard.id)
 
@@ -34,7 +34,7 @@ for userId in users:
         else:
             dashboardId = None
         #task = models.Task(userId=userId, dashboardId=dashboardId, task=tasks[id]['task'])
-        task = models.Task(userId=userId, dashboardId=dashboardId, task=tasks[id]['task'])
+        task = models.Task(userId=user.id, dashboardId=dashboardId, task=tasks[id]['task'])
         for tag in tasks[id]['tag']:
             task.tags.append(models.TaskTag(name=tag))
         task.genId()
