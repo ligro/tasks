@@ -52,6 +52,9 @@ class TBase(DictableBase):
             raise 'id already defined'
         self.id = str(uuid.uuid1())
 
+    def save(self):
+        self.genId()
+        session.add(self)
 
 class User(Base, TBase):
     __tablename__ = 'user'

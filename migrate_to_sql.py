@@ -13,8 +13,7 @@ for userId in users:
     oldUser = users[userId]
     oldUser['password'] = Password().findById(userId)['password']
     user = models.User(pseudo=oldUser['pseudo'], email=oldUser['email'], password=oldUser['password'])
-    user.genId()
-    models.session.add(user)
+    user.save()
 
     pprint(user.id)
 
@@ -22,8 +21,7 @@ for userId in users:
     dashboardIdMapping = {}
     for dashboardId in dashboards:
         dashboard = models.Dashboard(userId=user.id, name=dashboards[dashboardId]["name"])
-        dashboard.genId()
-        models.session.add(dashboard)
+        dashboard.save()
         dashboardIdMapping[dashboardId] = dashboard.id
         pprint(dashboard.id)
 
@@ -37,10 +35,7 @@ for userId in users:
         task = models.Task(userId=user.id, dashboardId=dashboardId, task=tasks[id]['task'])
         for tag in tasks[id]['tag']:
             task.tags.append(models.TaskTag(name=tag))
-        task.genId()
-        models.session.add(task)
+        task.save()
         pprint(task.id)
-
-        task.task += ' yo'
 
 models.session.commit()
