@@ -7,7 +7,7 @@ import threading
 
 import auth
 from taskconfig import config
-from task import Task
+import models
 
 lang = 'en'
 # for facet query
@@ -42,7 +42,7 @@ def query(query, dashboardId, limit, offset=0):
     matches = enquire.get_mset(offset, limit, min(checkatlist, _index._sdb.get_doccount()))
     for match in matches:
         task = json.loads(match.document.get_data())
-        tasks[task['_id']] = task
+        tasks[task['id']] = task
 
     # facet
     tags = {}
@@ -62,22 +62,19 @@ def query(query, dashboardId, limit, offset=0):
     }
 
 def reindex():
-    T = Task()
     offset = 0
     limit = 50
 
     logs = []
     while True:
         logs.append("get tasks from {} to {}".format(offset, limit))
-        tasks = T.find({}, limit=limit, skip=offset)
+        tasks = models.session.query(models.Task).limit(limit).offset(offset).all()
         if len(tasks) == 0:
             break
 
         logs.append( "begin to index {} tasks".format(len(tasks)))
         for task in tasks:
-            if 'tags' in tasks[task]:
-                tasks[task]['tag'] = tasks[task]['tags']
-            index(tasks[task])
+            index(task)
 
         flush()
         if len(tasks) < limit:
@@ -91,48 +88,38 @@ def index(task):
 
     doc = xapian.Document()
 
-    doc.set_data(task['task'])
+    doc.set_data(task.task)
     indexer = _index.get_indexer()
     indexer.set_document(doc)
 
     # index text
-    indexer.index_text(task['task'])
+    indexer.index_text(task.task)
 
-    if 'created_at' in task:
-        doc.add_value(2, task['created_at'])
+    doc.add_value(2, task.createdAt.isoformat())
 
     # index tag as value for facet
-    if 'tag' in task:
-        if isinstance(task['tag'], list):
-            # this is not the best way to do that
-            i = 3
-            for tag in task['tag']:
-                doc.add_value(i, tag)
-                i += 1
-        else:
-            doc.add_value(3, task['tag'])
+    # this is not the best way to do that
+    i = 3
+    for tag in task.tags:
+        doc.add_value(i, tag.name)
+        i += 1
 
     # store data
-    doc.set_data(json.dumps(task))
+    doc.set_data(json.dumps(task.toDict()))
 
     # add id
     idterm = _getDocIdFromTask(task)
     doc.add_boolean_term(idterm)
 
     # add author
-    doc.add_boolean_term(u'XA' + task['authorId'])
+    doc.add_boolean_term(u'XA' + task.userId)
 
-    if 'dashboardId' in task:
-        # add dashboard
-        doc.add_boolean_term(u'XD' + task['dashboardId'])
+    # add dashboard
+    doc.add_boolean_term(u'XD' + task.dashboardId)
 
     # add tags for filtering
-    if 'tag' in task:
-        if isinstance(task['tag'], list):
-            for tag in task['tag']:
-                doc.add_boolean_term(u'XT' + tag.lower())
-        else:
-            doc.add_boolean_term(u'XT' + task['tag'].lower())
+    for tag in task.tags:
+        doc.add_boolean_term(u'XT' + tag.name.lower())
 
     _index.add_doc(idterm, doc)
 
@@ -144,7 +131,7 @@ def flush():
     _index.flush()
 
 def _getDocIdFromTask(task):
-    return u"Q" + task['_id']
+    return u"Q" + task.id
 
 class Index:
     _sdb = None

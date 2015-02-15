@@ -3,13 +3,14 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy import Sequence, Column, Integer, String, UnicodeText, DateTime
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint
-from sqlalchemy.orm import sessionmaker, validates, relationship
+from sqlalchemy.orm import sessionmaker, validates, relationship, class_mapper
 from sqlalchemy.sql import func
 
 
-import uuid
+import uuid, datetime
 
 import logging
+
 logging.basicConfig()
 # TODO add this in config
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
@@ -22,7 +23,26 @@ engine = create_engine('sqlite:///task.db', connect_args={'check_same_thread':Fa
 Session = sessionmaker(bind=engine)
 session = Session()
 
-class TBase(object):
+class DictableBase(object):
+    def toDict(self, found=None):
+        if found is None:
+            found = []
+        mapper = class_mapper(self.__class__)
+        columns = [column.key for column in mapper.columns]
+        get_key_value = lambda c: (c, getattr(self, c).isoformat()) if isinstance(getattr(self, c), datetime.datetime) else (c, getattr(self, c))
+        out = dict(map(get_key_value, columns))
+        for name, relation in mapper.relationships.items():
+            if relation not in found:
+                found.append(relation)
+                related_obj = getattr(self, name)
+                if related_obj is not None:
+                    if relation.uselist:
+                        out[name] = [child.toDict(found) for child in related_obj]
+                    else:
+                        out[name] = related_obj.toDict(found)
+        return out
+
+class TBase(DictableBase):
     id = Column(String(36), primary_key=True)
     createdAt = Column(DateTime, default=func.now())
     updatedAt = Column(DateTime, nullable=True)
@@ -62,12 +82,19 @@ class Task(Base, TBase):
     task = Column(UnicodeText())
 
     dashboard = relationship('Dashboard')
-    tags = relationship('TaskTag', order_by='TaskTag.name')
+    tags = relationship('TaskTag', order_by='TaskTag.name', cascade="save-update, merge, delete, delete-orphan")
 
-class TaskTag(Base):
+    def toDict(self, found=None):
+        data = super(TBase, self).toDict(found)
+        if 'tags' in data:
+            for i, tag in enumerate(data['tags']):
+                data['tags'][i] = tag['name']
+        return data
+
+class TaskTag(Base, DictableBase):
     __tablename__ = 'task_tag'
 
-    taskId = Column(String(24), ForeignKey('task.id', onupdate="CASCADE", ondelete="CASCADE"))
+    taskId = Column(String(24), ForeignKey('task.id', ondelete="CASCADE"))
     name = Column(String(30))
 
     __table_args__ = (

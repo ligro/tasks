@@ -6,9 +6,10 @@ from admin import Admin
 import auth
 import user
 import dashboard
-from task import Task
 import search
 from taskconfig import config
+
+import models
 
 # TODO make it RESTful http://docs.cherrypy.org/stable/progguide/REST.html
 class App:
@@ -91,47 +92,49 @@ class App:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def task(self, id=None):
-        t = Task();
-        task = t.findById(id)
-        if task['authorId'] == auth.userAuth['_id']:
-            return task
-        return None
+        task = models.session.query(models.Task).get(id)
+        if not task or task.userId != auth.userAuth['_id']:
+            # return 403 ?
+            return {}
+
+        return task.toDict()
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def savetask(self, **kw):
         # remove empty field
-        task = {}
-        for k in kw:
-            if len(kw[k]) > 0:
-                task[k] = kw[k]
-
-        if 'task' not in task:
+        if 'task' not in kw:
             return {'msgs': {'task': 'this can not be empty'}}
 
-        ts = Task()
-        task['authorId'] = auth.userAuth['_id']
-        if 'tag' in task:
-            task['tag'] = [x.strip() for x in task['tag'].split(',')]
-        objId = ts.save(task)
-        taskObj = ts.findById(objId)
+        task = models.Task(userId=auth.userAuth['_id'], dashboardId=kw['dashboardId'], task=kw['task'])
+        if 'tag' in kw:
+            for tag in kw['tag'].split(','):
+                tag.strip()
+                task.tags.append(models.TaskTag(name=tag))
+        task.genId()
+        models.session.add(task)
+        models.session.commit()
+
         # move that code into task.save
-        search.index(taskObj)
+        search.index(task)
         search.flush()
-        return {'success': True, 'datas': taskObj}
+        return {'success': True, 'datas': task.toDict()}
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def rmtask(self, id):
-        task = {
-            '_id': id,
-            'authorId': auth.userAuth['_id']
-        }
+        task = models.session.query(models.Task).get(id)
+
+        if not task or task.userId != auth.userAuth['_id']:
+            # return 403 ?
+            return {'success': False}
+
         search.delete(task)
         search.flush()
-        Task().delete(task)
+        models.session.delete(task)
+        models.session.commit()
         return {'success': True}
 
     @auth.require(auth.is_loggued())
