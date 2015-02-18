@@ -1,6 +1,7 @@
 import cherrypy
 from model import Model
 
+import models
 import auth
 
 class Controller:
@@ -13,20 +14,13 @@ class Controller:
         if name == '':
             return {'error': True, 'msgs' : errors}
 
-        dashboard = {
-            'name': name,
-            'userId': auth.userAuth['_id']
-        }
+        dashboard = models.Dashboard(userId=auth.userAuth['_id'], name=name)
+        dashboard.save();
+        models.session.commit();
 
-        D = Dashboard()
-        id = D.save(dashboard)
-        dashboard = D.findById(id)
-        dashboard['id'] =  dashboard['_id']
-        del dashboard['_id']
-        del dashboard['userId']
+        return {'success': True, 'datas': dashboard.toDict()}
 
-        return {'success': True, 'datas': dashboard}
-
+# deprecated
 class Dashboard(Model):
     def __init__(self):
         super(Dashboard, self).__init__()
