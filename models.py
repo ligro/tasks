@@ -63,12 +63,20 @@ class User(Base, TBase):
     email = Column(String(100))
     password = Column(String(61))
 
-    # TODO add other validates
-
+    # TODO add validates
     @validates('email')
     def validate_email(self, key, address):
         assert '@' in address
         return address
+
+    @validates('password')
+    def _encodePwd(self, raw_pwd):
+        import random
+
+        algo = 'sha1'
+        salt = ''.join(random.sample('abcdefghijklmnopqrstuvwxyz', 15))
+        hsh = self._enc(algo, salt, raw_pwd)
+        return '%s$%s$%s' % (algo, salt, hsh)
 
 class Dashboard(Base, TBase):
     __tablename__ = 'dashboard'

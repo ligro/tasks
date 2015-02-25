@@ -1,6 +1,7 @@
 import cherrypy
 from model import Model
 
+import models
 import auth
 
 class Controller:
@@ -24,31 +25,19 @@ class Controller:
         if 'password' not in errors and kw['password'] != kw['password_conf']:
             errors['password_conf'] = "passwords are different"
 
-        userModel = User()
         if 'pseudo' not in errors:
-            if userModel.findOne({'pseudo': kw['pseudo']}) is not None:
+            if session.query(User).filter(pseudo=User.pseudo).limit(1).one() is not None:
                 errors['pseudo'] = "pseudo already exists"
 
         if 'email' not in errors:
-            if userModel.findOne({'email': kw['email']}) is not None:
+            if session.query(User).filter(email=User.email).limit(1).one() is not None:
                 errors['email'] = "email already exists"
 
         if len(errors) > 0:
             return {'error': True, 'msgs' : errors}
 
-        datas = {
-            'email': kw['email'],
-            'pseudo': kw['pseudo']
-        }
-        userId = userModel.save(datas)
-        user = userModel.findById(userId)
-
-        datas = {
-                '_id': userId,
-                'password': kw['password']
-                }
-        pwdModel = Password()
-        pwdModel.save(datas)
+        user = models.User(pseudo=kw['pseudo'], email=kw['email'], password=kw['password'])
+        user.save()
 
         auth.logIn(user)
         return {'success': True}
