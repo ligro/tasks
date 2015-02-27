@@ -6,7 +6,6 @@ from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import sessionmaker, validates, relationship, class_mapper
 from sqlalchemy.sql import func
 
-
 import uuid, datetime
 
 import logging
@@ -65,18 +64,34 @@ class User(Base, TBase):
 
     # TODO add validates
     @validates('email')
-    def validate_email(self, key, address):
-        assert '@' in address
-        return address
+    def validate_email(self, key, email):
+        assert '@' in email
+        return email
 
     @validates('password')
-    def _encodePwd(self, raw_pwd):
+    def _encodePwd(self, key, raw_pwd):
         import random
 
         algo = 'sha1'
         salt = ''.join(random.sample('abcdefghijklmnopqrstuvwxyz', 15))
         hsh = self._enc(algo, salt, raw_pwd)
         return '%s$%s$%s' % (algo, salt, hsh)
+
+    def check_pwd(self, raw_pwd):
+        algo, salt, hsh = self.password.split('$')
+        try:
+            algo, salt, hsh = self.password.split('$')
+        except:
+            return False
+
+        return hsh == self._enc(algo, salt, raw_pwd)
+
+    def _enc(self, algo, salt, pwd):
+        import hashlib
+
+        hl = hashlib.new(algo)
+        hl.update('{0}{1}'.format(salt, pwd))
+        return hl.hexdigest()
 
 class Dashboard(Base, TBase):
     __tablename__ = 'dashboard'

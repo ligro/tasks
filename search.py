@@ -20,7 +20,7 @@ def query(query, dashboardId, limit, offset=0):
         q = xapian.Query.MatchAll
 
     if auth.userAuth is not None:
-        fq = xapian.Query(u'XA' + auth.userAuth['_id'])
+        fq = xapian.Query(u'XA' + auth.userAuth.id)
         q = xapian.Query(xapian.Query.OP_FILTER, q, fq)
 
     if dashboardId is not None:

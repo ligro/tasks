@@ -5,8 +5,11 @@
 #
 
 import cherrypy
+import sqlalchemy
 
 from user import User, Password
+
+import models
 
 SESSION_KEY = '_cp_id'
 userAuth = None
@@ -14,12 +17,12 @@ userAuth = None
 def check_credentials(pseudo, password):
     """Verifies credentials for pseudo and password.
     Returns None on success or a string describing the error on failure"""
-    user = User().findOne({'$or':[{'pseudo' : pseudo},{'email' : pseudo}]})
-    if user is None:
+    try:
+        user = models.session.query(models.User).filter(sqlalchemy.or_(models.User.pseudo == pseudo, models.User.email == pseudo)).one()
+    except sqlalchemy.orm.exc.NoResultFound:
         return None
 
-    pwd = Password().findById(user['_id'])
-    if pwd is None or not Password().check_pwd(pwd['password'], password):
+    if not user.check_pwd(password):
         return None
 
     return user
@@ -39,7 +42,11 @@ def check_auth(*args, **kwargs):
     id = cherrypy.session.get(SESSION_KEY)
     cherrypy.request.id = id
     if id is not None:
-        userAuth = User().findById(id)
+        try:
+            userAuth = models.session.query(models.User).get(id)
+        except:
+            userAuth = False
+
 
     conditions = cherrypy.request.config.get('auth.require', None)
     if conditions is not None:
@@ -54,8 +61,8 @@ def check_auth(*args, **kwargs):
 cherrypy.tools.auth = cherrypy.Tool('before_handler', check_auth)
 
 def logIn(user):
-    cherrypy.session[SESSION_KEY] = user['_id']
-    cherrypy.request.id = user['_id']
+    cherrypy.session[SESSION_KEY] = user.id
+    cherrypy.request.id = user.id
 
 def logOut():
     sess = cherrypy.session

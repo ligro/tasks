@@ -26,12 +26,18 @@ class Controller:
             errors['password_conf'] = "passwords are different"
 
         if 'pseudo' not in errors:
-            if session.query(User).filter(pseudo=User.pseudo).limit(1).one() is not None:
+            try:
+                models.session.query(models.User).filter(models.User.pseudo == kw['pseudo']).limit(1).one()
                 errors['pseudo'] = "pseudo already exists"
+            except:
+                pass
 
         if 'email' not in errors:
-            if session.query(User).filter(email=User.email).limit(1).one() is not None:
+            try:
+                models.session.query(models.User).filter(models.User.email == kw['email']).limit(1).one()
                 errors['email'] = "email already exists"
+            except:
+                pass
 
         if len(errors) > 0:
             return {'error': True, 'msgs' : errors}

@@ -62,10 +62,10 @@ class App:
     def dashboards(self):
         dashboards = {}
         D = dashboard.Dashboard()
-        dashboards = D.find({'userId': auth.userAuth['_id']}, limit=20)
+        dashboards = D.find({'userId': auth.userAuth.id}, limit=20)
         if dashboards == {}:
             D.addDefault()
-            dashboards = D.find({'userId': auth.userAuth['_id']}, limit=20)
+            dashboards = D.find({'userId': auth.userAuth.id}, limit=20)
 
         for id in dashboards:
             del dashboards[id]['_id']
@@ -93,7 +93,7 @@ class App:
     @cherrypy.tools.json_out()
     def task(self, id=None):
         task = models.session.query(models.Task).get(id)
-        if not task or task.userId != auth.userAuth['_id']:
+        if not task or task.userId != auth.userAuth.id:
             # return 403 ?
             return {}
 
@@ -107,7 +107,7 @@ class App:
         if 'task' not in kw:
             return {'msgs': {'task': 'this can not be empty'}}
 
-        task = models.Task(userId=auth.userAuth['_id'], dashboardId=kw['dashboardId'], task=kw['task'])
+        task = models.Task(userId=auth.userAuth.id, dashboardId=kw['dashboardId'], task=kw['task'])
         if 'tag' in kw:
             for tag in kw['tag'].split(','):
                 tag.strip()
@@ -127,7 +127,7 @@ class App:
     def rmtask(self, id):
         task = models.session.query(models.Task).get(id)
 
-        if not task or task.userId != auth.userAuth['_id']:
+        if not task or task.userId != auth.userAuth.id:
             # return 403 ?
             return {'success': False}
 

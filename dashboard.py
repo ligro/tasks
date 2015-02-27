@@ -14,7 +14,7 @@ class Controller:
         if name == '':
             return {'error': True, 'msgs' : errors}
 
-        dashboard = models.Dashboard(userId=auth.userAuth['_id'], name=name)
+        dashboard = models.Dashboard(userId=auth.userAuth.id, name=name)
         dashboard.save();
         models.session.commit();
 
@@ -29,7 +29,7 @@ class Dashboard(Model):
     def addDefault(self):
         dashboard = {
             'name': 'Default',
-            'userId': auth.userAuth['_id']
+            'userId': auth.userAuth.id
         }
         self.save(dashboard)
 
