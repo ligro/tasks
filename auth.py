@@ -7,8 +7,6 @@
 import cherrypy
 import sqlalchemy
 
-from user import User, Password
-
 import models
 
 SESSION_KEY = '_cp_id'
@@ -26,13 +24,6 @@ def check_credentials(pseudo, password):
         return None
 
     return user
-
-    # An example implementation which uses an ORM could be:
-    # u = User.get(pseudo)
-    # if u is None:
-    #     return u"pseudo %s is unknown to me." % pseudo
-    # if u.password != md5.new(password).hexdigest():
-    #     return u"Incorrect password"
 
 def check_auth(*args, **kwargs):
     """A tool that looks in config for 'auth.require'. If found and it

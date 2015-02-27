@@ -60,17 +60,12 @@ class App:
     @auth.require(auth.is_loggued())
     @cherrypy.tools.json_out()
     def dashboards(self):
-        dashboards = {}
-        D = dashboard.Dashboard()
-        dashboards = D.find({'userId': auth.userAuth.id}, limit=20)
+        dashboards = models.session.query(models.Dashboard).filter(models.Dashboard.userId == auth.userAuth.id).limit(20).all()
         if dashboards == {}:
             D.addDefault()
             dashboards = D.find({'userId': auth.userAuth.id}, limit=20)
 
-        for id in dashboards:
-            del dashboards[id]['_id']
-
-        return dashboards
+        return [d.toDict() for d in dashboards]
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose

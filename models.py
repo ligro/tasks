@@ -100,6 +100,12 @@ class Dashboard(Base, TBase):
     userId = Column(String(24), ForeignKey('user.id', onupdate="CASCADE", ondelete="CASCADE"))
     name = Column(String(32))
 
+    @staticmethod
+    def addDefault(user):
+        dashboard = Dashboard(userId=user.id, name='default')
+        dashboard.save()
+
+
 class Task(Base, TBase):
     __tablename__ = 'task'
 
