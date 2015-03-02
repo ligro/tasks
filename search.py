@@ -115,7 +115,8 @@ def index(task):
     doc.add_boolean_term(u'XA' + task.userId)
 
     # add dashboard
-    doc.add_boolean_term(u'XD' + task.dashboardId)
+    if task.dashboardId is not None:
+        doc.add_boolean_term(u'XD' + task.dashboardId)
 
     # add tags for filtering
     for tag in task.tags:

@@ -16,14 +16,15 @@ def check_credentials(pseudo, password):
     """Verifies credentials for pseudo and password.
     Returns None on success or a string describing the error on failure"""
     try:
-        user = models.session.query(models.User).filter(sqlalchemy.or_(models.User.pseudo == pseudo, models.User.email == pseudo)).one()
+        users = models.session.query(models.User).filter(sqlalchemy.or_(models.User.pseudo == pseudo, models.User.email == pseudo)).all()
     except sqlalchemy.orm.exc.NoResultFound:
         return None
 
-    if not user.check_pwd(password):
-        return None
+    for user in users:
+        if user.check_pwd(password):
+            return user
 
-    return user
+    return None
 
 def check_auth(*args, **kwargs):
     """A tool that looks in config for 'auth.require'. If found and it

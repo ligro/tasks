@@ -43,6 +43,7 @@ class Controller:
             return {'error': True, 'msgs' : errors}
 
         user = models.User(pseudo=kw['pseudo'], email=kw['email'], password=kw['password'])
+        user.encodePwd()
         user.save()
 
         auth.logIn(user)

@@ -65,7 +65,7 @@ class App:
             D.addDefault()
             dashboards = D.find({'userId': auth.userAuth.id}, limit=20)
 
-        return [d.toDict() for d in dashboards]
+        return {d.id: d.toDict() for d in dashboards}
 
     @auth.require(auth.is_loggued())
     @cherrypy.expose

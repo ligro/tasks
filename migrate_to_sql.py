@@ -27,14 +27,15 @@ for userId in users:
 
     tasks = Task().find({'authorId':userId})
     for id in tasks:
-        if tasks[id]['dashboardId'] in dashboardIdMapping:
+        if 'dashboardId' in tasks[id] and tasks[id]['dashboardId'] in dashboardIdMapping:
             dashboardId = dashboardIdMapping[tasks[id]['dashboardId']]
         else:
             dashboardId = None
         #task = models.Task(userId=userId, dashboardId=dashboardId, task=tasks[id]['task'])
         task = models.Task(userId=user.id, dashboardId=dashboardId, task=tasks[id]['task'])
-        for tag in tasks[id]['tag']:
-            task.tags.append(models.TaskTag(name=tag))
+        if 'tag' in tasks[id]:
+            for tag in tasks[id]['tag']:
+                task.tags.append(models.TaskTag(name=tag))
         task.save()
         pprint(task.id)
 
