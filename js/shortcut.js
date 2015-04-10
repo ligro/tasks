@@ -24,13 +24,62 @@
                 'key': '/',
                 'desc': 'Perform search',
                 'func' : function(e){
+                    // FIXME found the current column, or take the first one
                     $('#page input.search-query').focus()
                 }
-            }
+            },
+            106: {
+                'key': 'j',
+                'desc': 'Focus task down',
+                'func' : function(e){
+                    // TODO
+                }
+            },
+            107: {
+                'key': 'k',
+                'desc': 'Focus task up',
+                'func' : function(e){
+                    // TODO
+                }
+            },
+            104: {
+                'key': 'h',
+                'desc': 'Focus column at left',
+                'func' : function(e){
+                    // TODO
+                }
+            },
+            108: {
+                'key': 'l',
+                'desc': 'Focus column at right',
+                'func' : function(e){
+                    // TODO
+                }
+            },
+            101: {
+                'key': 'e',
+                'desc': 'Edit focused task',
+                'func' : function(e){
+                    // TODO
+                }
+            },
+            116: {
+                'key': 't',
+                'desc': 'Tag focused task',
+                'func' : function(e){
+                    // TODO
+                }
+            },
+            100: {
+                'key': 'd',
+                'desc': 'Delete focused task',
+                'func' : function(e){
+                    // TODO
+                }
+            },
         },
         init: function() {
             $(document).on('keypress', function(e){
-                //console.log(e.target)
                 // FIXME issue to unfocus from the search
                 // FIXME issue when focus is on a link or a button
                 if (e.target !== document.body) {
@@ -42,7 +91,7 @@
                 }
 
                 var code = (e.charCode == 0) ? e.keyCode : e.charCode
-                /**
+                /**/
                 console.log(e)
                 console.log(code)
                 /**/
