@@ -14,10 +14,21 @@
                     $('<div>')
                         .modal('shortcuthelp', data, {title: 'Help', id: 'help'})
                 }
+            },
+            99: {
+                'key': 'c',
+                'desc': 'Create a new task',
+                'func' : function(e){ $.App.ui.taskEditModal() }
+            },
+            47: {
+                'key': '/',
+                'desc': 'Perform search',
+                'func' : function(e){
+                    $('#page input.search-query').focus()
+                }
             }
         },
-        init: function(shortcuts) {
-            $.extend($.shortcuts.shortcuts, shortcuts)
+        init: function() {
             $(document).on('keypress', function(e){
                 //console.log(e.target)
                 // FIXME issue to unfocus from the search
@@ -25,6 +36,11 @@
                 if (e.target !== document.body) {
                     return true;
                 }
+
+                if (e.altKey || e.metaKey || e.ctrlKey || e.isComposing) {
+                    return true;
+                }
+
                 var code = (e.charCode == 0) ? e.keyCode : e.charCode
                 /**
                 console.log(e)
@@ -41,20 +57,7 @@
     }
 
     Zepto(function($) {
-        $.shortcuts.init({
-            99: {
-                'key': 'c',
-                'desc': 'Create a new task',
-                'func' : function(e){ $.App.ui.taskEditModal() }
-            },
-            47: {
-                'key': '/',
-                'desc': 'Perform search',
-                'func' : function(e){
-                    $('#page input.search-query').focus()
-                }
-            }
-        })
+        $.shortcuts.init()
     })
 
 })(Zepto)
