@@ -1,5 +1,4 @@
 import cherrypy
-from model import Model
 
 import models
 import auth
@@ -19,17 +18,4 @@ class Controller:
         models.session.commit();
 
         return {'success': True, 'datas': dashboard.toDict()}
-
-# deprecated
-class Dashboard(Model):
-    def __init__(self):
-        super(Dashboard, self).__init__()
-        self.collection = self.db.dashboard
-
-    def addDefault(self):
-        dashboard = {
-            'name': 'Default',
-            'userId': auth.userAuth.id
-        }
-        self.save(dashboard)
 
