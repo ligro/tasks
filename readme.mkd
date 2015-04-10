@@ -14,7 +14,6 @@ python2.7 index.py
 
 python2.7
 cherrypy3 (python-cherrypy3)
-mongodb
 python-flup
 xapian (python bindings and lib)
 
@@ -27,10 +26,6 @@ Still need something to migrate tasks to a dashboard (at least a script, may be 
 
 Try to use bootstrap js components.
 
-x migration script
-_ admin to check datas (sqlite concurrency issue)
-_ rewrite code to use new models
-
 ### next
 
  * make columns stackable horizontally only
@@ -38,7 +33,6 @@ _ rewrite code to use new models
  * review the api (allow to add notes from somewhere else
  * allow to set the prod environment
  * catch api errors to return json with the error
- * migrate to from mongo to sql backend
  * migrate to python3
  * migrate to bootstrap3
  * tag autocompletion
@@ -48,11 +42,12 @@ _ rewrite code to use new models
  * allow to color tags
  * send inscription mail
  * add forgot pwd link
- * do not refresh tasks if the query is empty (on task edition/suppression) just remove from the list
+ * do not refresh tasks if the query is empty (on task suppression) just remove from the list
  * add dashboard in URLS anchor
 
 ### done
 
+ * migrate to from mongo to sql backend
  * allow to save queries, and easily retrieve it
  * alert display (with modals)
  * fix issues when you are disconnected (display a login modal form)
