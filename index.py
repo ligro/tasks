@@ -107,9 +107,8 @@ class App:
             for tag in kw['tag'].split(','):
                 tag.strip()
                 task.tags.append(models.TaskTag(name=tag))
-        task.genId()
-        models.session.add(task)
-        models.session.commit()
+        task.save()
+        models.commit()
 
         # move that code into task.save
         search.index(task)
@@ -129,7 +128,7 @@ class App:
         search.delete(task)
         search.flush()
         models.session.delete(task)
-        models.session.commit()
+        models.commit()
         return {'success': True}
 
     @auth.require(auth.is_loggued())

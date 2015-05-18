@@ -15,7 +15,7 @@ class Controller:
 
         dashboard = models.Dashboard(userId=auth.userAuth.id, name=name)
         dashboard.save();
-        models.session.commit();
+        models.commit();
 
         return {'success': True, 'datas': dashboard.toDict()}
 

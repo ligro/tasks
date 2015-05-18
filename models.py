@@ -5,6 +5,7 @@ from sqlalchemy import Sequence, Column, Integer, String, UnicodeText, DateTime
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import sessionmaker, validates, relationship, class_mapper
 from sqlalchemy.sql import func
+from sqlalchemy.exc import DatabaseError
 
 import uuid, datetime
 
@@ -21,6 +22,14 @@ Base = declarative_base()
 engine = create_engine('sqlite:///task.db', connect_args={'check_same_thread':False})
 Session = sessionmaker(bind=engine)
 session = Session()
+
+def commit():
+    try:
+        session.commit()
+    except DatabaseError as e:
+        session.rollback()
+        import pprint
+        pprint.pprint(e)
 
 class DictableBase(object):
     def toDict(self, found=None):
