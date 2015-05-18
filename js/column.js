@@ -73,7 +73,7 @@
                     e.preventDefault();
 
                     (search != '') && (search += ' AND ')
-                    search += 'tag:"' + $(e.target).closest('a.jTagFilter').attr('data-tag') + '"'
+                    search += 'tag:"' + $(e.target).closest('a.jTagFilter').attr('data-tag').toLowerCase() + '"'
                     $searchInput.val(search)
                 })
                 .on('click', '.moreBtn button', function(e) {

@@ -10,7 +10,7 @@ import sqlalchemy
 import models
 
 SESSION_KEY = '_cp_id'
-userAuth = None
+userAuth = False
 
 def check_credentials(pseudo, password):
     """Verifies credentials for pseudo and password.

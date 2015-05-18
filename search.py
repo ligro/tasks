@@ -19,7 +19,7 @@ def query(query, dashboardId, limit, offset=0):
     else:
         q = xapian.Query.MatchAll
 
-    if auth.userAuth is not None:
+    if auth.userAuth:
         fq = xapian.Query(u'XA' + auth.userAuth.id)
         q = xapian.Query(xapian.Query.OP_FILTER, q, fq)
 
@@ -97,7 +97,8 @@ def index(task):
     # index text
     indexer.index_text(task.task)
 
-    doc.add_value(2, task.createdAt.isoformat())
+    if task.createdAt is not None:
+        doc.add_value(2, task.createdAt.isoformat())
 
     # index tag as value for facet
     # this is not the best way to do that
