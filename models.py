@@ -13,7 +13,7 @@ import logging
 
 logging.basicConfig()
 # TODO add this in config
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
 
 Base = declarative_base()
 
