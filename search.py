@@ -66,13 +66,15 @@ def reindex():
     limit = 50
 
     logs = []
+    from datetime import datetime
+    start = datetime.now()
     while True:
-        logs.append("get tasks from {} to {}".format(offset, limit))
+        logs.append("get tasks from {} to {} [{}]".format(offset, limit, datetime.now() - start))
         tasks = models.session.query(models.Task).limit(limit).offset(offset).all()
         if len(tasks) == 0:
             break
 
-        logs.append( "begin to index {} tasks".format(len(tasks)))
+        logs.append( "begin to index {} tasks [{}]".format(len(tasks), datetime.now() - start))
         for task in tasks:
             index(task)
 
