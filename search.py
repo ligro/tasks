@@ -169,8 +169,9 @@ class Index:
             self._sdb.close()
 
     def reopen(self):
-        self.close_index()
-        self.open_index()
+        self._sdb.reopen()
+        #self.close_index()
+        #self.open_index()
 
     def get_enquire(self):
         return xapian.Enquire(self._sdb)
