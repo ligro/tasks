@@ -27,19 +27,14 @@ def query(query, dashboardId, limit, offset=0):
         fq = xapian.Query(u'XD' + dashboardId)
         q = xapian.Query(xapian.Query.OP_FILTER, q, fq)
 
-    enquire = _index.get_enquire()
-    enquire.set_query(q)
-
-    # facet
-    spy1 = xapian.ValueCountMatchSpy(3)
-    enquire.add_matchspy(spy1)
-    spy2 = xapian.ValueCountMatchSpy(4)
-    enquire.add_matchspy(spy2)
-    spy3 = xapian.ValueCountMatchSpy(5)
-    enquire.add_matchspy(spy3)
+    try:
+        [matches, spy1, spy2, spy3] = _index.query(q, offset, limit)
+    except xapian.DatabaseModifiedError:
+        # reopen
+        _index.reopen()
+        [matches, spy1, spy2, spy3] = _index.query(q, offset, limit)
 
     tasks = {}
-    matches = enquire.get_mset(offset, limit, min(checkatlist, _index._sdb.get_doccount()))
     for match in matches:
         task = json.loads(match.document.get_data())
         tasks[task['id']] = task
@@ -61,9 +56,21 @@ def query(query, dashboardId, limit, offset=0):
         'tags': tags
     }
 
+def _emptyDir(directory):
+    for file in os.listdir(directory):
+        if os.path.isfile(os.path.join(directory, file)):
+            os.remove(os.path.join(directory, file))
+        else:
+            _emptyDir(os.path.join(directory, file))
+            os.rmdir(os.path.join(directory, file))
+
 def reindex():
     offset = 0
     limit = 50
+
+    _index.close_index()
+    _emptyDir(config['index']['path'])
+    _index.open_index()
 
     logs = []
     from datetime import datetime
@@ -204,6 +211,21 @@ class Index:
             idb = self._openWritableIndex()
             idb.delete_document(id)
             self._closeWritableIndex(idb)
+
+    def query(self, query, offset, limit):
+        enquire = _index.get_enquire()
+        enquire.set_query(query)
+
+        # facet
+        spy1 = xapian.ValueCountMatchSpy(3)
+        enquire.add_matchspy(spy1)
+        spy2 = xapian.ValueCountMatchSpy(4)
+        enquire.add_matchspy(spy2)
+        spy3 = xapian.ValueCountMatchSpy(5)
+        enquire.add_matchspy(spy3)
+
+        return [enquire.get_mset(offset, limit, min(checkatlist, _index._sdb.get_doccount())), spy1, spy2, spy3]
+
 
 
 _index = Index()
