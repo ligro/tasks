@@ -61,7 +61,8 @@ class TBase(DictableBase):
         self.id = str(uuid.uuid1())
 
     def save(self):
-        self.genId()
+        if self.id is None:
+            self.genId()
         session.add(self)
 
 class User(Base, TBase):

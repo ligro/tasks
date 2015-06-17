@@ -102,11 +102,24 @@ class App:
         if 'task' not in kw:
             return {'msgs': {'task': 'this can not be empty'}}
 
-        task = models.Task(userId=auth.userAuth.id, dashboardId=kw['dashboardId'], task=kw['task'])
+        if 'id' in kw:
+            task = models.session.query(models.Task).get(kw['id'])
+            if (task.userId != auth.userAuth.id):
+                return {'success': False, 'msg': 'Forbidden'}
+
+            task.dashboardId = kw['dashboardId']
+            task.task = kw['task']
+            # TODO enhance this
+            for tag in task.tags:
+                models.session.delete(tag)
+        else:
+            task = models.Task(userId=auth.userAuth.id, dashboardId=kw['dashboardId'], task=kw['task'])
+
         if 'tag' in kw:
             for tag in kw['tag'].split(','):
                 tag.strip()
                 task.tags.append(models.TaskTag(name=tag))
+
         task.save()
         models.commit()
 
