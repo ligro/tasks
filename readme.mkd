@@ -21,14 +21,12 @@ xapian (python bindings and lib)
 
 ### in progress
 
-add dashboard
-Still need something to migrate tasks to a dashboard (at least a script, may be something in the interface too) ?
-
-Try to use bootstrap js components.
+ * add dashboard, change task dashboard
+ * Try to use bootstrap js components for select ?
+ * make columns stackable horizontally only
 
 ### next
 
- * make columns stackable horizontally only
  * enhance shorcuts (navigation)
  * review the api (allow to add notes from somewhere else
  * allow to set the prod environment
@@ -44,6 +42,8 @@ Try to use bootstrap js components.
  * add forgot pwd link
  * do not refresh tasks if the query is empty (on task suppression) just remove from the list
  * add dashboard in URLS anchor
+
+ * should I rename this as notes instead of tasks ?
 
 ### done
 

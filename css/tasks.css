@@ -90,3 +90,35 @@ div.task a:hover {
     border-bottom: 1px solid #303030;
 }
 
+.createdAt {
+    font-size: 10px;
+}
+
+.jSelect {
+    width: 160px;
+}
+
+.jSelect .jSelectValue {
+    cursor: pointer;
+}
+
+.jSelect .jSelectDropDown {
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    top: 40px;
+    /* FIXME this is not the good way*/
+    left: 150px;
+    background-color: #FFF;
+    border: solid 2px;
+    border-radius: 2px;
+}
+
+.jSelect .jSelectDropDown div {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.jSelect .jSelectDropDown div:hover {
+    background-color: #EEE;
+}

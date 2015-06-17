@@ -18,8 +18,12 @@
                             <a href="/auth/logout" class="navbar-link">Log out</a>
                         </p>
                         <p class="navbar-text">
-                            <select class="jDashboard"></select>
-                            <a href="javascript:void(0);" class="jLink navbar-link" data-func="addtask">Create task</a>
+                            <a href="javascript:void(0);" class="jLink navbar-link icon-plus" data-func="addtask" title="Create task"></a>
+                            <span class="jDashboard jSelect">
+                                <i class="icon-chevron-down"></i>
+                                <span class="jSelectValue"> - </span>
+                                <span class="jSelectDropDown"> </span>
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -37,6 +41,7 @@
     </body>
     <script type="application/javascript" src="/js/zepto.min.js"></script>
     <script type="application/javascript" src="/js/dust-full-0.3.0.min.js"></script>
+    <script type="application/javascript" src="/js/select.js"></script>
     <script type="application/javascript" src="/js/utils.js"></script>
     <script type="application/javascript" src="/js/ui.js"></script>
     <script type="application/javascript" src="/js/modal.js"></script>
