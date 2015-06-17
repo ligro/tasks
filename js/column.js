@@ -65,6 +65,11 @@
                     // remove the entry in the array
                     nbColumns--
                     delete columns[$this.data('id')]
+
+                    $('#page .column')
+                    .removeClass('span' + (12/(nbColumns + 1) - 1))
+                    .addClass('span' + ((12/nbColumns) - 1))
+
                     // erase and save all queries
                     saveColumns()
                 })
