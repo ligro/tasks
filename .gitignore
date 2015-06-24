@@ -2,4 +2,4 @@
 index.db/
 task.db
 config.ini
-virtualenv/
+venv/
