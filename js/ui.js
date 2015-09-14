@@ -26,18 +26,18 @@
          },
          initTemplates: function(){
             // retrieve templates
-            $.ajax({
+            $.ajaxPromise({
                 type: 'GET',
                 url: '/templates/',
                 // type of data we are expecting in return:
-                dataType: 'json',
-                success: function(data){
-                    $.templates = data;
-                    $(document.body).trigger('templates:load')
-                },
-                error: function(xhr, type){
-                    $('#FatalError').show()
-                }
+                dataType: 'json'
+            })
+            .then(function(data){
+                $.templates = data;
+                $(document.body).trigger('templates:load')
+            })
+            .catch(function(data){
+                $('#FatalError').show()
             })
          },
          initNotifications: function(){

@@ -4,28 +4,28 @@
     $.App = {
         getUserTasks: function(userId) {
             // fixme use jcolumns ?
-            $.ajax({
+            $.ajaxPromise({
                 type: 'POST',
                 url: '/admin/usertasks',
-                data: {userId: userId},
-                success: function(data){
-                    var $tasks = $('.tasks'),
-                        tplData = {}
+                data: {userId: userId}
+            })
+            .then(function(data){
+                var $tasks = $('.tasks'),
+                    tplData = {}
 
-                    $tasks.html('')
-                    for (var i in data.tasks) {
-                        tplData = data.tasks[i]
-                        tplData.nobuttons = 1
-                        console.log(tplData)
-                        $.ui._loadTpl('task', tplData, function(err, out) {
-                            $tasks.append($(out))
-                        })
-                    }
-
-                },
-                error: function(xhr, type){
-                    $(document.body).trigger('notify', ['An error occured', 'error']);
+                $tasks.html('')
+                for (var i in data.tasks) {
+                    tplData = data.tasks[i]
+                    tplData.nobuttons = 1
+                    console.log(tplData)
+                    // TODO make it Promise
+                    $.ui._loadTpl('task', tplData, function(err, out) {
+                        $tasks.append($(out))
+                    })
                 }
+            })
+            .catch(function(data){
+                $(document.body).trigger('notify', ['An error occured', 'error']);
             })
         }
     }

@@ -97,17 +97,17 @@
                     var $task = $(this).parent()
                     e.preventDefault()
 
-                    $.ajax({
+                    $.ajaxPromise({
                         type: 'POST',
                         url: '/rmtask/',
-                        data: {id: $task.data('id')},
-                        success: function(data){
-                            $task.remove()
-                            $(document.body).trigger('notify', ['Task removed', 'info']);
-                        },
-                        error: function(xhr, type){
-                            $(document.body).trigger('notify', ['An error occured', 'error']);
-                        }
+                        data: {id: $task.data('id')}
+                    })
+                    .then(function(data){
+                        $task.remove()
+                        $(document.body).trigger('notify', ['Task removed', 'info']);
+                    })
+                    .catch(function(data){
+                        $(document.body).trigger('notify', ['An error occured', 'error']);
                     })
 
                     $(".column").trigger('task:refresh')

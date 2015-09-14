@@ -1,6 +1,20 @@
 ;(function($) {
     'use strict';
 
+    $.extend($, {
+        ajaxPromise: function(data) {
+            return new Promise(function (resolve, reject) {
+                data.success = function (data) {
+                    resolve(data)
+                }
+                data.error = function (xhr, type) {
+                    reject({'xhr': xhr, 'type': type})
+                }
+                $.ajax(data)
+            })
+        }
+    })
+
     $.extend($.fn, {
         // get fields of a form
         getFields: function(){
@@ -32,41 +46,41 @@
                 }
 
                 $.extend(data, $this.getFields())
-                $.ajax({
+                $.ajaxPromise({
                     type: $this.attr('method'),
                     url: $this.attr('action'),
-                    data: data,
-                    success: function(data){
-                        // data.success is mandatory for POST requests but not for others
-                        if ($this.attr('method') != 'POST' || data.success) {
-                            if (typeof $.App[$this.data('method')] !== 'undefined'
-                                && typeof $.App[$this.data('method')].success !== 'undefined'
-                            ) {
-                                $.App[$this.data('method')].success(data)
-                            }
-                            $this.trigger('post:success', data)
+                    data: data
+                })
+                .then(function(data){
+                    // data.success is mandatory for POST requests but not for others
+                    if ($this.attr('method') != 'POST' || data.success) {
+                        if (typeof $.App[$this.data('method')] !== 'undefined'
+                            && typeof $.App[$this.data('method')].success !== 'undefined'
+                        ) {
+                            $.App[$this.data('method')].success(data)
+                        }
+                        $this.trigger('post:success', data)
 
-                        } else if (typeof data.msgs === "undefined") {
-                            $(document.body).trigger('notify', ['An error occured', 'error']);
-                            $this.trigger('post:error')
-                        } else {
-                            var $input, field;
-                            for (field in data.msgs) {
-                                $input = $this.find('input[name="'+field+'"]')
-                                if ($input.length == 0) {
-                                    $(document.body).trigger('notify', [data.msgs[field], 'error']);
-                                    continue;
-                                }
-                                $input.errorMsg(data.msgs[field])
+                    } else if (typeof data.msgs === "undefined") {
+                        $(document.body).trigger('notify', ['An error occured', 'error']);
+                        $this.trigger('post:error')
+                    } else {
+                        var $input, field;
+                        for (field in data.msgs) {
+                            $input = $this.find('input[name="'+field+'"]')
+                            if ($input.length == 0) {
+                                $(document.body).trigger('notify', [data.msgs[field], 'error']);
+                                continue;
                             }
-                            $this.trigger('post:error', data)
+                            $input.errorMsg(data.msgs[field])
                         }
-                    },
-                    error: function(xhr, type){
-                        if (xhr.status != 403) {
-                            $(document.body).trigger('notify', ['An error occured', 'error']);
-                            $this.trigger('post:error')
-                        }
+                        $this.trigger('post:error', data)
+                    }
+                })
+                .catch(function(data){
+                    if (data.xhr.status != 403) {
+                        $(document.body).trigger('notify', ['An error occured', 'error']);
+                        $this.trigger('post:error')
                     }
                 })
             })
@@ -77,7 +91,7 @@
                     .after('<span class="jErrorMsg help-inline">'+msg+'</span>')
                     .closest('.control-group').addClass('error')
             })
-        }
+        },
     })
 
     Zepto(function($){
