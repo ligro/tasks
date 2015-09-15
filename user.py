@@ -44,6 +44,7 @@ class Controller:
         user = models.User(pseudo=kw['pseudo'], email=kw['email'], password=kw['password'])
         user.encodePwd()
         user.save()
+        models.commit()
 
         auth.logIn(user)
         return {'success': True}
