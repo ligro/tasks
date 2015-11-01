@@ -17,7 +17,7 @@
                     $dropDown.append('<div data-value="' + value + '">' + options[value] + '</div>')
                 }
 
-                $this.on('click', '.jSelectValue', function (e) {
+                $this.on('click', function (e) {
                     e.preventDefault()
                     $dropDown.toggle()
                 })
