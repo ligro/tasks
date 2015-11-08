@@ -2,6 +2,7 @@
     'use strict';
 
     var dashboards = {
+        list: {},
         $el: null,
         current: null,
         select: function(id) {
@@ -11,24 +12,40 @@
                 window.localStorage.setItem('dashboardId', dashboards.current)
             }
         },
+        getDashboard: function(){
+            if (dashboards.list == null) {
+                return Promise.resolve(dashboards.list);
+            }
+            return $.ajaxPromise({
+               type: 'GET',
+               url: '/dashboards',
+            })
+            .then(function(data){
+                if (data.length == 0) {
+                    $('#FatalError').show()
+                    return []
+                }
+
+                for (var dashboardId in data) {
+                    dashboards.list[dashboardId] = data[dashboardId].name
+                }
+
+                return dashboards.list
+            })
+            .catch(function(data){
+                console.error('getDashboard catch', data)
+                return []
+            })
+        },
         init: function() {
             dashboards.$el = $('.jDashboard')
-
             $(document).one('templates:load', function(e){
-                $.ajaxPromise({
-                    type: 'GET',
-                    url: '/dashboards',
-                }).then(function(data){
-                    if (data.length == 0) {
-                        $('#FatalError').show()
-                        return
-                    }
+                dashboards.getDashboard().then(function(dashboardsList){
                     var defaultDashboardId = false,
-                        options = {}
+                        options = dashboardsList
 
-                    for (var dashboardId in data) {
+                    for (var dashboardId in dashboardsList) {
                         !defaultDashboardId && (defaultDashboardId = dashboardId)
-                        options[dashboardId] = data[dashboardId].name
                     }
                     options[""] = "All my tasks"
                     options["add"] = "Add a new dashboard"
@@ -64,6 +81,7 @@
                     dashboards.select(currentDashboardId)
                 })
                 .catch(function(data){
+                    console.log('dashboards.init catch', data)
                     $('#FatalError').show()
                 })
             })

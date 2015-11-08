@@ -5,9 +5,16 @@
         select: function(options, selectedValue = null){
             return this.each(function (){
                 var $this = $(this),
-                    $dropDown = $this.find('.jSelectDropDown'),
-                    $value = $this.find('.jSelectValue'),
-                    first = true
+                    first = true,
+                    $dropDown,
+                    $value
+                $this.append('<i class="icon-chevron-down"></i>'
+                    + '<span class="jSelectValue"> - </span>'
+                    + '<span class="jSelectDropDown"> </span>'
+                )
+
+                $dropDown = $this.find('.jSelectDropDown')
+                $value = $this.find('.jSelectValue')
 
                 for (var value in options) {
                     if (first) {
