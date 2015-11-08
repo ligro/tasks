@@ -32,7 +32,7 @@
                 // FIXME should be merged with .on 'post:success'
                 $.modal.closeModal()
                 $(document.body).trigger('notify', ['Task saved', 'info'])
-
+                $(".column").trigger('task:refresh')
             },
             validate: function($form) {
                 var res = true;
@@ -73,11 +73,6 @@
              }
 
              $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
-                .on('post:success', function (e){
-                    // FIXME should be merged with addTask.success
-                    // reload all columns
-                    $(".column").trigger('task:refresh')
-                })
                 .modal('addTask', task, {
                     title: 'Task',
                     submit: {name: button, class: 'btn-primary'}
