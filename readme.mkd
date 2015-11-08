@@ -28,17 +28,16 @@ xapian (python bindings and lib)
 ### in progress
 
  * add dashboard, change task dashboard
- * Try to use bootstrap js components for select ?
- * make columns stackable horizontally only
 
 ### next
 
+ * enhance columns stackable horizontally only
  * enhance shorcuts (navigation)
- * review the api (allow to add notes from somewhere else
+ * review the api (allow to add notes from somewhere else)
  * allow to set the prod environment
  * catch api errors to return json with the error
  * migrate to python3
- * migrate to bootstrap3
+ * migrate to bootstrap3 or something else
  * tag autocompletion
  * task edition/creation inline
  * handle mobile view
