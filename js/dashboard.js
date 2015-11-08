@@ -1,6 +1,20 @@
 ;(function($) {
     'use strict';
 
+    $.extend($.fn, {
+        dashboardSelect: function(){
+            return this.each(function (){
+                var $this = $(this)
+                dashboards.getDashboard().then(function(dashboardsList){
+                    $this.select(dashboardsList, dashboards.current)
+                })
+                .catch(function(data){
+                    console.log('dashboardSelect', data);
+                })
+            })
+        }
+    })
+
     var dashboards = {
         list: {},
         $el: null,

@@ -76,6 +76,9 @@
                 .modal('addTask', task, {
                     title: 'Task',
                     submit: {name: button, class: 'btn-primary'}
+                },
+                function($modal){
+                    $modal.find('.jSelect').dashboardSelect()
                 })
          },
          abouts_link: function(){
