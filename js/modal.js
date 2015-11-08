@@ -2,7 +2,7 @@
     'use strict';
 
     $.extend($.fn, {
-        modal: function(tpl, data, modalData){
+        modal: function(tpl, data, modalData, end){
             var $this = $(this)
 
             $.ui._loadTpl(tpl, data, function(err, out) {
@@ -14,6 +14,10 @@
                     // add close event
                     $this.on('click', '.close', function(){ $this.remove() })
                     $('body').append($this)
+
+                    if (end) {
+                        end($this)
+                    }
                 })
             })
 
