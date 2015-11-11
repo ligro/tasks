@@ -6,7 +6,7 @@
     <div>
     {task}
     </div>
-    {#tags}<span class="label">{.}</span>&nbsp;{/tags}
-    {?dashboard}<br/><span class="label">{dashboard.name}</span>&nbsp;{/dashboard}
+    {#tags}<span class="label label-default">{.}</span>&nbsp;{/tags}
+    {?dashboard}<br/><span class="label label-default">{dashboard.name}</span>&nbsp;{/dashboard}
     {?createdAt}<br /><span class="createdAt">created at {createdAt}</span>{/createdAt}
 </div>
