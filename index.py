@@ -161,6 +161,7 @@ conf = {
             'js': 'application/javascript',
             'css': 'text/css',
             'png': 'image/png',
+            'woff': 'application/font-woff',
         }
     },
 }
