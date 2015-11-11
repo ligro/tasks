@@ -27,6 +27,10 @@ xapian (python bindings and lib)
 
 ### in progress
 
+ * update to bootstrap3
+  * add class="form-control" on all input with control
+  * fix alert
+  * fix modal
  * add dashboard, change task dashboard
 
 ### next
