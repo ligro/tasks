@@ -154,25 +154,15 @@ class App:
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 conf = {
-    '/js': {
+    '/static': {
         'tools.staticdir.on': True,
-        'tools.staticdir.dir': os.path.join(current_dir, 'js'),
-        'tools.staticdir.content_types': {'js': 'application/javascript'}
-    },
-    '/css': {
-        'tools.staticdir.on': True,
-        'tools.staticdir.dir': os.path.join(current_dir, 'css'),
+        'tools.staticdir.dir': os.path.join(current_dir, 'static'),
         'tools.staticdir.content_types': {
+            'js': 'application/javascript',
             'css': 'text/css',
-        }
-    },
-    '/img': {
-        'tools.staticdir.on': True,
-        'tools.staticdir.dir': os.path.join(current_dir, 'img'),
-        'tools.staticdir.content_types': {
             'png': 'image/png',
         }
-    }
+    },
 }
 
 def application(environ, start_response):
