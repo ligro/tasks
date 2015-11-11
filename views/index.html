@@ -20,7 +20,7 @@
             </div>
         </header>
         <section id="FatalError" style="display:none;">
-            <div class="alert alert-error">
+            <div class="alert alert-danger">
                 <strong>Fatal error</strong> a technical error occured, the site broken
             </div>
         </section>
@@ -34,12 +34,12 @@
                     <div class="logInBox">
                         <p>Log in</p>
                         <form action="/auth/login/" method="POST" class="jForm" data-method="login">
-                            <div class="control-group">
+                            <div class="form-group">
                                 <div class="controls">
                                     <input type="text" placeholder="Email or pseudo" name="login" />
                                 </div>
                             </div>
-                            <div class="control-group">
+                            <div class="form-group">
                                 <div class="controls">
                                     <input type="password" placeholder="Password" name="password" />
                                 </div>
@@ -50,27 +50,27 @@
                     <div class="createUserBox">
                         <p>You don't have an account, create it now :</p>
                         <form action="/user/create/" method="POST" class="jForm" data-method="userCreation">
-                            <div class="control-group">
+                            <div class="form-group">
                                 <div class="controls">
                                     <input type="text" placeholder="Pseudo" name="pseudo" />
                                 </div>
                             </div>
-                            <div class="control-group">
+                            <div class="form-group">
                                 <div class="controls">
                                     <input type="text" placeholder="Email" name="email" />
                                 </div>
                             </div>
-                            <div class="control-group">
+                            <div class="form-group">
                                 <div class="controls">
                                     <input type="password" placeholder="Password" name="password" />
                                 </div>
                             </div>
-                            <div class="control-group">
+                            <div class="form-group">
                                 <div class="controls">
                                     <input type="password" placeholder="Password Confirmation" name="password_conf" />
                                 </div>
                             </div>
-                            <input type="submit" class="btn jSubmit" value="Create your account" />
+                            <input type="submit" class="btn btn-default jSubmit" value="Create your account" />
                         </form>
                     </div>
                 </div>
