@@ -67,8 +67,8 @@
                     delete columns[$this.data('id')]
 
                     $('#page .column')
-                    .removeClass('span' + (12/(nbColumns + 1) - 1))
-                    .addClass('span' + ((12/nbColumns) - 1))
+                    .removeClass('col-sm-' + (12/(nbColumns + 1)))
+                    .addClass('col-sm-' + (12/nbColumns))
 
                     // erase and save all queries
                     saveColumns()
