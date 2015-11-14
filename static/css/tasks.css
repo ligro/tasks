@@ -1,29 +1,25 @@
 body {
-    position : relative;
-    padding-top : 40px;
     background-color : #FAFAFA;
 }
-
-section#page {
+/*
+div#page {
     height : auto;
     text-align: center;
     margin-top: 20px;
 }
 
-section#page section.column {
-    /*need a limit*/
-}
-
-section#page section.column textarea {
+/*
+div#page section.column textarea {
     width: 100%;
 }
+*/
 
-section#page section.column p {
+div#page section.column p {
     padding-left: 10px;
     text-align: left;
 }
 
-section#page .moreBtn {
+div#page .moreBtn {
     margin-bottom: 20px;
 }
 
