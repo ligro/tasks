@@ -8,18 +8,16 @@
         <link href="static/css/tasks.css" rel="stylesheet" media="screen">
     </head>
     <body>
-        <header class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
                     <a class="navbar-brand" href="">Tasks Manager</a>
-                    <div class="navbar-collapse collapse">
-                        <p class="navbar-text pull-right">
-                            <a href="javascript:void(0);" class="jLink navbar-link" data-func="abouts">Abouts</a>
-                        </p>
-                    </div>
                 </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="javascript:void(0);" class="jLink navbar-link" data-func="abouts">abouts</a></li>
+                </ul>
             </div>
-        </header>
+        </nav>
         <section id="FatalError" style="display:none;">
             <div class="alert alert-danger">
                 <strong>Fatal error</strong> a technical error occured, the site broken
