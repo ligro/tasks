@@ -1,16 +1,16 @@
-    <div class="form-group row">
+    <div class="form-group">
         {?id}
         <input type="hidden" name="id" value="{id}" />
         {/id}
         {?dashboardId}
         <input type="hidden" name="dashboardId" value="{dashboardId}" />
         {/dashboardId}
-        <textarea class="col-md-12" rows="4" name="task" placeholder="What is your task ?">{?task}{task}{/task}</textarea>
+        <textarea class="form-control" rows="4" name="task" placeholder="What is your task ?">{?task}{task}{/task}</textarea>
     </div>
-    <div class="row">
-        <input type="text" name="tag" placeholder="tags" {?tags}value="{tags}"{/tags}/>
+    <div class="form-group">
+        <input type="text" name="tag" class="form-control" placeholder="tags" {?tags}value="{tags}"{/tags}/>
         <span class="help-block">You can add several tags, by separating them by comma</span>
     </div>
-    <div class="row">
+    <div class="form-group">
         <span class="jDashboard jSelect"></span>
     </div>
