@@ -62,9 +62,6 @@ div.task {
     border: solid 2px #E8EDEE;
 }
 
-div.task span {
-    min-height : 10px;
-}
 
 div.task a {
     color : #344579;
