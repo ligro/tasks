@@ -8,13 +8,11 @@
       <div class="modal-body">
         {content|s}
       </div>
+      {?submit}
       <div class="modal-footer">
-        {?submit}
-        <div class="modal-footer">
-            <input type="submit" class="btn btn-default{?submit.class} {submit.class}{/submit.class}" value="{submit.name}" />
-        </div>
-        {/submit}
+          <input type="submit" class="btn btn-default{?submit.class} {submit.class}{/submit.class}" value="{submit.name}" />
       </div>
+      {/submit}
     </div>
   </div>
 </div>
