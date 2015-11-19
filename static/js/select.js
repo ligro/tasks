@@ -1,39 +1,50 @@
 ;(function($) {
     'use strict';
 
+    // TODO rename as dropdown
     $.extend($.fn, {
         select: function(options, selectedValue = null){
             return this.each(function (){
                 var $this = $(this),
-                    first = true,
+                    tplData = {},
                     $dropDown,
+                    $values,
                     $value
-                $this.append('<i class="icon-chevron-down"></i>'
-                    + '<span class="jSelectValue"> - </span>'
-                    + '<span class="jSelectDropDown"> </span>'
-                )
 
-                $dropDown = $this.find('.jSelectDropDown')
-                $value = $this.find('.jSelectValue')
+                tplData.selectedValue = selectedValue
 
-                for (var value in options) {
-                    if (first) {
-                        $value.html(options[value]).data('value', value)
-                        first = false
+                tplData.options = []
+                for (var id in options) {
+                    if (tplData.selectedValue == null) {
+                        tplData.selectedValue = options[id]
                     }
-                    $dropDown.append('<div data-value="' + value + '">' + options[value] + '</div>')
+                    tplData.options.push({id: id, value: options[id]})
                 }
 
-                $this.on('click', function (e) {
-                    e.preventDefault()
-                    $dropDown.toggle()
-                })
-                $this.on('click', '.jSelectDropDown div', function (e) {
-                    e.preventDefault()
-                    var $self = $(e.target)
-                    $value.html($self.html()).data('value', $self.data('value'))
-                    $dropDown.toggle()
-                    $this.trigger('select:change', [$self.data('value')])
+                $.ui._loadTpl('dropdown', tplData, function(err, out) {
+
+                    $this.append($(out));
+                    $dropDown = $this.find('.dropdown')
+                    $value = $this.find('.selectedValue')
+
+                    $this.on('click', function (e) {
+                        e.preventDefault()
+                        if ($dropDown.hasClass('open')) {
+                            $dropDown.removeClass('open')
+                        } else {
+                            $dropDown.addClass('open')
+                        }
+                    })
+
+                    $this.on('click', '.dropdown-menu li', function (e) {
+                        e.preventDefault()
+                        var $self = $(e.target)
+
+                        $value.html($self.html())
+
+                        $dropDown.removeClass('open')
+                        $this.trigger('select:change', [$self.data('id')])
+                    })
                 })
             })
         }

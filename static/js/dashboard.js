@@ -6,7 +6,7 @@
             return this.each(function (){
                 var $this = $(this)
                 dashboards.getDashboard().then(function(dashboardsList){
-                    $this.select(dashboardsList, dashboards.current)
+                    $this.select(dashboardsList, dashboardsList[dashboards.current])
                 })
                 .catch(function(data){
                     console.log('dashboardSelect', data);
@@ -55,27 +55,18 @@
             dashboards.$el = $('.jDashboard')
             $(document).one('templates:load', function(e){
                 dashboards.getDashboard().then(function(dashboardsList){
-                    var defaultDashboardId = false,
-                        options = dashboardsList
-
-                    for (var dashboardId in dashboardsList) {
-                        !defaultDashboardId && (defaultDashboardId = dashboardId)
-                    }
-                    options[""] = "All my tasks"
-                    options["add"] = "Add a new dashboard"
-
-                    dashboards.$el.select(options)
+                    dashboards.buildDropDown(dashboardsList, window.localStorage.getItem('dashboardId'));
 
                     dashboards.$el.on('select:change', function (e, id) {
                         console.log('select:change', id)
+
                         if (id == 'add') {
                             // launch modal to add a new dashboard
                             $('<form class="jForm" action="/dashboard/add" method="POST">')
                             .on('post:success', function (e, data){
-                                // FIXME doesn't work
-                                dashboards.$el.val(data.datas.id)
-                                    dashboards.select(data.datas.id)
-                                    $.modal.closeModal()
+                                dashboardsList[data.datas.id] = data.datas.name
+                                dashboards.buildDropDown(dashboardsList, data.datas.id);
+                                $.modal.closeModal()
                             })
                             .modal('addDashboard', {}, {
                                 title: 'Dashboard',
@@ -87,18 +78,27 @@
                         }
                     })
 
-                    var currentDashboardId = window.localStorage.getItem('dashboardId')
-                    if (!currentDashboardId) {
-                        currentDashboardId = defaultDashboardId
-                    }
-                    dashboards.$el.val(currentDashboardId)
-                    dashboards.select(currentDashboardId)
                 })
                 .catch(function(data){
                     console.log('dashboards.init catch', data)
                     $('#FatalError').show()
                 })
             })
+        },
+        buildDropDown: function(dashboardsList, defaultDashboardId) {
+            var options = {}
+
+            for (var dashboardId in dashboardsList) {
+                !defaultDashboardId && (defaultDashboardId = dashboardId)
+                options[dashboardId] = dashboardsList[dashboardId]
+            }
+            options[""] = "All my tasks"
+            options["add"] = "Add a new dashboard"
+
+            dashboards.$el.html('')
+            dashboards.$el.select(options, options[defaultDashboardId])
+
+            dashboards.select(defaultDashboardId)
         }
     }
 

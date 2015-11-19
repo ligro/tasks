@@ -1,0 +1,11 @@
+<div class="dropdown">
+  <button class="btn btn-default btn-sm dropdown-toggle" id="taskdropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="selectedValue">{selectedValue}</span>&nbsp;
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="taskdropdown">
+    {#options}
+    <li><a href="#" data-id="{.id}">{.value}</a></li>
+    {/options}
+  </ul>
+</div>
