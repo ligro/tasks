@@ -7,8 +7,8 @@
             debug: ['Dev debug', 'alert-info'],
             info: ['Information', 'alert-info', 3000],
             success: ['Success', 'alert-success', 3000],
-            warning: ['Warning', '', 5000],
-            error: ['Error', 'alert-error']
+            warning: ['Warning', 'alert-warning', 5000],
+            error: ['Error', 'alert-danger']
         },
         notifyId: 0,
 
