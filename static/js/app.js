@@ -22,7 +22,8 @@
                 $("#page").append($(out))
                 columns = $('#page .column')
                 $(columns[columns.length - 1]).column()
-                columns.removeClass('col-sm-' + (12/(columns.length) - 1))
+
+                columns.removeClass('col-sm-' + (12/(columns.length - 1)))
                 columns.addClass('col-sm-' + (12/columns.length))
             })
         },
