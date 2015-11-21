@@ -72,6 +72,10 @@ div.task a:hover {
     color : #344579;
 }
 
+div.tags a:focus, div.tags a:hover {
+    text-decoration: none;
+}
+
 /* help modal */
 /* TODO */
 #help {
