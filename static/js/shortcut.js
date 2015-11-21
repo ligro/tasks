@@ -25,7 +25,7 @@
                 'desc': 'Perform search',
                 'func' : function(e){
                     // FIXME found the current column, or take the first one
-                    $('#page input.search-query').focus()
+                    $('#page input.jSearchQuery').focus()
                 }
             },
             106: {

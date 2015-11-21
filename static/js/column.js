@@ -23,7 +23,7 @@
 
         $.each(columns, function(i, column) {
             if (typeof column !== 'undefined') {
-                dashboardsQueries[$.App.dashboardId].push(column.element.find('input.search-query').val())
+                dashboardsQueries[$.App.dashboardId].push(column.element.find('input.jSearchQuery')[0].value)
             }
         })
 
@@ -162,23 +162,20 @@
             var cpt = 0,
             dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
 
+console.log('load', dashboardId, dashboardsQueries[dashboardId])
             $.App.dashboardId = dashboardId
 
             // reset
             $('#page .column').remove()
-            columns = []
+            columns = {}
             nbColumns = 0
             columnsId = 0
 
-            if (dashboardsQueries && typeof dashboardsQueries[dashboardId] !== 'undefined') {
-                if (dashboardsQueries[dashboardId].length) {
-                    $.each(dashboardsQueries[dashboardId], function(i, query){
-                        $.App.addColumn(query)
-                    })
-                }
-            }
-
-            if (columns == 0) {
+            if (dashboardsQueries && typeof dashboardsQueries[dashboardId] !== 'undefined' && dashboardsQueries[dashboardId].length) {
+                $.each(dashboardsQueries[dashboardId], function(i, query){
+                    $.App.addColumn(query)
+                })
+            } else {
                 $.App.addColumn()
             }
         })
