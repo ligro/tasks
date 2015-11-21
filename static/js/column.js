@@ -35,7 +35,7 @@
             return this.each(function (){
                 var $this = $(this),
                    $searchForm = $this.find(".jFormSearch"),
-                   $searchInput = $searchForm.find("input.search-query"),
+                   $searchInput = $searchForm.find("input.jSearchQuery"),
                    $tags = $this.find('.tags'),
                    $totalTask = $this.find('.totalTask'),
                    $tasks = $this.find('.tasks'),
