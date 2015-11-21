@@ -29,6 +29,10 @@ div.task {
     border: solid 2px #FAFAFA;
 }
 
+div.tags .label{
+    display: inline-block;
+}
+
 div.tags a:focus, div.tags a:hover {
     text-decoration: none;
 }
