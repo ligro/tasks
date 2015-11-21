@@ -80,6 +80,7 @@
                 },
                 function($modal){
                     $modal.find('.jSelect').dashboardSelect()
+                    $modal.find('textarea')[0].focus()
                 })
          },
          abouts_link: function(){
