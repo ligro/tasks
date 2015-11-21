@@ -11,11 +11,11 @@
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="">Tasks Manager</a>
-                </div>
-                <ul class="nav navbar-nav navbar-right">
+                  <a class="navbar-brand" href="">Tasks Manager</a>
+                  <ul class="nav navbar-nav navbar-right">
                     <li><a href="javascript:void(0);" class="jLink navbar-link" data-func="abouts">abouts</a></li>
-                </ul>
+                  </ul>
+                </div>
             </div>
         </nav>
         <section id="FatalError" style="display:none;">
@@ -25,13 +25,15 @@
         </section>
         <section id="page" class="container-fluid">
             <div class="row">
-                <div class="col-sm-offset-2 col-sm-4 whatIsThisBox">
-                    What is Task manager
+                <div class="col-sm-6">
+                    <h3 class="text-center">What is Task manager</h3>
+                    <p>Find a nice description of the product.</p>
+                    <p>Also add a nice screenshot.</p>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-offset-0 col-sm-4 col-xs-offset-2 col-xs-8">
                     <div class="alerts"></div>
-                    <div class="logInBox">
-                        <p>Log in</p>
+                    <div class="text-center">
+                        <h4>Log in</h4>
                         <form action="/auth/login/" method="POST" class="jForm" data-method="login">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Email or pseudo" name="login" />
@@ -42,8 +44,8 @@
                             <input type="submit" class="btn btn-primary jSubmit" value="Log in" />
                         </form>
                     </div>
-                    <div class="createUserBox">
-                        <p>You don't have an account, create it now :</p>
+                    <div class="text-center">
+                        <h4>Or create an account :</h4>
                         <form action="/user/create/" method="POST" class="jForm" data-method="userCreation">
                             <div class="form-group">
                                 <input type="text" placeholder="Pseudo" class="form-control" name="pseudo" />

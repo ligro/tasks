@@ -1,18 +1,6 @@
 body {
     background-color : #FAFAFA;
 }
-/*
-div#page {
-    height : auto;
-    text-align: center;
-    margin-top: 20px;
-}
-
-/*
-div#page section.column textarea {
-    width: 100%;
-}
-*/
 
 div#page section.column p {
     padding-left: 10px;
@@ -27,19 +15,6 @@ div#page .moreBtn {
     position: absolute;
     right: 10px;
     z-index: 1060;
-}
-
-div.whatIsThisBox {
-    text-align: center;
-}
-
-div.logInBox, div.createUserBox {
-    text-align: center;
-}
-
-div.logInBox input, div.createUserBox input {
-    margin-left: auto;
-    margin-right: auto;
 }
 
 div.tasks {
