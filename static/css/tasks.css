@@ -1,14 +1,11 @@
 body {
     background-color : #FAFAFA;
+    margin-bottom: 20px;
 }
 
 div#page section.column p {
     padding-left: 10px;
     text-align: left;
-}
-
-div#page .moreBtn {
-    margin-bottom: 20px;
 }
 
 .alerts {
@@ -21,76 +18,35 @@ div.tasks {
     margin-bottom: 20px;
 }
 
-div.tasks:after {
-    clear: both;
-}
-
 div.task:hover {
     border: solid 2px #C8CDEE;
 }
 
 div.task {
     padding : 5px;
-    margin-bottom : 2px;
     border-radius: 2px;
     background-color: #E8EDEE;
-    border: solid 2px #E8EDEE;
-}
-
-
-div.task a {
-    color : #344579;
-}
-
-div.task a:hover {
-    text-decoration : none;
-    color : #344579;
+    border: solid 2px #FAFAFA;
 }
 
 div.tags a:focus, div.tags a:hover {
     text-decoration: none;
 }
 
-/* help modal */
-/* TODO */
-#help {
-    color: #F89406;
+.task .createdAt {
+    font-size: 10px;
+}
+
+.modal {
     background: none repeat scroll 0 0 rgba(34, 34, 34, 0.8);
+}
+
+#help .modal-content {
+    background: #000 none repeat scroll 0px center;
+    opacity: 0.7;
+    color: #D8B406;
 }
 
 #help .modal-header {
     border-bottom: 1px solid #303030;
-}
-
-.createdAt {
-    font-size: 10px;
-}
-
-.jSelect {
-    width: 160px;
-}
-
-.jSelect {
-    cursor: pointer;
-}
-
-.jSelect .jSelectDropDown {
-    display: none;
-    cursor: pointer;
-    position: absolute;
-    top: 40px;
-    /* FIXME this is not the good way*/
-    left: 150px;
-    background-color: #FFF;
-    border: solid 2px;
-    border-radius: 2px;
-}
-
-.jSelect .jSelectDropDown div {
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.jSelect .jSelectDropDown div:hover {
-    background-color: #EEE;
 }
