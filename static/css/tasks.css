@@ -1,0 +1,52 @@
+body {
+    background-color : #FAFAFA;
+    margin-bottom: 20px;
+}
+
+div#page section.column p {
+    padding-left: 10px;
+    text-align: left;
+}
+
+.alerts {
+    position: absolute;
+    right: 10px;
+    z-index: 1060;
+}
+
+div.tasks {
+    margin-bottom: 20px;
+}
+
+div.task:hover {
+    border: solid 2px #C8CDEE;
+}
+
+div.task {
+    padding : 5px;
+    border-radius: 2px;
+    background-color: #E8EDEE;
+    border: solid 2px #FAFAFA;
+}
+
+div.tags a:focus, div.tags a:hover {
+    text-decoration: none;
+}
+
+.task .createdAt {
+    font-size: 10px;
+}
+
+.modal {
+    background: none repeat scroll 0 0 rgba(34, 34, 34, 0.8);
+}
+
+#help .modal-content {
+    background: #000 none repeat scroll 0px center;
+    opacity: 0.7;
+    color: #D8B406;
+}
+
+#help .modal-header {
+    border-bottom: 1px solid #303030;
+}

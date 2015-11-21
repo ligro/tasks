@@ -23,7 +23,7 @@
 
         $.each(columns, function(i, column) {
             if (typeof column !== 'undefined') {
-                dashboardsQueries[$.App.dashboardId].push(column.element.find('input.search-query').val())
+                dashboardsQueries[$.App.dashboardId].push(column.element.find('input.jSearchQuery')[0].value)
             }
         })
 
@@ -35,7 +35,7 @@
             return this.each(function (){
                 var $this = $(this),
                    $searchForm = $this.find(".jFormSearch"),
-                   $searchInput = $searchForm.find("input.search-query"),
+                   $searchInput = $searchForm.find("input.jSearchQuery"),
                    $tags = $this.find('.tags'),
                    $totalTask = $this.find('.totalTask'),
                    $tasks = $this.find('.tasks'),
@@ -67,8 +67,8 @@
                     delete columns[$this.data('id')]
 
                     $('#page .column')
-                    .removeClass('span' + (12/(nbColumns + 1) - 1))
-                    .addClass('span' + ((12/nbColumns) - 1))
+                    .removeClass('col-sm-' + (12/(nbColumns + 1)))
+                    .addClass('col-sm-' + (12/nbColumns))
 
                     // erase and save all queries
                     saveColumns()
@@ -162,23 +162,20 @@
             var cpt = 0,
             dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
 
+console.log('load', dashboardId, dashboardsQueries[dashboardId])
             $.App.dashboardId = dashboardId
 
             // reset
             $('#page .column').remove()
-            columns = []
+            columns = {}
             nbColumns = 0
             columnsId = 0
 
-            if (dashboardsQueries && typeof dashboardsQueries[dashboardId] !== 'undefined') {
-                if (dashboardsQueries[dashboardId].length) {
-                    $.each(dashboardsQueries[dashboardId], function(i, query){
-                        $.App.addColumn(query)
-                    })
-                }
-            }
-
-            if (columns == 0) {
+            if (dashboardsQueries && typeof dashboardsQueries[dashboardId] !== 'undefined' && dashboardsQueries[dashboardId].length) {
+                $.each(dashboardsQueries[dashboardId], function(i, query){
+                    $.App.addColumn(query)
+                })
+            } else {
                 $.App.addColumn()
             }
         })

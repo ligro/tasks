@@ -34,7 +34,7 @@
             return this.each(function(){
                 var $this = $(this)
 
-                $this.find('.control-group').removeClass('error')
+                $this.find('.form-group').removeClass('has-error')
                 $this.find('.jErrorMsg').remove()
 
                 if (typeof $.App[$this.data('method')] !== 'undefined'
@@ -88,8 +88,8 @@
         errorMsg: function(msg) {
             return this.each(function(){
                 $(this)
-                    .after('<span class="jErrorMsg help-inline">'+msg+'</span>')
-                    .closest('.control-group').addClass('error')
+                    .after('<span class="jErrorMsg help-block">'+msg+'</span>')
+                    .closest('.form-group').addClass('has-error')
             })
         },
     })
