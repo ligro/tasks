@@ -9,7 +9,8 @@
                     tplData = {},
                     $dropDown,
                     $values,
-                    $value
+                    $value,
+                    $input
 
                 tplData.selectedValue = selectedValue
 
@@ -26,6 +27,7 @@
                     $this.append($(out));
                     $dropDown = $this.find('.dropdown')
                     $value = $this.find('.selectedValue')
+                    $input = $this.find('input')
 
                     $this.on('click', function (e) {
                         e.preventDefault()
@@ -41,6 +43,7 @@
                         var $self = $(e.target)
 
                         $value.html($self.html())
+                        $input.val($self.data('id'))
 
                         $dropDown.removeClass('open')
                         $this.trigger('select:change', [$self.data('id')])

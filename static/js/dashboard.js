@@ -2,11 +2,12 @@
     'use strict';
 
     $.extend($.fn, {
-        dashboardSelect: function(){
+        dashboardSelect: function(selectedDashboard = null){
+            selectedDashboard = selectedDashboard || dashboards.current
             return this.each(function (){
                 var $this = $(this)
                 dashboards.getDashboard().then(function(dashboardsList){
-                    $this.select(dashboardsList, dashboardsList[dashboards.current])
+                    $this.select(dashboardsList, dashboardsList[selectedDashboard])
                 })
                 .catch(function(data){
                     console.log('dashboardSelect', data);

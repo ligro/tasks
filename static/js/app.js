@@ -69,17 +69,13 @@
                  button = 'Create'
              }
 
-             if ($.App.dashboardId !== null) {
-                task.dashboardId = $.App.dashboardId;
-             }
-
              $('<form class="jForm" action="/savetask/" method="POST" data-method="addTask">')
                 .modal('addTask', task, {
                     title: 'Task',
                     submit: {name: button, class: 'btn-primary'}
                 },
                 function($modal){
-                    $modal.find('.jSelect').dashboardSelect()
+                    $modal.find('.jSelect').dashboardSelect(task.dashboardId)
                     $modal.find('textarea')[0].focus()
                 })
          },
