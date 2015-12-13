@@ -1,0 +1,42 @@
+# TODO
+
+## in progress
+
+
+## next
+
+ * fix refresh to be sure that data will be returned updated (may be issue with
+   time to commit in xapian)
+ * enhance columns stackable horizontally only
+ * enhance shorcuts (navigation)
+ * review the api (allow to add notes from somewhere else)
+ * allow to set the prod environment
+ * catch api errors to return json with the error
+ * migrate to python3
+ * tag autocompletion
+ * task edition/creation inline
+ * merge and cache static files (css, js) for production
+ * allow to color tags
+ * send inscription mail
+ * add forgot pwd link
+ * add dashboard in URLS anchor
+
+ * should I rename this as notes instead of tasks ?
+
+## done
+
+ * add dashboard, change task dashboard
+ * switch to bootstrap3
+ * migrate to from mongo to sql backend
+ * allow to save queries, and easily retrieve it
+ * alert display (with modals)
+ * fix issues when you are disconnected (display a login modal form)
+ * handle multiple column view
+ * fix the task edition
+ * easily filter on tags
+ * facetting on tag
+ * handle pagination
+ * add inscription, login
+ * index the db
+ * allow to search in the db
+ * add filtering (choose a technology)
