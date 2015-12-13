@@ -23,7 +23,6 @@ python2.7 index.py
 
 ## depends
 
-python2.7
-cherrypy3 (python-cherrypy3)
-xapian (python bindings and lib)
-
+* python2.7
+* cherrypy3 (python-cherrypy3)
+* xapian (python bindings and lib)
