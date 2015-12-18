@@ -162,7 +162,6 @@
             var cpt = 0,
             dashboardsQueries = JSON.parse(window.localStorage.getItem('dashboards:queries'))
 
-console.log('load', dashboardId, dashboardsQueries[dashboardId])
             $.App.dashboardId = dashboardId
 
             // reset
