@@ -99,7 +99,7 @@
 
                     $.ajaxPromise({
                         type: 'POST',
-                        url: '/api/rmtask/',
+                        url: '/api/task/rm',
                         data: {id: $task.data('id')}
                     })
                     .then(function(data){

@@ -69,7 +69,7 @@
                  button = 'Create'
              }
 
-             $('<form class="jForm" action="/api/savetask/" method="POST" data-method="addTask">')
+             $('<form class="jForm" action="/api/task/save" method="POST" data-method="addTask">')
                 .modal('addTask', task, {
                     title: 'Task',
                     submit: {name: button, class: 'btn-primary'}

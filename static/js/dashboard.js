@@ -33,7 +33,7 @@
             }
             return $.ajaxPromise({
                type: 'GET',
-               url: '/api/dashboards',
+               url: '/api/dashboard/',
             })
             .then(function(data){
                 if (data.length == 0) {
