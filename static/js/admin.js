@@ -6,7 +6,7 @@
             // fixme use jcolumns ?
             $.ajaxPromise({
                 type: 'POST',
-                url: '/admin/usertasks',
+                url: '/admin/api/usertasks',
                 data: {userId: userId}
             })
             .then(function(data){

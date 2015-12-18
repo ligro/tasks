@@ -33,7 +33,7 @@
             }
             return $.ajaxPromise({
                type: 'GET',
-               url: '/dashboards',
+               url: '/api/dashboards',
             })
             .then(function(data){
                 if (data.length == 0) {
@@ -63,7 +63,7 @@
 
                         if (id == 'add') {
                             // launch modal to add a new dashboard
-                            $('<form class="jForm" action="/dashboard/add" method="POST">')
+                            $('<form class="jForm" action="/api/dashboard/add" method="POST">')
                             .on('post:success', function (e, data){
                                 dashboardsList[data.datas.id] = data.datas.name
                                 dashboards.buildDropDown(dashboardsList, data.datas.id);

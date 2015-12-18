@@ -22,7 +22,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="javascript:void(0);" class="jLink navbar-link" data-func="abouts">abouts</a></li>
-                    <li><a href="/auth/logout" class="navbar-link">Log out</a></li>
+                    <li><a href="/api/auth/logout" class="navbar-link">Log out</a></li>
                 </ul>
             </div>
         </nav>
@@ -34,7 +34,7 @@
         <section id="page" class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <form action="user" class="jForm jFormUser form-inline">
+                    <form action="/admin/api/user" class="jForm jFormUser form-inline">
                          <div class="input-group">
                              <input type="hidden" name="limit" value="20">
                              <input type="text" name="pseudo" placeholder="pseudo" class="input-small">

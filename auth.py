@@ -111,7 +111,7 @@ def all_of(*conditions):
 
 # Controller to provide login and logout actions
 
-class controller(object):
+class Controller(object):
 
     def on_login(self, pseudo):
         """Called on successful login"""

@@ -2,8 +2,7 @@ import os
 import cherrypy
 from models import session, User, Dashboard, Task
 
-# admin area
-class Admin:
+class Controller:
 
     # all methods in this controller (and subcontrollers) is
     # open only to members of the admin group
@@ -11,6 +10,9 @@ class Admin:
     _cp_config = {
         #'auth.require': [member_of('admin')]
     }
+
+    def __init__(self):
+        self.api = ApiController()
 
     @cherrypy.expose
     def index(self):
@@ -20,6 +22,8 @@ class Admin:
         with open(tpl, 'r') as f:
             lines = f.readlines()
         return lines
+
+class ApiController:
 
     @cherrypy.expose
     @cherrypy.tools.json_out()

@@ -98,7 +98,7 @@
         $(document).on('ajaxError', function(e){
             if (e.data[0].status == 403) {
                 // you should login
-                $('<form action="/auth/login/" method="POST" class="jForm" data-method="login">')
+                $('<form action="/api/auth/login/" method="POST" class="jForm" data-method="login">')
                     .on('post:success', function (e){
                         e.target.remove()
                     })
