@@ -11,15 +11,16 @@ import uuid, datetime
 
 import logging
 
+from taskconfig import config
+
 logging.basicConfig()
 # TODO add this in config
 logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
 
 Base = declarative_base()
 
-# TODO add this in config
 # TODO force to use only one connection per thread with sqlite
-engine = create_engine('sqlite:///task.db', connect_args={'check_same_thread':False})
+engine = create_engine(config['database']['dsn'], connect_args={'check_same_thread':False})
 Session = sessionmaker(bind=engine)
 session = Session()
 

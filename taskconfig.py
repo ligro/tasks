@@ -6,23 +6,20 @@ cp.read('config.ini')
 
 config = {
         'httpserver': {
-            'host': '0.0.0.0',
+            'host': '127.0.0.1',
             'port': 8080,
             },
         'database': {
-            'host': None,
-            'port': None,
-            'db_name': 'task'
+            'dsn': 'sqlite:///data/task.db',
             },
         'index': {
-            'path': 'index.db'
+            'path': 'data/index.db'
             }
         }
 
 
 spec = {
         'httpserver': { 'port': 'getint' },
-        'database': { 'port': 'getint' }
         }
 
 for section in cp.sections():
