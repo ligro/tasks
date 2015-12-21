@@ -33,10 +33,14 @@
                 dataType: 'json'
             })
             .then(function(data){
+                if (Object.keys(data).length == 0) {
+                    return Promise.reject('no template found');
+                }
                 $.templates = data;
                 $(document.body).trigger('templates:load')
             })
             .catch(function(data){
+                console.log('CATCH initTemplates', data);
                 $('#FatalError').show()
             })
          },
@@ -80,6 +84,9 @@
              })
          },
         _loadTpl: function(name, data, end) {
+            if (typeof $.templates[name] === 'undefined') {
+                throw 'template ' + name + ' not found';
+            }
             typeof dust.cache[name] === 'undefined'
                 && dust.loadSource(dust.compile($.templates[name], name))
 
