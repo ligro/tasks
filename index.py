@@ -1,6 +1,6 @@
 import os, glob
 import cherrypy
-import admin, auth, api
+from controller import admin, auth, api
 from taskconfig import config
 
 class App:

@@ -18,7 +18,7 @@ class Controller:
         if not isinstance(limit, int):
             limit = int(limit)
 
-        results = search.query(query, dashboardId, limit, offset)
+        results = search.query(query, auth.userAuth.id, dashboardId, limit, offset)
 
         return results
 

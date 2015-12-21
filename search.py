@@ -5,7 +5,6 @@ import json
 from collections import OrderedDict
 import threading
 
-import auth
 from taskconfig import config
 import models
 
@@ -13,14 +12,14 @@ lang = 'en'
 # for facet query
 checkatlist = 10000
 
-def query(query, dashboardId, limit, offset=0):
+def query(query, userId, dashboardId, limit, offset=0):
     if len(query):
         q = _index.query_parser.parse_query(query)
     else:
         q = xapian.Query.MatchAll
 
-    if auth.userAuth:
-        fq = xapian.Query(u'XA' + auth.userAuth.id)
+    if userId:
+        fq = xapian.Query(u'XA' + userId)
         q = xapian.Query(xapian.Query.OP_FILTER, q, fq)
 
     if dashboardId is not None:
