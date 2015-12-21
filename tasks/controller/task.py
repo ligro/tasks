@@ -1,8 +1,7 @@
 import cherrypy
 
-import models
+from tasks import models, search
 import auth
-import search
 
 class Controller:
 

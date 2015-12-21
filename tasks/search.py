@@ -5,7 +5,7 @@ import json
 from collections import OrderedDict
 import threading
 
-from taskconfig import config
+from tasks.config import config
 import models
 
 lang = 'en'

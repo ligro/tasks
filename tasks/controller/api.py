@@ -1,8 +1,4 @@
-import cherrypy
-import auth, user, dashboard, task
-from taskconfig import config
-
-import models
+import user, dashboard, task
 
 class Controller:
 

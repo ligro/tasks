@@ -7,7 +7,7 @@
 import cherrypy
 import sqlalchemy
 
-import models
+from tasks import models
 
 SESSION_KEY = '_cp_id'
 userAuth = False

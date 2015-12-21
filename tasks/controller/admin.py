@@ -1,6 +1,6 @@
 import os
 import cherrypy
-from models import session, User, Dashboard, Task
+from tasks.models import session, User, Dashboard, Task
 
 class Controller:
 

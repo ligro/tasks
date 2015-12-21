@@ -10,7 +10,7 @@ import uuid, datetime
 
 import logging
 
-from taskconfig import config
+from tasks.config import config
 
 logging.basicConfig()
 # TODO add this in config
