@@ -5,10 +5,6 @@ from tasks import Tasks
 from tasks.config import config
 
 
-#def application(environ, start_response):
-#    cherrypy.tree.mount(Tasks(), '/', conf)
-#    return cherrypy.tree(environ, start_response)
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 conf = {
     '/static': {
@@ -23,7 +19,14 @@ conf = {
     },
 }
 
-cherrypy.server.socket_port = config['httpserver']['port']
-cherrypy.server.socket_host = config['httpserver']['host']
-cherrypy.quickstart(Tasks(), '/', conf)
+# needed for uwsgi
+def application(environ, start_response):
+    cherrypy.tree.mount(Tasks(), '/', conf)
+    return cherrypy.tree(environ, start_response)
+
+# if we don't use uwsgi
+if __name__ == '__main__':
+    cherrypy.server.socket_port = config['httpserver']['port']
+    cherrypy.server.socket_host = config['httpserver']['host']
+    cherrypy.quickstart(Tasks(), '/', conf)
 
