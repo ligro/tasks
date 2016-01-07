@@ -35,16 +35,17 @@ def query(query, userId, dashboardId, limit, offset=0):
 
     tasks = {}
     for match in matches:
-        task = json.loads(match.document.get_data())
+        task = json.loads(match.document.get_data().decode())
         tasks[task['id']] = task
 
     # facet
     tags = {}
     for spy in [spy1, spy2, spy3]:
         for facet in list(spy.values()):
-            if facet.term not in tags:
-                tags[facet.term] = 0
-            tags[facet.term] += facet.termfreq
+            tagName = facet.term.decode()
+            if tagName not in tags:
+                tags[tagName] = 0
+            tags[tagName] += facet.termfreq
 
     # sort facets
     tags = OrderedDict(sorted(list(tags.items()), key=lambda t: t[1], reverse=True))
