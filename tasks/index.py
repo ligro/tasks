@@ -12,6 +12,7 @@ class Tasks:
         # todo move that in config file
         # todo check this dir exists or create it
         'tools.sessions.storage_path': "/tmp/sessions/dev_tasks",
+        'tools.sessions.locking': 'early',
         'tools.auth.on': True
     }
 
