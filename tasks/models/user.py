@@ -2,7 +2,7 @@ from sqlalchemy import Column, String
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import validates
 
-from models import Base, TBase
+from .models import Base, TBase
 
 class User(Base, TBase):
     __tablename__ = 'user'

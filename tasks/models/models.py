@@ -38,8 +38,8 @@ class DictableBase(object):
         mapper = class_mapper(self.__class__)
         columns = [column.key for column in mapper.columns]
         get_key_value = lambda c: (c, getattr(self, c).isoformat()) if isinstance(getattr(self, c), datetime.datetime) else (c, getattr(self, c))
-        out = dict(map(get_key_value, columns))
-        for name, relation in mapper.relationships.items():
+        out = dict(list(map(get_key_value, columns)))
+        for name, relation in list(mapper.relationships.items()):
             if relation not in found:
                 found.append(relation)
                 related_obj = getattr(self, name)
@@ -57,7 +57,7 @@ class TBase(DictableBase):
 
     def genId(self):
         if self.id is not None:
-            raise 'id already defined'
+            raise Exception('id already defined')
         self.id = str(uuid.uuid1())
 
     def save(self):

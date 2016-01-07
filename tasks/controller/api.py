@@ -1,4 +1,4 @@
-import user, dashboard, task
+from . import user, dashboard, task
 
 class Controller:
 

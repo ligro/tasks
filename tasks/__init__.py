@@ -1,1 +1,1 @@
-from index import Tasks
+from .index import Tasks

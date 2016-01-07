@@ -1,7 +1,7 @@
 import cherrypy
 
 from tasks import models
-import auth
+from . import auth
 
 class Controller:
     """User controller"""

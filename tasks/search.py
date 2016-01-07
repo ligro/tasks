@@ -6,7 +6,7 @@ from collections import OrderedDict
 import threading
 
 from tasks.config import config
-import models
+from . import models
 
 lang = 'en'
 # for facet query
@@ -19,11 +19,11 @@ def query(query, userId, dashboardId, limit, offset=0):
         q = xapian.Query.MatchAll
 
     if userId:
-        fq = xapian.Query(u'XA' + userId)
+        fq = xapian.Query('XA' + userId)
         q = xapian.Query(xapian.Query.OP_FILTER, q, fq)
 
     if dashboardId is not None:
-        fq = xapian.Query(u'XD' + dashboardId)
+        fq = xapian.Query('XD' + dashboardId)
         q = xapian.Query(xapian.Query.OP_FILTER, q, fq)
 
     try:
@@ -41,13 +41,13 @@ def query(query, userId, dashboardId, limit, offset=0):
     # facet
     tags = {}
     for spy in [spy1, spy2, spy3]:
-        for facet in spy.values():
+        for facet in list(spy.values()):
             if facet.term not in tags:
                 tags[facet.term] = 0
             tags[facet.term] += facet.termfreq
 
     # sort facets
-    tags = OrderedDict(sorted(tags.items(), key=lambda t: t[1], reverse=True))
+    tags = OrderedDict(sorted(list(tags.items()), key=lambda t: t[1], reverse=True))
 
     return {
         'tasks': tasks,
@@ -121,15 +121,15 @@ def index(task):
     doc.add_boolean_term(idterm)
 
     # add author
-    doc.add_boolean_term(u'XA' + task.userId)
+    doc.add_boolean_term('XA' + task.userId)
 
     # add dashboard
     if task.dashboardId is not None:
-        doc.add_boolean_term(u'XD' + task.dashboardId)
+        doc.add_boolean_term('XD' + task.dashboardId)
 
     # add tags for filtering
     for tag in task.tags:
-        doc.add_boolean_term(u'XT' + tag.name.lower())
+        doc.add_boolean_term('XT' + tag.name.lower())
 
     _index.add_doc(idterm, doc)
 
@@ -141,7 +141,7 @@ def flush():
     _index.flush()
 
 def _getDocIdFromTask(task):
-    return u"Q" + task.id
+    return "Q" + task.id
 
 class Index:
     _sdb = None

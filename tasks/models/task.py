@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, UnicodeText
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
 
-from models import Base, TBase, DictableBase
+from .models import Base, TBase, DictableBase
 
 class Task(Base, TBase):
     __tablename__ = 'task'

@@ -129,7 +129,7 @@ class Controller(object):
 
         user = check_credentials(login, password)
         if user is None:
-            return {'success': False, 'msgs': [u"Incorrect pseudo or password."]}
+            return {'success': False, 'msgs': ["Incorrect pseudo or password."]}
 
         logIn(user)
         return {'success': True}
