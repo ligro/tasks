@@ -10,8 +10,10 @@
                 $.App.addColumn()
             })
         },
-        addColumn: function(query = '') {
+        addColumn: function(query) {
             var columns, datas
+
+            if (typeof query === 'undefined') query = ''
 
             datas = {
                 'query': query,

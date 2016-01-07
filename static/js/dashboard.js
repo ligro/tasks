@@ -2,7 +2,7 @@
     'use strict';
 
     $.extend($.fn, {
-        dashboardSelect: function(selectedDashboard = null){
+        dashboardSelect: function(selectedDashboard){
             selectedDashboard = selectedDashboard || dashboards.current
             return this.each(function (){
                 var $this = $(this)

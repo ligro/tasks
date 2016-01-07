@@ -3,7 +3,8 @@
 
     // TODO rename as dropdown
     $.extend($.fn, {
-        select: function(options, selectedValue = null){
+        select: function(options, selectedValue){
+            if (typeof selectedValue === 'undefined') selectedValue = null
             return this.each(function (){
                 var $this = $(this),
                     tplData = {},

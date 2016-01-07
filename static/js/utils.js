@@ -30,7 +30,8 @@
             return fields
         },
         // post form
-        post: function(data = {}){
+        post: function(data){
+            if (typeof data === 'undefined') data = {}
             return this.each(function(){
                 var $this = $(this)
 
