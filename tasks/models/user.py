@@ -38,7 +38,7 @@ class User(Base, TBase):
         import hashlib
 
         hl = hashlib.new(algo)
-        hl.update('{0}{1}'.format(salt, pwd))
+        hl.update(bytes('{0}{1}'.format(salt, pwd), 'utf-8'))
         return hl.hexdigest()
 
 
