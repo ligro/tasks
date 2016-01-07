@@ -1,1 +1,1 @@
-import admin, api, auth, dashboard, task, user
+from . import admin, api, auth, dashboard, task, user

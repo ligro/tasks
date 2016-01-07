@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String
 from sqlalchemy import ForeignKey
 
-from models import Base, TBase
+from .models import Base, TBase
 
 class Dashboard(Base, TBase):
     __tablename__ = 'dashboard'
