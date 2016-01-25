@@ -10,7 +10,7 @@
                 modalData.content = out
                 $.ui._loadTpl('modal', modalData, function(err, out) {
 
-                    $this.html($(out).show().addClass('in'))
+                    $this.html($(out).css('display', 'block').addClass('in'))
 
                     // add close event
                     $this.on('click', '.close', function(){ $this.remove() })
