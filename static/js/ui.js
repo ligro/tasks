@@ -53,18 +53,17 @@
 
                  var id = $.ui.notifyId++
 
-                 $.ui._loadTpl(
+                 $.ui._loadTplPromise(
                      'alert',
                      {
                          level_label: $.ui.notifyLevels[type][0],
                          class: $.ui.notifyLevels[type][1],
                          msg: msg,
                          id: id
-                     },
-                     function(err, out) {
-                         $('.alerts').prepend($(out))
                      }
-                 )
+                 ).then(function(out) {
+                     $('.alerts').prepend($(out))
+                 })
 
                  if (typeof $.ui.notifyLevels[type][2] != 'undefined') {
                     setTimeout(function(){
@@ -91,6 +90,17 @@
                 && dust.loadSource(dust.compile($.templates[name], name))
 
             dust.render(name, data, end)
+        },
+        _loadTplPromise: function(name, data) {
+            return new Promise(function (resolve, reject) {
+                $.ui._loadTpl(name, data, function (err, out){
+                    if (err) {
+                        console.error(err)
+                        reject(err)
+                    }
+                    resolve(out)
+                })
+            })
         }
      }
 

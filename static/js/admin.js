@@ -17,11 +17,11 @@
                 for (var i in data.tasks) {
                     tplData = data.tasks[i]
                     tplData.nobuttons = 1
-                    console.log(tplData)
-                    // TODO make it Promise
-                    $.ui._loadTpl('task', tplData, function(err, out) {
-                        $tasks.append($(out))
-                    })
+
+                    $.ui._loadTplPromise('task', tplData)
+                        .then(function(out) {
+                            $tasks.append($(out))
+                        })
                 }
             })
             .catch(function(data){
@@ -37,9 +37,10 @@
 
                 $users.html('')
                 for (var i in data.users) {
-                    $.ui._loadTpl('user', data.users[i], function(err, out) {
-                        $users.append($(out))
-                    })
+                    $.ui._loadTplPromise('user', data.users[i])
+                        .then(function(out) {
+                            $users.append($(out))
+                        })
                 }
             })
             .on('post:error', function(e, data) {

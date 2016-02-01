@@ -137,16 +137,18 @@
                         // update tag view
                         $tags.html('')
                         for (var tag in data.tags) {
-                            $.ui._loadTpl('tag', {'tag': tag, 'nb': data.tags[tag]}, function(err, out) {
-                                $tags.append($(out))
-                            })
+                            $.ui._loadTplPromise('tag', {'tag': tag, 'nb': data.tags[tag]})
+                                .then(function(out) {
+                                    $tags.append($(out))
+                                })
                         }
 
                         // add tasks in view
                         for (var taskId in data.tasks) {
-                            $.ui._loadTpl('task', data.tasks[taskId], function(err, out) {
-                                $tasks.append($(out))
-                            })
+                            $.ui._loadTplPromise('task', data.tasks[taskId])
+                                .then(function(out) {
+                                    $tasks.append($(out))
+                                })
                             columns[$this.data('id')].loaded++
                         }
 

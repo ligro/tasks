@@ -23,33 +23,34 @@
                     tplData.options.push({id: id, value: options[id]})
                 }
 
-                $.ui._loadTpl('dropdown', tplData, function(err, out) {
+                $.ui._loadTplPromise('dropdown', tplData)
+                    .then(function(out) {
 
-                    $this.append($(out));
-                    $dropDown = $this.find('.dropdown')
-                    $value = $this.find('.selectedValue')
-                    $input = $this.find('input')
+                        $this.append($(out));
+                        $dropDown = $this.find('.dropdown')
+                        $value = $this.find('.selectedValue')
+                        $input = $this.find('input')
 
-                    $this.on('click', function (e) {
-                        e.preventDefault()
-                        if ($dropDown.hasClass('open')) {
+                        $this.on('click', function (e) {
+                            e.preventDefault()
+                            if ($dropDown.hasClass('open')) {
+                                $dropDown.removeClass('open')
+                            } else {
+                                $dropDown.addClass('open')
+                            }
+                        })
+
+                        $this.on('click', '.dropdown-menu li', function (e) {
+                            e.preventDefault()
+                            var $self = $(e.target)
+
+                            $value.html($self.html())
+                            $input.val($self.data('id'))
+
                             $dropDown.removeClass('open')
-                        } else {
-                            $dropDown.addClass('open')
-                        }
+                            $this.trigger('select:change', [$self.data('id')])
+                        })
                     })
-
-                    $this.on('click', '.dropdown-menu li', function (e) {
-                        e.preventDefault()
-                        var $self = $(e.target)
-
-                        $value.html($self.html())
-                        $input.val($self.data('id'))
-
-                        $dropDown.removeClass('open')
-                        $this.trigger('select:change', [$self.data('id')])
-                    })
-                })
             })
         }
     })

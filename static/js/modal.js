@@ -5,10 +5,12 @@
         modal: function(tpl, data, modalData, end){
             var $this = $(this)
 
-            $.ui._loadTpl(tpl, data, function(err, out) {
-
-                modalData.content = out
-                $.ui._loadTpl('modal', modalData, function(err, out) {
+            $.ui._loadTplPromise(tpl, data)
+                .then(function(out) {
+                    modalData.content = out
+                    return $.ui._loadTplPromise('modal', modalData)
+                })
+                .then(function(out) {
 
                     $this.html($(out).css('display', 'block').addClass('in'))
 
@@ -20,7 +22,6 @@
                         end($this)
                     }
                 })
-            })
 
             return $this
         }

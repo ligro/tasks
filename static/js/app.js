@@ -20,14 +20,15 @@
                 'dashboardId': $.App.dashboardId
             }
 
-            $.ui._loadTpl('column', datas, function(err, out) {
-                $("#page").append($(out))
-                columns = $('#page .column')
-                $(columns[columns.length - 1]).column()
+            $.ui._loadTplPromise('column', datas)
+                .then(function(out) {
+                    $("#page").append($(out))
+                    columns = $('#page .column')
+                    $(columns[columns.length - 1]).column()
 
-                columns.removeClass('col-sm-' + (12/(columns.length - 1)))
-                columns.addClass('col-sm-' + (12/columns.length))
-            })
+                    columns.removeClass('col-sm-' + (12/(columns.length - 1)))
+                    columns.addClass('col-sm-' + (12/columns.length))
+                })
         },
         // jForm success method
         addTask: {
