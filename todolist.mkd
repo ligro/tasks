@@ -2,20 +2,21 @@
 
 ## in progress
 
+ * migrate to python3
 
 ## next
 
  * `http://cherrypy.readthedocs.org/en/latest/pkg/cherrypy.html?highlight=error#module-cherrypy._cperror`
 
+ * handle markdown
+ * allow to set the prod environment
+ * catch api errors to return json with the error
+ * tag autocompletion
  * fix refresh to be sure that data will be returned updated (may be issue with
    time to commit in xapian)
  * enhance columns stackable horizontally only
  * enhance shorcuts (navigation)
  * review the api (allow to add notes from somewhere else)
- * allow to set the prod environment
- * catch api errors to return json with the error
- * migrate to python3
- * tag autocompletion
  * task edition/creation inline
  * merge and cache static files (css, js) for production
  * allow to color tags
