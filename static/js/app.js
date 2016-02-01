@@ -76,8 +76,8 @@
                 .modal('addTask', task, {
                     title: 'Task',
                     submit: {name: button, class: 'btn-primary'}
-                },
-                function($modal){
+                })
+                .then(function($modal){
                     $modal.find('.jSelect').dashboardSelect(task.dashboardId)
                     $modal.find('textarea')[0].focus()
                 })

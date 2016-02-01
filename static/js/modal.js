@@ -2,10 +2,10 @@
     'use strict';
 
     $.extend($.fn, {
-        modal: function(tpl, data, modalData, end){
+        modal: function(tpl, data, modalData) {
             var $this = $(this)
 
-            $.ui._loadTplPromise(tpl, data)
+            return $.ui._loadTplPromise(tpl, data)
                 .then(function(out) {
                     modalData.content = out
                     return $.ui._loadTplPromise('modal', modalData)
@@ -18,12 +18,11 @@
                     $this.on('click', '.close', function(){ $this.remove() })
                     $('body').append($this)
 
-                    if (end) {
-                        end($this)
-                    }
+                    return $this
                 })
-
-            return $this
+                .catch(function(e){
+                    console.log(e)
+                })
         }
     })
 
