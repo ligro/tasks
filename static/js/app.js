@@ -33,7 +33,6 @@
         // jForm success method
         addTask: {
             success: function(data) {
-                // FIXME should be merged with .on 'post:success'
                 $.modal.closeModal()
                 $(document.body).trigger('notify', ['Task saved', 'info'])
                 $(".column").trigger('task:refresh')
