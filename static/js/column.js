@@ -103,6 +103,10 @@
                         data: {id: $task.data('id')}
                     })
                     .then(function(data){
+                        if (!data.success) {
+                            $(document.body).trigger('notify', ['An error occured', 'error']);
+                            return;
+                        }
                         $task.remove()
                         $(document.body).trigger('notify', ['Task removed', 'info']);
                     })
