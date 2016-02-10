@@ -5,6 +5,8 @@
 
 ## next
 
+ * `http://cherrypy.readthedocs.org/en/latest/pkg/cherrypy.html?highlight=error#module-cherrypy._cperror`
+
  * fix refresh to be sure that data will be returned updated (may be issue with
    time to commit in xapian)
  * enhance columns stackable horizontally only
