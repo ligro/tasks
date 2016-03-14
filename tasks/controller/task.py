@@ -61,13 +61,19 @@ class Controller:
     def rm(self, id):
         task = models.session.query(models.Task).get(id)
 
-        if not task or task.userId != auth.userAuth.id:
+        if not task:
+            search.delete(id)
+            search.flush()
+            # should not append, but it does
+            return {'success': True}
+
+        if task.userId != auth.userAuth.id:
             # return 403 ?
             return {'success': False}
 
+        models.session.delete(task)
         search.delete(task)
         search.flush()
-        models.session.delete(task)
         models.commit()
         return {'success': True}
 

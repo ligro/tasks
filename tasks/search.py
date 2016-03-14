@@ -117,7 +117,7 @@ def index(task):
     doc.set_data(json.dumps(task.toDict()))
 
     # add id
-    idterm = _getDocIdFromTask(task)
+    idterm = _getDocId(task.id)
     doc.add_boolean_term(idterm)
 
     # add author
@@ -133,15 +133,15 @@ def index(task):
 
     _index.add_doc(idterm, doc)
 
-def delete(task):
-    idterm = _getDocIdFromTask(task)
+def delete(taskId):
+    idterm = _getDocId(taskId)
     _index.del_doc(idterm)
 
 def flush():
     _index.flush()
 
-def _getDocIdFromTask(task):
-    return u"Q" + task.id
+def _getDocId(id):
+    return u"Q" + id
 
 class Index:
     _sdb = None
