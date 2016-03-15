@@ -72,7 +72,7 @@ class Controller:
             return {'success': False}
 
         models.session.delete(task)
-        search.delete(task)
+        search.delete(task.id)
         search.flush()
         models.commit()
         return {'success': True}
