@@ -3,7 +3,7 @@
 
     // TODO rename as dropdown
     $.extend($.fn, {
-        select: function(options, selectedValue){
+        select: function(options, selectedValue, inputName){
             if (typeof selectedValue === 'undefined') selectedValue = null
             return this.each(function (){
                 var $this = $(this),
@@ -14,11 +14,20 @@
                     $input
 
                 tplData.selectedValue = selectedValue
+                if (inputName) {
+                    tplData.input = {
+                        'name' : inputName,
+                        'value': null
+                    }
+                }
 
                 tplData.options = []
                 for (var id in options) {
                     if (tplData.selectedValue == null) {
                         tplData.selectedValue = options[id]
+                    }
+                    if (tplData.input && tplData.selectedValue == options[id]) {
+                        tplData.input.value = id
                     }
                     tplData.options.push({id: id, value: options[id]})
                 }
@@ -45,7 +54,9 @@
                             var $self = $(e.target)
 
                             $value.html($self.html())
-                            $input.val($self.data('id'))
+                            if ($input) {
+                                $input.val($self.data('id'))
+                            }
 
                             $dropDown.removeClass('open')
                             $this.trigger('select:change', [$self.data('id')])

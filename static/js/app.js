@@ -77,7 +77,7 @@
                     submit: {name: button, class: 'btn-primary'}
                 })
                 .then(function($modal){
-                    $modal.find('.jSelect').dashboardSelect(task.dashboardId)
+                    $modal.find('.jSelect').dashboardSelect(task.dashboardId, 'dashboardId')
                     $modal.find('textarea')[0].focus()
                 })
          },
