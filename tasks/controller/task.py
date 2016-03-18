@@ -31,7 +31,10 @@ class Controller:
 
         if 'id' in kw:
             task = models.session.query(models.Task).get(kw['id'])
-            if (task.userId != auth.userAuth.id):
+            if task is None:
+                return {'success': False, 'msg': 'Task not found'}
+
+            if task.userId != auth.userAuth.id:
                 return {'success': False, 'msg': 'Forbidden'}
 
             task.dashboardId = kw['dashboardId']
